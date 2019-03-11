@@ -41,4 +41,6 @@ public interface TopicMapper extends BaseMapper<Topic> {
   int countToday();
 
   Integer countTodayByadminId(@Param("adminId") Integer adminId);
+
+  void deleteTopicByid(@Param("topicid") Integer topicid);
 }

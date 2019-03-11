@@ -31,7 +31,8 @@ public class UserApiController extends BaseApiController {
   private CollectService collectService;
   @Autowired
   private OAuthUserService oAuthUserService;
-
+  @Autowired
+  NotificationService notificationService;
   // 用户的个人信息
   @GetMapping("/{username}")
   public Result profile(@PathVariable String username) {
@@ -45,7 +46,9 @@ public class UserApiController extends BaseApiController {
     MyPage<Map<String, Object>> comments = commentService.selectByUserId(user.getId(), 1, 10);
     // 查询用户收藏的话题数
     Integer collectCount = collectService.countByUserId(user.getId());
+    System.out.println("是这里吗 2");
 
+    user.setMessage(notificationService.countNotRead(user.getId()));
     Map<String, Object> map = new HashMap<>();
     map.put("user", user);
     map.put("oAuthUsers", oAuthUsers);

@@ -6,6 +6,7 @@ import co.yiiu.pybbs.model.Topic;
 import co.yiiu.pybbs.model.User;
 import co.yiiu.pybbs.service.CommentService;
 import co.yiiu.pybbs.service.TopicService;
+import co.yiiu.pybbs.service.UserService;
 import co.yiiu.pybbs.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -27,7 +28,8 @@ public class CommentApiController extends BaseApiController {
   private CommentService commentService;
   @Autowired
   private TopicService topicService;
-
+  @Autowired
+  private UserService userService;
   // 创建评论
   @PostMapping
   public Result create(@RequestBody Map<String, String> body, HttpSession session) {
@@ -40,6 +42,11 @@ public class CommentApiController extends BaseApiController {
     Topic topic = topicService.selectById(topicId);
     ApiAssert.notNull(topic, "你晚了一步，话题可能已经被删除了");
     Comment comment = commentService.insert(content, topic, user, commentId, session);
+    if (user.getId()!=topic.getUserId()){
+      User topicUser=userService.selectById(topic.getUserId());
+      topicUser.setMessage(topicUser.getMessage()+1);
+      userService.update(topicUser);
+    }
     return success(comment);
   }
 

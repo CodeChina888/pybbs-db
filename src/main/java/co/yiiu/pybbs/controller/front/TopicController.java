@@ -93,9 +93,9 @@ public class TopicController extends BaseController {
     return render("topic/edit");
   }
 
-  @GetMapping("/tag/{name}")
-  public String tag(@PathVariable String name, @RequestParam(defaultValue = "1") Integer pageNo, Model model) {
-    Tag tag = tagService.selectByName(name);
+  @GetMapping("/tag/{id}")
+  public String tag(@PathVariable Integer id, @RequestParam(defaultValue = "1") Integer pageNo, Model model) {
+    Tag tag = tagService.selectById(id);
     Assert.notNull(tag, "模板不存在");
     // 查询标签关联的话题
     MyPage<Map<String, Object>> iPage = tagService.selectTopicByTagId(tag.getId(), pageNo);

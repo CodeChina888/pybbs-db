@@ -64,5 +64,5 @@ public class NotificationService {
     notification.setInTime(new Date());
     notification.setRead(false);
     notificationMapper.insert(notification);
-  }
+      }
 }

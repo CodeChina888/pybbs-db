@@ -139,6 +139,7 @@ public class CommentService {
     // 给话题作者发通知
     if (!user.getId().equals(topic.getUserId())) {
       notificationService.insert(user.getId(), topic.getUserId(), topic.getId(), "COMMENT", content);
+
       // 发送邮件通知
       String emailTitle = "%s 评论你的话题 %s 快去看看吧！";
       // 如果开启了websocket，就发网页通知

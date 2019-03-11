@@ -83,6 +83,7 @@
                 </#if>
                  </a>
                 </#if>
+            <#if topic.pass == true>
                 <#if sec.hasPermission("topic:top")>
                   <button onclick="actionBtn('${topic.id}', 'top', this)" class="btn btn-xs btn-warning">
                     <#if topic.top>
@@ -101,6 +102,7 @@
                     </#if>
                   </button>
                 </#if>
+            </#if>
                 <#if sec.hasPermission("topic:edit")>
                   <a href="/admin/topic/edit?id=${topic.id}" class="btn btn-xs btn-warning">编辑</a>
                 </#if>

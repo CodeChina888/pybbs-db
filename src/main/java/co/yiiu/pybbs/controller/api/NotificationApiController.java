@@ -2,6 +2,7 @@ package co.yiiu.pybbs.controller.api;
 
 import co.yiiu.pybbs.model.User;
 import co.yiiu.pybbs.service.NotificationService;
+import co.yiiu.pybbs.service.UserService;
 import co.yiiu.pybbs.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +24,8 @@ public class NotificationApiController extends BaseApiController {
 
   @Autowired
   private NotificationService notificationService;
-
+  @Autowired
+  private UserService userService;
   @GetMapping("/notRead")
   public Result notRead() {
     User user = getApiUser();
@@ -33,6 +35,9 @@ public class NotificationApiController extends BaseApiController {
   @GetMapping("/markRead")
   public Result markRead() {
     User user = getApiUser();
+    user.setMessage(0);
+    userService.update(user);
+    System.out.println("执行了吗");
     notificationService.markRead(user.getId());
     return success();
   }

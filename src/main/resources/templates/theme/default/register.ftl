@@ -16,6 +16,10 @@
             <input type="password" id="password" name="password" class="form-control" placeholder="密码"/>
           </div>
           <div class="form-group">
+            <label for="email">邮箱</label>
+            <input type="email" id="email" name="email" class="form-control" placeholder="邮箱"/>
+          </div>
+          <div class="form-group">
             <label for="captcha">验证码</label>
             <div class="input-group">
               <input type="text" class="form-control" id="captcha" name="captcha" placeholder="验证码"/>
@@ -42,10 +46,11 @@
       var date = new Date();
       $(this).attr("src", "/common/captcha?ver=" + date.getTime());
     })
-    $("#register_btn").click(function() {
+    $("#register_btn").click(function(){
       var username = $("#username").val();
       var password = $("#password").val();
       var captcha = $("#captcha").val();
+        var email = $("#email").val();
       if (!username) {
         toast("请输入用户名");
         return;
@@ -68,6 +73,7 @@
           username: username,
           password: password,
           captcha: captcha,
+            email:email,
         }),
         success: function(data) {
           if (data.code === 200) {

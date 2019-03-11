@@ -31,7 +31,7 @@
           <#if tags>
             <span>•</span>
              <#list topic.tags as tag>
-              <a href="/topic/tag/${tag.name}"><span class="label label-info">${tag.name}</span></a>
+              <a href="/topic/tag/${tag.id}"><span class="label label-info">${tag.name}</span></a>
             </#list>
           </#if>
         </p>

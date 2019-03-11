@@ -5,7 +5,7 @@ spring:
 datasource_driver: com.mysql.cj.jdbc.Driver
 datasource_url: jdbc:mysql://120.78.185.50:3306/pybbs?useSSL=false&characterEncoding=utf8&serverTimezone=GMT
 datasource_username: root
-datasource_password: 123456
+datasource_password: yufuyang
 
 # 想看mybatis执行的sql的时候，去掉下面这段的注释
 #logging:

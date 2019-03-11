@@ -35,6 +35,18 @@ public class User implements Serializable {
   // 有消息通知是否通过邮箱收取
   private Boolean emailNotification;
 
+  private long message;
+
+  public long getMessage()
+  {
+    return message;
+  }
+
+  public void setMessage(long message)
+  {
+    this.message = message;
+  }
+
   // 有消息通知是否通过telegram收取
   // 文档上写的可以通过username跟userId发送消息，但测试结果是只能通过userId发送
   // 难道我调接口的姿势不对？待我后面再收拾它。。

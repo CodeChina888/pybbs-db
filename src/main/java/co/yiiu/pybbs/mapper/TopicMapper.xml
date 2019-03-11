@@ -94,5 +94,8 @@
      where admin_user.id = #{adminId}
      order by t.in_time desc
   </select>
+  <delete id="deleteTopicByid">
+    delete * from topic where id=#{topicid}
+  </delete>
 
 </mapper>

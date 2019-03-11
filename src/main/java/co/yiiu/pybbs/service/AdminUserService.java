@@ -41,31 +41,40 @@ public class AdminUserService {
 
   public void update(AdminUser adminUser) {
     AdminUser adminUser1=adminUserMapper.selectById(adminUser.getId());
-
-    Tag oldTag=tagMapper.selectById(adminUser1.getTagId());
-    System.out.println(oldTag.getName());
-    if (oldTag.getId()!=adminUser.getTagId())
+    System.out.println(adminUser1.getTagId());
+    if(adminUser1.getTagId()!=0)
     {
+      Tag oldTag = tagMapper.selectById(adminUser1.getTagId());
+      System.out.println(oldTag.getName());
+      if (oldTag.getId() != adminUser.getTagId())
+      {
         oldTag.setAdminId(0);
         oldTag.setAdminName("");
-      Tag tag = tagMapper.selectById(adminUser.getTagId());
-      tag.setAdminId(adminUser.getId());
-      tag.setAdminName(adminUser.getUsername());
-      tagMapper.updateById(oldTag);
-      tagMapper.updateById(tag);
-      adminUserMapper.updateById(adminUser);
-    }else adminUserMapper.updateById(adminUser);
+        Tag tag = tagMapper.selectById(adminUser.getTagId());
+        tag.setAdminId(adminUser.getId());
+        tag.setAdminName(adminUser.getUsername());
+        tagMapper.updateById(oldTag);
+        tagMapper.updateById(tag);
+        adminUserMapper.updateById(adminUser);
+      }
+      else adminUserMapper.updateById(adminUser);
+    } else { adminUser.setTagId(0);
+            adminUserMapper.updateById(adminUser);}
   }
 
   public void insert(AdminUser adminUser) {
       adminUserMapper.insert(adminUser);
-      adminUserMapper.updateTag(adminUser.getTagId());
-      adminUserMapper.updateAdminName(adminUser.getTagId());
+
+        adminUserMapper.updateTag(adminUser.getTagId());
+        adminUserMapper.updateAdminName(adminUser.getTagId());
+
   }
 
   public void delete(Integer id) {
-    Tag tag=tagMapper.selectById(adminUserMapper.selectById(id).getTagId());
-    if(tag!=null){
+    if (adminUserMapper.selectById(id).getTagId()!=0)
+    {
+      Tag tag = tagMapper.selectById(adminUserMapper.selectById(id).getTagId());
+
       tag.setAdminId(0);
       tag.setAdminName("");
       tagMapper.updateById(tag);

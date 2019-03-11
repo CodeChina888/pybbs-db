@@ -56,7 +56,6 @@ public class AdminUserAdminController extends BaseAdminController {
   @PostMapping("/add")
   public String save(AdminUser adminUser) {
     adminUser.setInTime(new Date());
-    adminUser.setTagId(0);
     adminUser.setPassword(new BCryptPasswordEncoder().encode(adminUser.getPassword()));
     adminUserService.insert(adminUser);
     return redirect("/admin/admin_user/list");

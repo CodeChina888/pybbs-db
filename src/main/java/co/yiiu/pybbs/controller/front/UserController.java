@@ -3,6 +3,7 @@ package co.yiiu.pybbs.controller.front;
 import co.yiiu.pybbs.model.OAuthUser;
 import co.yiiu.pybbs.model.User;
 import co.yiiu.pybbs.service.CollectService;
+import co.yiiu.pybbs.service.NotificationService;
 import co.yiiu.pybbs.service.OAuthUserService;
 import co.yiiu.pybbs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,8 @@ public class UserController extends BaseController {
   private CollectService collectService;
   @Autowired
   private OAuthUserService oAuthUserService;
-
+  @Autowired
+  NotificationService notificationService;
   @GetMapping("/{username}")
   public String profile(@PathVariable String username, Model model) {
     // 查询用户个人信息
@@ -41,6 +43,7 @@ public class UserController extends BaseController {
     // 查询用户收藏的话题数
     Integer collectCount = collectService.countByUserId(user.getId());
 
+    user.setMessage(notificationService.countNotRead(user.getId()));
     // 找出oauth登录里有没有github，有的话把github的login提取出来
     List<String> logins = oAuthUsers.stream().filter(oAuthUser -> oAuthUser.getType().equals("GITHUB")).map(OAuthUser::getLogin).collect(Collectors.toList());
     if (logins.size() > 0) {
