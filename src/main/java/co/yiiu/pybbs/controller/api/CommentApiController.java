@@ -8,6 +8,7 @@ import co.yiiu.pybbs.service.CommentService;
 import co.yiiu.pybbs.service.TopicService;
 import co.yiiu.pybbs.service.UserService;
 import co.yiiu.pybbs.util.Result;
+import co.yiiu.pybbs.util.aop.MyLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,7 @@ public class CommentApiController extends BaseApiController {
   private UserService userService;
   // 创建评论
   @PostMapping
+  @MyLog("发表评论")
   public Result create(@RequestBody Map<String, String> body, HttpSession session) {
     User user = getApiUser();
     String content = body.get("content");
@@ -46,13 +48,17 @@ public class CommentApiController extends BaseApiController {
       User topicUser=userService.selectById(topic.getUserId());
       topicUser.setMessage(topicUser.getMessage()+1);
       userService.update(topicUser);
+    }else {
+      User commentUser=userService.selectById(comment.getUserId());
+      commentUser.setMessage(commentUser.getMessage()+1);
     }
     return success(comment);
   }
 
   // 更新评论
+  @MyLog("更新评论")
   @PutMapping("/{id}")
-  public Result update(@PathVariable Integer id, @RequestBody Map<String, String> body) {
+  public Result update(@RequestBody Map<String, String> body,@PathVariable Integer id) {
     User user = getApiUser();
     String content = body.get("content");
     ApiAssert.notNull(id, "评论ID呢？");
@@ -66,6 +72,7 @@ public class CommentApiController extends BaseApiController {
   }
 
   // 删除评论
+  @MyLog("删除评论")
   @DeleteMapping("/{id}")
   public Result delete(@PathVariable Integer id, HttpSession session) {
     User user = getApiUser();

@@ -15,4 +15,11 @@
     select count(1) from user where to_days(in_time) = to_days(now());
   </select>
 
+  <select id="selectByoriginId" resultType="co.yiiu.pybbs.model.User">
+    select * from user where origin_id = #{origin_id};
+  </select>
+
+  <select id="isExist" resultType="integer">
+    select count(1) from user where origin_id = #{origin_id} limit 1;
+  </select>
 </mapper>

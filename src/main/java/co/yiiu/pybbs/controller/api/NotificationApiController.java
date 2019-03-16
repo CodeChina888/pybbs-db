@@ -37,7 +37,6 @@ public class NotificationApiController extends BaseApiController {
     User user = getApiUser();
     user.setMessage(0);
     userService.update(user);
-    System.out.println("执行了吗");
     notificationService.markRead(user.getId());
     return success();
   }

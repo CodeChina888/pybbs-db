@@ -37,11 +37,11 @@
   <body class="hold-transition login-page">
   <div class="login-box">
     <div class="login-logo">
-      <a href="javascript:;"><b>ADMIN</b>${site.name}</a>
+      <a href="javascript:;"><b>ADMIN</b>安恒信息</a>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
-      <p class="login-box-msg">${site.name} 管理平台登录</p>
+      <p class="login-box-msg">安恒信息管理平台登录</p>
       <#if error??>
         <div class="text-red">${error}</div>
       </#if>

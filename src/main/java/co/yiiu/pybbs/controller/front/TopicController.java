@@ -9,6 +9,7 @@ import co.yiiu.pybbs.service.TagService;
 import co.yiiu.pybbs.service.TopicService;
 import co.yiiu.pybbs.service.UserService;
 import co.yiiu.pybbs.util.MyPage;
+import co.yiiu.pybbs.util.aop.MyLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -44,7 +46,7 @@ public class TopicController extends BaseController {
 
   // 话题详情
   @GetMapping("/{id}")
-  public String detail(@PathVariable Integer id, Model model, HttpServletRequest request) {
+  public String detail(@PathVariable Integer id, Model model, HttpServletRequest request, HttpSession session) {
     // 查询话题详情
     Topic topic = topicService.selectById(id);
     Assert.notNull(topic, "话题不存在");
@@ -65,22 +67,25 @@ public class TopicController extends BaseController {
     model.addAttribute("tags", tags);
     model.addAttribute("topicUser", topicUser);
     model.addAttribute("collects", collects);
+    int orginId=(int)session.getAttribute("originid");
+    userService.refresh(orginId);
     return render("topic/detail");
   }
 
   @GetMapping("/create")
-  public String create(String tag, Model model) {
-    //String name=tag.getName();
-    //System.out.println("jinlaile");
+  public String create(String tag, Model model,HttpSession session) {
     model.addAttribute("tag",tag);
     List list=tagService.selectAllTag();
     model.addAttribute("list",list);
+    int orginId=(int)session.getAttribute("originid");
+    userService.refresh(orginId);
     return render("topic/create");
   }
 
   // 编辑话题
+  @MyLog(value = "编辑话题")  //这里添加了AOP的自定义注解
   @GetMapping("/edit/{id}")
-  public String edit(@PathVariable Integer id, Model model) {
+  public String edit(Model model,@PathVariable Integer id,HttpSession session) {
     Topic topic = topicService.selectById(id);
     Assert.isTrue(topic.getUserId().equals(getUser().getId()), "谁给你的权限修改别人的话题的？");
     // 查询话题的标签
@@ -90,17 +95,21 @@ public class TopicController extends BaseController {
     model.addAttribute("topic", topic);
     model.addAttribute("tags", tags.getName());
     model.addAttribute("list",list);
+    int orginId=(int)session.getAttribute("originid");
+    userService.refresh(orginId);
     return render("topic/edit");
   }
 
   @GetMapping("/tag/{id}")
-  public String tag(@PathVariable Integer id, @RequestParam(defaultValue = "1") Integer pageNo, Model model) {
+  public String tag(@PathVariable Integer id, @RequestParam(defaultValue = "1") Integer pageNo, Model model,HttpSession session) {
     Tag tag = tagService.selectById(id);
     Assert.notNull(tag, "模板不存在");
     // 查询标签关联的话题
     MyPage<Map<String, Object>> iPage = tagService.selectTopicByTagId(tag.getId(), pageNo);
     model.addAttribute("tag", tag);
     model.addAttribute("page", iPage);
+    int orginId=(int)session.getAttribute("originid");
+    userService.refresh(orginId);
     return render("tag/tag");
   }
 }

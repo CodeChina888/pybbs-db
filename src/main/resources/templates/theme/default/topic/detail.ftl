@@ -50,7 +50,7 @@
         ${model.formatContent(topic.content)}
         <div>
 
-          <a href="/topic/tag/${tags.name}"><span class="label label-info">${tags.name}</span></a>
+          <a href="/topic/tag/${tags.id}"><span class="label label-info">${tags.name}</span></a>
 
         </div>
       </div>

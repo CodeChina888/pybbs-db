@@ -46,7 +46,6 @@ public class UserApiController extends BaseApiController {
     MyPage<Map<String, Object>> comments = commentService.selectByUserId(user.getId(), 1, 10);
     // 查询用户收藏的话题数
     Integer collectCount = collectService.countByUserId(user.getId());
-    System.out.println("是这里吗 2");
 
     user.setMessage(notificationService.countNotRead(user.getId()));
     Map<String, Object> map = new HashMap<>();

@@ -10,4 +10,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface UserMapper extends BaseMapper<User> {
   int countToday();
+
+  User selectByoriginId(Integer id);
+
+  Integer isExist(Integer id);
 }

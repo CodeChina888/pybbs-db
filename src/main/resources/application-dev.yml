@@ -1,13 +1,13 @@
 datasource_driver: com.mysql.cj.jdbc.Driver
-datasource_url: jdbc:mysql://127.0.0.1:3306/pybbs?useSSL=false&characterEncoding=utf8&serverTimezone=GMT
-#datasource_url: jdbc:mysql://120.78.185.50:3306/pybbs?useSSL=false&characterEncoding=utf8&serverTimezone=GMT
+datasource_url: jdbc:mysql://127.0.0.1:3306/dbapp?useSSL=false&characterEncoding=utf8&serverTimezone=GMT
+#datasource_url: jdbc:mysql://120.78.185.50:3306/dbapp?useSSL=false&characterEncoding=utf8&serverTimezone=GMT
 datasource_username: root
-datasource_password: yufuyang
+datasource_password: 123456
 
 
-logging:
-  level:
-    co:
-     yiiu:
-       pybbs:
-         mapper: debug
+#logging:
+#  level:
+#    co:
+#     yiiu:
+#       pybbs:
+#         mapper: debug

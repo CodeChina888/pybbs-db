@@ -61,13 +61,17 @@ public class IndexController extends BaseController {
     // 再查一遍，保证数据的最新
     User user = (User) session.getAttribute("_user");
     user = userService.selectById(user.getId());
+    int orginId=(int)session.getAttribute("originid");
+    userService.refresh(orginId);
     model.addAttribute("user", user);
     return render("user/settings");
   }
 
   @GetMapping("/tags")
-  public String tags(@RequestParam(defaultValue = "1") Integer pageNo, Model model) {
+  public String tags(@RequestParam(defaultValue = "1") Integer pageNo, Model model,HttpSession session) {
     model.addAttribute("pageNo", pageNo);
+    int orginId=(int)session.getAttribute("originid");
+    userService.refresh(orginId);
     return render("tag/tags");
   }
 
@@ -85,7 +89,9 @@ public class IndexController extends BaseController {
 
   // 通知
   @GetMapping("/notifications")
-  public String notifications() {
+  public String notifications(HttpSession session) {
+    int orginId=(int)session.getAttribute("originid");
+    userService.refresh(orginId);
     return render("notifications");
   }
 

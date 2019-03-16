@@ -39,8 +39,6 @@ public class SettingsApiController extends BaseApiController {
     Boolean emailNotification = Boolean.parseBoolean(body.get("emailNotification"));
     // 查询当前用户的最新信息
     User user1 = userService.selectById(user.getId());
-    user1.setTelegramName(telegramName);
-    user1.setWebsite(website);
     user1.setBio(bio);
     user1.setEmailNotification(emailNotification);
     userService.update(user1);

@@ -14,20 +14,20 @@
                      placeholder="用户名">
             </div>
           </div>
-          <div class="form-group">
-            <label for="telegramName" class="col-sm-2 control-label">Telegram用户名</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" id="telegramName" name="telegramName" value="${user.telegramName!}"
-                     placeholder="Telegram用户名">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="website" class="col-sm-2 control-label">个人主页</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" id="website" name="website" value="${user.website!}"
-                     placeholder="个人主页">
-            </div>
-          </div>
+          <#--<div class="form-group">-->
+            <#--<label for="telegramName" class="col-sm-2 control-label">Telegram用户名</label>-->
+            <#--<div class="col-sm-10">-->
+              <#--<input type="text" class="form-control" id="telegramName" name="telegramName" value="${user.telegramName!}"-->
+                     <#--placeholder="Telegram用户名">-->
+            <#--</div>-->
+          <#--</div>-->
+          <#--<div class="form-group">-->
+            <#--<label for="website" class="col-sm-2 control-label">个人主页</label>-->
+            <#--<div class="col-sm-10">-->
+              <#--<input type="text" class="form-control" id="website" name="website" value="${user.website!}"-->
+                     <#--placeholder="个人主页">-->
+            <#--</div>-->
+          <#--</div>-->
           <div class="form-group">
             <label for="bio" class="col-sm-2 control-label">个人简介</label>
             <div class="col-sm-10">
@@ -37,12 +37,12 @@
           </div>
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" id="emailNotification" <#if user.emailNotification>checked</#if>>
-                  有新消息发送邮件
-                </label>
-              </div>
+              <#--<div class="checkbox">-->
+                <#--<label>-->
+                  <#--<input type="checkbox" id="emailNotification" <#if user.emailNotification>checked</#if>>-->
+                  <#--有新消息发送邮件-->
+                <#--</label>-->
+              <#--</div>-->
             <#--<div class="checkbox">
               <label>
                 <input type="checkbox" id="telegramNotification"> 有新消息发送Telegram通知
@@ -108,30 +108,30 @@
         </form>
       </div>
     </div>
-    <div class="panel panel-info">
-      <div class="panel-heading">修改密码</div>
-      <div class="panel-body">
-        <form onsubmit="return;" class="form-horizontal">
-          <div class="form-group">
-            <label for="oldPassword" class="col-sm-2 control-label">旧密码</label>
-            <div class="col-sm-10">
-              <input type="password" name="oldPassword" id="oldPassword" class="form-control" placeholder="旧密码"/>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="newPassword" class="col-sm-2 control-label">新密码</label>
-            <div class="col-sm-10">
-              <input type="password" name="newPassword" id="newPassword" class="form-control" placeholder="新密码"/>
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-              <button type="button" id="settings_pwd_btn" class="btn btn-info">更改密码</button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
+    <#--<div class="panel panel-info">-->
+      <#--<div class="panel-heading">修改密码</div>-->
+      <#--<div class="panel-body">-->
+        <#--<form onsubmit="return;" class="form-horizontal">-->
+          <#--<div class="form-group">-->
+            <#--<label for="oldPassword" class="col-sm-2 control-label">旧密码</label>-->
+            <#--<div class="col-sm-10">-->
+              <#--<input type="password" name="oldPassword" id="oldPassword" class="form-control" placeholder="旧密码"/>-->
+            <#--</div>-->
+          <#--</div>-->
+          <#--<div class="form-group">-->
+            <#--<label for="newPassword" class="col-sm-2 control-label">新密码</label>-->
+            <#--<div class="col-sm-10">-->
+              <#--<input type="password" name="newPassword" id="newPassword" class="form-control" placeholder="新密码"/>-->
+            <#--</div>-->
+          <#--</div>-->
+          <#--<div class="form-group">-->
+            <#--<div class="col-sm-offset-2 col-sm-10">-->
+              <#--<button type="button" id="settings_pwd_btn" class="btn btn-info">更改密码</button>-->
+            <#--</div>-->
+          <#--</div>-->
+        <#--</form>-->
+      <#--</div>-->
+    <#--</div>-->
   </div>
   <div class="col-md-3 hidden-xs">
     <#include "../components/user_info.ftl"/>

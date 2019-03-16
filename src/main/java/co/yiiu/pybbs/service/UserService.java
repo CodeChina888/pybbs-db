@@ -2,22 +2,27 @@ package co.yiiu.pybbs.service;
 
 import co.yiiu.pybbs.config.service.RedisService;
 import co.yiiu.pybbs.mapper.UserMapper;
+import co.yiiu.pybbs.model.Data;
+import co.yiiu.pybbs.model.Message;
+import co.yiiu.pybbs.model.Row;
 import co.yiiu.pybbs.model.User;
 import co.yiiu.pybbs.util.Constants;
+import co.yiiu.pybbs.util.HttpClientUtil;
 import co.yiiu.pybbs.util.JsonUtil;
 import co.yiiu.pybbs.util.MyPage;
 import co.yiiu.pybbs.util.bcrypt.BCryptPasswordEncoder;
 import co.yiiu.pybbs.util.identicon.Identicon;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.lang.reflect.Type;
+import java.util.*;
 
 /**
  * Created by tomoya.
@@ -74,18 +79,17 @@ public class UserService {
   }
 
   // 注册创建用户
-  public User addUser(String username, String password, String avatar, String email, String bio, String website) {
+  public User addUser(Integer OriginId,String username, String password, String avatar, String email, String bio) {
     String token = this.generateToken();
     User user = new User();
+    user.setOriginId(OriginId);
     user.setUsername(username);
     if (!StringUtils.isEmpty(password)) user.setPassword(new BCryptPasswordEncoder().encode(password));
     user.setToken(token);
     user.setInTime(new Date());
-    if (avatar == null) avatar = identicon.generator(username);
+//    if (avatar == null) avatar = identicon.generator(username);
     user.setAvatar(avatar);
     user.setEmail(email);
-    user.setBio(bio);
-    user.setWebsite(website);
     userMapper.insert(user);
     // 再查一下，有些数据库里默认值保存后，类里还是null
     return this.selectById(user.getId());
@@ -119,6 +123,26 @@ public class UserService {
     return user;
   }
 
+  public User selectByoriginId(Integer originId) {
+    String userJson = redisService.getString(Constants.REDIS_USER_ID_KEY + originId);
+    User user;
+    if (userJson == null) {
+      user =userMapper.selectByoriginId(originId);
+      redisService.setString(Constants.REDIS_USER_ID_KEY + originId, JsonUtil.objectToJson(user));
+    } else {
+      user = JsonUtil.jsonToObject(userJson, User.class);
+    }
+    return user;
+  }
+
+  public boolean isExist(Integer originId) {
+    Integer flag=userMapper.isExist(originId);
+    if(flag>0)
+      return true;
+    else
+      return false;
+  }
+
   // 查询用户积分榜
   public List<User> selectTop(Integer limit) {
     QueryWrapper<User> wrapper = new QueryWrapper<>();
@@ -134,6 +158,51 @@ public class UserService {
     // 删除redis里的缓存
     this.delRedisUser(user);
   }
+
+  //查询x平台用户信息
+  public Message<Data> userMessage(Integer id ){
+    //User user=userService.selectById(userid);
+    String url="http://xpro.adl.io/service/memcenter/api/v1/inner/member/getUserInfo?id="+id;
+    String message = HttpClientUtil.doGet(url);
+    Gson gson = new Gson();
+    //Map<String, Object> map = new HashMap<String, Object>();
+    Type type=new TypeToken<Message<Data>>(){}.getType();
+    Message<Data> dataMessage = gson.fromJson(message, type);
+    //Row row=dataMessage.getData().getRow();
+    //System.out.println(row.getRealname());
+    return dataMessage;
+  }
+
+  //查询x平台用户是否有登陆论坛的权限
+  public Boolean hasPermission(Integer id){
+    String url="http://service.adl.io/memcenter/api/v1/inner/forum/userHasPermission?userId="+id;
+    String message=HttpClientUtil.doGet(url);
+    Gson gson = new Gson();
+    Type type=new TypeToken<Message<Data>>(){}.getType();
+    Message<Data> dataMessage = gson.fromJson(message, type);
+    if (Integer.parseInt(dataMessage.getCode())==00000)
+    { Row row = dataMessage.getData().getRow();
+      return row.getHasPermission();
+    }else {
+      return false;
+    }
+  }
+
+  //刷新token
+  public void refresh(Integer id) {
+    Message<Data> dataMessage = this.userMessage(id);
+    String url = "http://service.adl.io/memcenter/api/v1/inner/auth/refresh";
+    Map<String, String> head = new HashMap<>();
+    head.put("Authorization", "Bearer "+dataMessage.getData().getJwtToken());
+    String message = HttpClientUtil.doPost(url, null, head);
+    Gson gson = new Gson();
+    Type type=new TypeToken<Message<Data>>(){}.getType();
+    Message<Data> Message = gson.fromJson(message, type);
+    System.out.println("code:"+Message.getCode());
+  }
+
+
+
 
   // ------------------------------- admin ------------------------------------------
 

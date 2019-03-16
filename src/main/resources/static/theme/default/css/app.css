@@ -1,9 +1,11 @@
 body {
   background-color: #fff;
 }
+a:hover{
+  text-decoration: none !important;
+}
 footer {
   background-color: #fff;
-  padding: 15px 0;
 }
 .CodeMirror {
   border: 1px solid #ddd;
@@ -11,7 +13,7 @@ footer {
 .CodeMirror pre.CodeMirror-placeholder {
   color: #999;
 }
-.wrapper {background-color: #e5e5e5; width: 100%;}
+.wrapper {background-color: #eee; width: 100%;}
 .title{font-size:16px;font-weight:500;padding-bottom:5px}
 .title a:visited{color:#888}
 .nav-pills>li>a{position:relative;display:block;padding:0 5px}

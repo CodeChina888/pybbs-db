@@ -9,6 +9,7 @@ import co.yiiu.pybbs.model.vo.CommentsByTopic;
 import co.yiiu.pybbs.service.*;
 import co.yiiu.pybbs.util.Result;
 import co.yiiu.pybbs.util.StringUtil;
+import co.yiiu.pybbs.util.aop.MyLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -75,6 +76,7 @@ public class TopicApiController extends BaseApiController {
 
   // 保存话题
   @PostMapping
+  @MyLog("创建话题")
   public Result create(@RequestBody Map<String, String> body, HttpSession session) {
     User user = getApiUser();
     String title = body.get("title");
@@ -94,8 +96,9 @@ public class TopicApiController extends BaseApiController {
   }
 
   // 更新话题
+  @MyLog("更新话题")
   @PutMapping(value = "/{id}")
-  public Result edit(@PathVariable Integer id,@RequestBody Map<String, String> body){
+  public Result edit(@RequestBody Map<String, String> body,@PathVariable Integer id){
     User user = getApiUser();
     String title = body.get("title");
     String content = body.get("content");
@@ -115,6 +118,7 @@ public class TopicApiController extends BaseApiController {
   }
 
   // 删除话题
+  @MyLog("删除话题")
   @DeleteMapping("{id}")
   public Result delete(@PathVariable Integer id, HttpSession session) {
     User user = getApiUser();

@@ -1,5 +1,47 @@
 <#macro header page_tab>
-<nav class="navbar navbar-default" style="border-radius: 0">
+<div class="my_header">
+<header class="navbar my_navbar" style="margin-bottom:0">
+        <div class="header-set el-row">
+            <div class="el-col el-col-4"><a href="https://www.linkedbyx.com/home"
+                    class="home-logo router-link-exact-active router-link-active">
+                    <div class="xpro-logo"></div>
+                </a></div>
+            <ul class="xpro-nav">
+                <li class="xpro-nav-li is-active"><a href="https://www.linkedbyx.com/home"
+                        class="router-link-exact-active router-link-active">首页</a></li>
+                <li class="xpro-nav-li"><a href="https://www.linkedbyx.com/taskCenter/latest" class="">任务中心</a></li>
+                <li class="xpro-nav-li"><a href="https://www.linkedbyx.com/studyCenter/types" class="">学习中心</a></li>
+                <li class="xpro-nav-li"><a href="https://www.linkedbyx.com/train/home" class="">认证培训</a></li>
+                <li class="xpro-nav-li"><a href="https://www.linkedbyx.com/market" class="">积分商城</a></li>
+                <li class="xpro-nav-li"><a href="https://www.linkedbyx.com/forum" class=""><strong>前往论坛</strong></a></li>
+                <li class="xpro-nav-li v">|</li>
+                <li class="xpro-nav-li" style="position: relative">
+                    <div class="el-dropdown" id="sommmouns_drop_down"><span class="el-dropdown-link"><span class="d"><span
+                                    class="layout-text-ellipsis">会员990b31f38828d5c6</span> <span
+                                    class="user-level"><span>LV1</span></span> <span
+                                    class="iconfont icon-caretdown"></span></span></span> </div>
+                    <ul id="sommmouns_drop_down_ul" class="el-dropdown-menu self-menu" style="transform-origin: center top; z-index: 2006; top: 60px; left: 40px; display: none">
+                        <li class="el-dropdown-menu__item layout-text-center">个人中心</li>
+                        <li class="el-dropdown-menu__item layout-text-center">注销</li>
+                    </ul>
+                    <script>
+                        $('#sommmouns_drop_down').click(function() {
+                            console.log(1)
+                            $('#sommmouns_drop_down_ul').slideDown()
+                            return false
+                        })
+                        $('#sommmouns_drop_down_ul').click(function() {
+                            return false
+                        })
+                        document.onclick = function () {
+                            $('#sommmouns_drop_down_ul').slideUp()
+                        }
+                    </script>
+                </li>
+            </ul>
+        </div>
+    </header>
+<nav class="navbar navbar-default" style="border-radius: 0;border-color: #e7e7e7; background:#f8f8f8">
   <div class="container">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -9,7 +51,8 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/">${site.name}</a>
+      <#--<a class="navbar-brand" href="/">${site.name}</a>-->
+        <a class="navbar-brand" href="/">安恒信息</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -44,4 +87,6 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
+</div>
+
 </#macro>

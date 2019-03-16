@@ -76,7 +76,6 @@ public class TopicAdminController extends BaseAdminController {
   @PostMapping("edit")
   @ResponseBody
   public Result update(Integer id, String title, String content, String tags) {
-    System.out.println(tags);
     Topic topic = topicService.selectById(id);
     topicService.updateTopic(topic, title, content, tags);
     return success();
@@ -99,7 +98,6 @@ public class TopicAdminController extends BaseAdminController {
   @PostMapping("/check")
   @ResponseBody
   public Result isPass(Integer id, String title, String content, String tags,Boolean pass) {
-    System.out.println(tags);
     Topic topic = topicService.selectById(id);
     topic.setPass(pass);
     notificationService.insert(0,topic.getUserId(),id,"check",content);

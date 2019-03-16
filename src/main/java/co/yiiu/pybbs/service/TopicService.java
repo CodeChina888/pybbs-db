@@ -68,7 +68,6 @@ public class TopicService {
   public void selectTags(MyPage<Map<String, Object>> page, TagService tagService) {
     page.getRecords().forEach(map -> {
       List<Tag> tags = tagService.selectByIds((Integer) map.get("tagId"));
-      System.out.println((Integer) map.get("tagId"));
       map.put("tags", tags);
     });
   }

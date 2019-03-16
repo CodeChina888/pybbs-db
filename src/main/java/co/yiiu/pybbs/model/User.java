@@ -18,14 +18,12 @@ public class User implements Serializable {
 
   @TableId(type = IdType.AUTO)
   private Integer id;
+  private Integer originId;
   private String username;
-  private String telegramName;
   private String avatar;
   @JsonIgnore
   private String password;
   private String email;
-  // 个人网站
-  private String website;
   // 个人简介
   private String bio;
   private Integer score;
@@ -60,14 +58,6 @@ public class User implements Serializable {
     this.emailNotification = emailNotification;
   }
 
-  public String getTelegramName() {
-    return telegramName;
-  }
-
-  public void setTelegramName(String telegramName) {
-    this.telegramName = telegramName;
-  }
-
   public String getToken() {
     return token;
   }
@@ -84,13 +74,6 @@ public class User implements Serializable {
     this.avatar = avatar;
   }
 
-  public String getWebsite() {
-    return website;
-  }
-
-  public void setWebsite(String website) {
-    this.website = website;
-  }
 
   public String getBio() {
     return bio;
@@ -148,16 +131,22 @@ public class User implements Serializable {
     this.inTime = inTime;
   }
 
+  public Integer getOriginId() {
+    return originId;
+  }
+
+  public void setOriginId(Integer originId) {
+    this.originId = originId;
+  }
+
   @Override
   public String toString() {
     return "User{" +
         "id=" + id +
         ", username='" + username + '\'' +
-        ", telegramName='" + telegramName + '\'' +
         ", avatar='" + avatar + '\'' +
         ", password='" + password + '\'' +
         ", email='" + email + '\'' +
-        ", website='" + website + '\'' +
         ", bio='" + bio + '\'' +
         ", score=" + score +
         ", inTime=" + inTime +

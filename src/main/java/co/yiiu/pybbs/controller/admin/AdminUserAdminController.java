@@ -6,6 +6,7 @@ import co.yiiu.pybbs.model.Tag;
 import co.yiiu.pybbs.service.AdminUserService;
 import co.yiiu.pybbs.service.RoleService;
 import co.yiiu.pybbs.service.TagService;
+import co.yiiu.pybbs.service.UserService;
 import co.yiiu.pybbs.util.bcrypt.BCryptPasswordEncoder;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ public class AdminUserAdminController extends BaseAdminController {
   private TagService tagService;
   @Autowired
   private AdminUserMapper adminUserMapper;
+
   @RequiresPermissions("admin_user:list")
   @GetMapping("/list")
   public String list(Model model) {

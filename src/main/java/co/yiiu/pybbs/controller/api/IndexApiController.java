@@ -79,7 +79,7 @@ public class IndexApiController extends BaseApiController {
     ApiAssert.notEmpty(password, "请输入密码");
     User user = userService.selectByUsername(username);
     ApiAssert.isNull(user, "用户名已存在");
-    user = userService.addUser(username, password, null, null, null, null);
+//    user = userService.addUser(username, password, null, null, null, null);
     return this.doUserStorage(session, user);
   }
 

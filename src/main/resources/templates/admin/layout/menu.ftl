@@ -45,6 +45,14 @@
           </a>
         </li>
       </#if>
+        <#if sec.hasPermission('record:list')>
+        <li <#if page_tab=='record'>class="active"</#if>>
+            <a href="/admin/record/list">
+                <i class="fa fa-tags"></i>
+                <span>${i18n.getMessage("admin.records")}</span>
+            </a>
+        </li>
+        </#if>
       <#if sec.hasPermission('user:list')>
         <li <#if page_tab=='user'>class="active"</#if>>
           <a href="/admin/user/list">

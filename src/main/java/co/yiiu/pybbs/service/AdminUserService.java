@@ -41,11 +41,9 @@ public class AdminUserService {
 
   public void update(AdminUser adminUser) {
     AdminUser adminUser1=adminUserMapper.selectById(adminUser.getId());
-    System.out.println(adminUser1.getTagId());
     if(adminUser1.getTagId()!=0)
     {
       Tag oldTag = tagMapper.selectById(adminUser1.getTagId());
-      System.out.println(oldTag.getName());
       if (oldTag.getId() != adminUser.getTagId())
       {
         oldTag.setAdminId(0);
