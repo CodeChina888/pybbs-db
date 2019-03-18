@@ -29,6 +29,12 @@ public class BaseController {
     HttpSession session = request.getSession();
     return (User) session.getAttribute("_user");
   }
+  protected String getToken() {
+    HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+    HttpSession session = request.getSession();
+    return (String) session.getAttribute("_token");
+  }
+
 
   // 只针对前台页面的模板路径渲染，后台不变
   protected String render(String path) {

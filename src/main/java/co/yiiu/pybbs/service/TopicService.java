@@ -109,8 +109,8 @@ public class TopicService {
     topic.setCommentCount(0);
     topic.setTagId(tags.getId());
     topicMapper.insert(topic);
-    tags.setTopicCount(tags.getTopicCount()+1);
-    tagService.update(tags);
+//    tags.setTopicCount(tags.getTopicCount()+1);
+//    tagService.update(tags);
     // 增加用户积分
     user.setScore(user.getScore() + Integer.parseInt(systemConfigService.selectAllConfig().get("create_topic_score").toString()));
     userService.update(user);
@@ -197,7 +197,12 @@ public class TopicService {
     // 删除相关的评论
     commentService.deleteByTopicId(id);
     // 将话题对应的标签 topicCount -1
-    tagService.reduceTopicCount(id);
+    Tag tag=tagService.selectById(topic.getTagId());
+    if(tag.getTopicCount()!=0){
+      tag.setTopicCount(tag.getTopicCount()-1);
+      tagService.update(tag);
+    }
+    // tagService.reduceTopicCount(id);
     // 删除相应的关联标签
     //topicTagService.deleteByTopicId(id);
     // 减去用户积分

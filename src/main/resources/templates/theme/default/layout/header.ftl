@@ -61,14 +61,14 @@
         <li <#if page_tab == "index">class="active"</#if>><a href="/"><i class="fa fa-home"></i> ${i18n.getMessage("index")}</a></li>
         <li <#if page_tab == "tags">class="active"</#if>><a href="/tags"><i class="fa fa-tags"></i> ${i18n.getMessage("tag")}</a></li>
       </ul>
-      <#if site.search == "1">
-        <form class="navbar-form navbar-left" action="/search" method="get">
-          <div class="form-group">
-            <input type="text" name="keyword" value="${keyword!}" class="form-control" required placeholder="Search">
-          </div>
-          <button type="submit" class="btn btn-info">${i18n.getMessage("search")}</button>
-        </form>
-      </#if>
+      <#--<#if site.search == "1">-->
+        <#--<form class="navbar-form navbar-left" action="/search" method="get">-->
+          <#--<div class="form-group">-->
+            <#--<input type="text" name="keyword" value="${keyword!}" class="form-control" required placeholder="Search">-->
+          <#--</div>-->
+          <#--<button type="submit" class="btn btn-info">${i18n.getMessage("search")}</button>-->
+        <#--</form>-->
+      <#--</#if>-->
       <ul class="nav navbar-nav navbar-right">
         <#--<li <#if page_tab == "api">class="active"</#if>><a href="/api">API</a></li>-->
         <#if _user??>

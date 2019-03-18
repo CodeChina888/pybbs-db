@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Locale;
@@ -47,7 +46,6 @@ public class IndexController extends BaseController {
   public String index(@RequestParam(defaultValue = "all") String tab, @RequestParam(defaultValue = "1") Integer pageNo, Model model) {
     model.addAttribute("tab", tab);
     model.addAttribute("pageNo", pageNo);
-
     return render("index");
   }
 
@@ -60,9 +58,9 @@ public class IndexController extends BaseController {
   public String settings(HttpSession session, Model model) {
     // 再查一遍，保证数据的最新
     User user = (User) session.getAttribute("_user");
+    String token=(String)session.getAttribute("_token");
+    System.out.println(token);
     user = userService.selectById(user.getId());
-    int orginId=(int)session.getAttribute("originid");
-    userService.refresh(orginId);
     model.addAttribute("user", user);
     return render("user/settings");
   }
@@ -70,8 +68,9 @@ public class IndexController extends BaseController {
   @GetMapping("/tags")
   public String tags(@RequestParam(defaultValue = "1") Integer pageNo, Model model,HttpSession session) {
     model.addAttribute("pageNo", pageNo);
-    int orginId=(int)session.getAttribute("originid");
-    userService.refresh(orginId);
+//    String token=(String) session.getAttribute("token");
+    System.out.println("当前sessionID:"+session.getId());
+//    System.out.println("token"+token);
     return render("tag/tags");
   }
 
@@ -89,9 +88,7 @@ public class IndexController extends BaseController {
 
   // 通知
   @GetMapping("/notifications")
-  public String notifications(HttpSession session) {
-    int orginId=(int)session.getAttribute("originid");
-    userService.refresh(orginId);
+  public String notifications() {
     return render("notifications");
   }
 

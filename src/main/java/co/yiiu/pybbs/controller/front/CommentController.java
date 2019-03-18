@@ -33,12 +33,12 @@ public class CommentController extends BaseController {
 
   // 编辑评论
   @GetMapping("/edit/{id}")
-  public String edit(@PathVariable Integer id, Model model, HttpSession session) {
+  public String edit(@PathVariable Integer id, Model model) {
     Comment comment = commentService.selectById(id);
     Topic topic = topicService.selectById(comment.getTopicId());
-    int orginId=(int)session.getAttribute("originid");
-    userService.refresh(orginId);
-    System.out.println("orginId"+orginId);
+//    int orginId=(int)session.getAttribute("originid");
+//    userService.refresh(orginId);
+//    System.out.println("orginId"+orginId);
     model.addAttribute("comment", comment);
     model.addAttribute("topic", topic);
     return render("comment/edit");

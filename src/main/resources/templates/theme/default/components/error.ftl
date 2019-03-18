@@ -15,8 +15,7 @@
   <div class="panel panel-info">
     <div class="panel-body">
       <h1>: (</h1>
-      <h3>${errorCode}</h3>
-      <p>你没有权限！</p>
+      <h3>你没有权限！</h3>
     </div>
   </div>
 </div>

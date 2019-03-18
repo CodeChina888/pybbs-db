@@ -100,6 +100,12 @@ public class TopicAdminController extends BaseAdminController {
   public Result isPass(Integer id, String title, String content, String tags,Boolean pass) {
     Topic topic = topicService.selectById(id);
     topic.setPass(pass);
+    Tag tag=tagService.selectById(topic.getTagId());
+    if(topic.getPass())
+    {
+      tag.setTopicCount(tag.getTopicCount()+1);
+      tagService.update(tag);
+    }
     notificationService.insert(0,topic.getUserId(),id,"check",content);
     topicService.updateTopic(topic, title, content, tags);
     return success();

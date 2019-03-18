@@ -142,16 +142,18 @@ public class User implements Serializable {
   @Override
   public String toString() {
     return "User{" +
-        "id=" + id +
-        ", username='" + username + '\'' +
-        ", avatar='" + avatar + '\'' +
-        ", password='" + password + '\'' +
-        ", email='" + email + '\'' +
-        ", bio='" + bio + '\'' +
-        ", score=" + score +
-        ", inTime=" + inTime +
-        ", token='" + token + '\'' +
-        ", emailNotification=" + emailNotification +
-        '}';
+            "id=" + id +
+            ", originId=" + originId +
+            ", username='" + username + '\'' +
+            ", avatar='" + avatar + '\'' +
+            ", password='" + password + '\'' +
+            ", email='" + email + '\'' +
+            ", bio='" + bio + '\'' +
+            ", score=" + score +
+            ", inTime=" + inTime +
+            ", token='" + token + '\'' +
+            ", emailNotification=" + emailNotification +
+            ", message=" + message +
+            '}';
   }
 }

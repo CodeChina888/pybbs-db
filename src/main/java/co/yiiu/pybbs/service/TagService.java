@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,6 +40,8 @@ public class TagService {
   private TopicMapper topicMapper;
   @Autowired
   private AdminUserService adminUserService;
+  @Autowired
+  private TopicService topicService;
 
   public Tag selectById(Integer id) {
     return tagMapper.selectById(id);
@@ -147,17 +150,18 @@ public class TagService {
   }
 
   // 如果 topic_tag 表里还有关联的数据，这里删除会报错
-  public void delete(Integer id) {
+  public void delete(Integer id, HttpSession session) {
     if (tagMapper.selectById(id).getAdminId()!=0)
     {
       AdminUser adminUser = adminUserService.selectById(tagMapper.selectById(id).getAdminId());
       adminUser.setTagId(0);
+      adminUserService.update(adminUser);
     }
-    tagMapper.deleteById(id);
     List<Topic> topics=tagMapper.selectAllTopicByTagId(id);
     for (Topic topic:topics) {
-        topicMapper.deleteById(topic.getId());
+      topicService.delete(topic,session);
     }
+    tagMapper.deleteById(id);
   }
 
   // ---------------------------- admin ----------------------------

@@ -15,7 +15,7 @@
     select t.*, u.username, u.avatar
     from topic t
     left join user u on t.user_id = u.id
-    where t.tag_id = #{tagId}
+    where t.tag_id = #{tagId} and t.pass=true
     order by t.in_time desc
   </select>
   <select id="selectAllTopicByTagId" resultType="co.yiiu.pybbs.model.Topic">

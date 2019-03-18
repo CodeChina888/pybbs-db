@@ -38,10 +38,10 @@
                 <span>•</span>
                 <span><a href="javascript:;" id="deleteTopic">删除</a></span>
               </#if>
+              <#if topic.pass==false>
+                  <span style="font-size: 16px">当前状态:未审核</span>
+              </#if>
             </p>
-          </div>
-          <div class="media-right">
-            <img src="${topicUser.avatar!}" class="avatar avatar-lg"/>
           </div>
         </div>
       </div>

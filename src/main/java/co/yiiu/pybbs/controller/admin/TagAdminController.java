@@ -15,6 +15,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
+
 /**
  * Created by tomoya.
  * Copyright (c) 2018, All Rights Reserved.
@@ -86,10 +88,10 @@ public class TagAdminController extends BaseAdminController {
   @RequiresPermissions("tag:delete")
   @GetMapping("/delete")
   @ResponseBody
-  public Result delete(Integer id) {
+  public Result delete(Integer id, HttpSession session) {
     //Tag tag = tagService.selectById(id);
     //if (tag.getTopicCount() > 0) return error("标签还关联着话题，要先把相关联的话题都删了，这个标签才能删除");
-    tagService.delete(id);
+    tagService.delete(id,session);
     return success();
   }
 

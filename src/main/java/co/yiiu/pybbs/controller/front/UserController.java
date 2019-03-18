@@ -56,14 +56,14 @@ public class UserController extends BaseController {
     model.addAttribute("username", username);
     model.addAttribute("oAuthUsers", oAuthUsers);
     model.addAttribute("collectCount", collectCount);
-    int orginId=(int)session.getAttribute("originid");
-    userService.refresh(orginId);
+//    int orginId=(int)session.getAttribute("originid");
+//    userService.refresh(orginId);
     return render("user/profile");
   }
   @GetMapping("/{username}/topics")
   public String topics(@PathVariable String username, @RequestParam(defaultValue = "1") Integer pageNo, Model model,HttpSession session) {
-    int orginId=(int)session.getAttribute("originid");
-    userService.refresh(orginId);
+//    int orginId=(int)session.getAttribute("originid");
+//    userService.refresh(orginId);
     model.addAttribute("username", username);
     model.addAttribute("pageNo", pageNo);
     return render("user/topics");
@@ -72,8 +72,8 @@ public class UserController extends BaseController {
   @GetMapping("/{username}/comments")
   public String comments(@PathVariable String username, @RequestParam(defaultValue = "1") Integer pageNo, Model model,HttpSession session) {
     model.addAttribute("username", username);
-    int orginId=(int)session.getAttribute("originid");
-    userService.refresh(orginId);
+//    int orginId=(int)session.getAttribute("originid");
+//    userService.refresh(orginId);
     model.addAttribute("pageNo", pageNo);
     return render("user/comments");
   }
@@ -83,8 +83,8 @@ public class UserController extends BaseController {
   public String collects(@PathVariable String username, @RequestParam(defaultValue = "1") Integer pageNo, Model model,HttpSession session) {
     model.addAttribute("username", username);
     model.addAttribute("pageNo", pageNo);
-    int orginId=(int)session.getAttribute("originid");
-    userService.refresh(orginId);
+//    int orginId=(int)session.getAttribute("originid");
+//    userService.refresh(orginId);
     return render("user/collects");
   }
 }
