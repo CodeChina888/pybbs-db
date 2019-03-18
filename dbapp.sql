@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50721
 File Encoding         : 65001
 
-Date: 2019-03-15 16:49:20
+Date: 2019-03-18 19:22:04
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -98,13 +98,11 @@ CREATE TABLE `comment` (
   KEY `topic_id` (`topic_id`) USING BTREE,
   KEY `user_id` (`user_id`) USING BTREE,
   CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of comment
 -- ----------------------------
-INSERT INTO `comment` VALUES ('57', '12', '31', '6', '2019-03-15 08:06:54', null, null);
-INSERT INTO `comment` VALUES ('58', '2223', '32', '6', '2019-03-15 08:23:00', null, null);
 
 -- ----------------------------
 -- Table structure for flyway_schema_history
@@ -148,7 +146,7 @@ CREATE TABLE `notification` (
   KEY `user_id` (`user_id`) USING BTREE,
   KEY `target_user_id` (`target_user_id`) USING BTREE,
   CONSTRAINT `notification_ibfk_3` FOREIGN KEY (`target_user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of notification
@@ -306,7 +304,7 @@ CREATE TABLE `record` (
   `params` varchar(10000) DEFAULT NULL,
   `in_time` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=134 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=139 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of record
@@ -316,6 +314,11 @@ INSERT INTO `record` VALUES ('130', '0', 'test', '更新话题', 'edit', '{\"tit
 INSERT INTO `record` VALUES ('131', '0', 'test', '发表评论', 'create', '{\"topicId\":\"32\",\"commentId\":\"\",\"content\":\"222\"}', '2019-03-15 08:23:00');
 INSERT INTO `record` VALUES ('132', '0', 'test', '更新评论', 'update', '{\"content\":\"2223\"}', '2019-03-15 08:23:03');
 INSERT INTO `record` VALUES ('133', '0', 'test', '创建话题', 'create', '{\"title\":\"测试结果2\",\"content\":\"2\",\"tags\":\"c\"}', '2019-03-15 08:39:15');
+INSERT INTO `record` VALUES ('134', '0', 'test', '创建话题', 'create', '{\"title\":\"我的一个小测试\",\"content\":\"java\",\"tags\":\"java\"}', '2019-03-18 05:35:13');
+INSERT INTO `record` VALUES ('135', '0', 'test', '发表评论', 'create', '{\"topicId\":\"34\",\"commentId\":\"\",\"content\":\"测试结果\"}', '2019-03-18 05:42:01');
+INSERT INTO `record` VALUES ('136', '0', 'test', '发表评论', 'create', '{\"topicId\":\"34\",\"commentId\":\"59\",\"content\":\"@test 测试如下\"}', '2019-03-18 05:42:14');
+INSERT INTO `record` VALUES ('137', '0', 'test', '创建话题', 'create', '{\"title\":\"我的一个小测试2\",\"content\":\"2\",\"tags\":\"java\"}', '2019-03-18 05:52:04');
+INSERT INTO `record` VALUES ('138', '0', 'test', '创建话题', 'create', '{\"title\":\"我的一个小测试2\",\"content\":\"1\",\"tags\":\"C#\"}', '2019-03-18 08:53:24');
 
 -- ----------------------------
 -- Table structure for role
@@ -484,15 +487,12 @@ CREATE TABLE `tag` (
   `admin_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `name` (`name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of tag
 -- ----------------------------
-INSERT INTO `tag` VALUES ('12', 'java', '', null, '0', '2019-03-10 07:28:38', '16', 'yufuyang');
-INSERT INTO `tag` VALUES ('13', 'javascrip', '', null, '0', '2019-03-10 07:28:45', '17', 'yujiajun');
-INSERT INTO `tag` VALUES ('14', 'c#', '', null, '0', '2019-03-10 07:28:55', '0', null);
-INSERT INTO `tag` VALUES ('15', 'c', '', null, '1', '2019-03-10 08:14:36', '0', null);
+INSERT INTO `tag` VALUES ('17', 'springmvc', '这是一个springmvc板块', null, '0', '2019-03-18 05:31:08', '0', null);
 
 -- ----------------------------
 -- Table structure for topic
@@ -515,16 +515,12 @@ CREATE TABLE `topic` (
   `pass` bit(1) DEFAULT b'0',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `title` (`title`) USING BTREE,
-  KEY `user_id` (`user_id`) USING BTREE,
-  CONSTRAINT `topic_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+  KEY `user_id` (`user_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of topic
 -- ----------------------------
-INSERT INTO `topic` VALUES ('31', '我的一个小测试', '33', '2019-03-15 08:04:24', '2019-03-15 08:06:59', '6', '1', '0', '9', '\0', '\0', null, '15', '\0');
-INSERT INTO `topic` VALUES ('32', '我的一个小测试233', '2', '2019-03-15 08:07:39', '2019-03-15 08:22:40', '6', '1', '0', '7', '\0', '\0', null, '15', '\0');
-INSERT INTO `topic` VALUES ('33', '测试结果2', '2', '2019-03-15 08:39:15', null, '6', '0', '0', '1', '\0', '\0', null, '15', '\0');
 
 -- ----------------------------
 -- Table structure for topic_tag
@@ -571,5 +567,5 @@ CREATE TABLE `user` (
 -- ----------------------------
 INSERT INTO `user` VALUES ('4', '0', 'yufuyang', '$2a$10$MKpzmLCebYMqeCLW8pD2/ecWU6ofKYnjNkfnykWzs6YHQjrrv2WV6', null, null, null, '65', '2019-03-10 07:50:54', 'b04b1ac5-d45f-4808-84b0-d8eac1b15682', null, '\0', '27');
 INSERT INTO `user` VALUES ('5', '0', 'yujiajun', '$2a$10$p8CEhzMRsAFph2khMSPNtORwFDVyjFqnZsiNV1DwmYxZZCHmRaGoG', null, null, null, '45', '2019-03-10 08:05:49', '310655ee-121d-45c5-b2a2-938a645b32a5', null, '\0', '0');
-INSERT INTO `user` VALUES ('6', '0', 'test', '$2a$10$fPKYEXWvltG2xGpXjqLWCOeV/25sMa06.YATRiLQumAL7mliCL7MK', 'http://localhost:8080/static/upload/avatar/test/avatar.png', null, null, '400', '2019-03-11 06:01:11', '5e431eb4-7ae1-460c-846b-293cc9c8673d', null, '\0', '0');
+INSERT INTO `user` VALUES ('6', '0', 'test', '$2a$10$fPKYEXWvltG2xGpXjqLWCOeV/25sMa06.YATRiLQumAL7mliCL7MK', 'http://localhost:8080/static/upload/avatar/test/avatar.png', null, null, '410', '2019-03-11 06:01:11', '5e431eb4-7ae1-460c-846b-293cc9c8673d', null, '\0', '0');
 INSERT INTO `user` VALUES ('7', '1195', '会员0b3f0a635e719f04', '$2a$10$c1JVjk75gKvDqjX9fhslIuf3eekm.SG0Ztm9Yqw7nGIkFQnlMoYii', 'http://p1q3gxdny.bkt.clouddn.com/default-avatar.png', null, null, '0', '2019-03-14 02:16:43', 'f80d861c-edb4-4255-a3b8-4adc7d3713cf', null, '\0', '0');
