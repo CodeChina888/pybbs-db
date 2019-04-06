@@ -6,7 +6,7 @@
       <small>仪表盘</small>
     </h1>
     <ol class="breadcrumb">
-      <li><a href="/admin/index"><i class="fa fa-dashboard"></i> 首页</a></li>
+      <li><a href="/forum/admin/index"><i class="fa fa-dashboard"></i> 首页</a></li>
       <li class="active">仪表盘</li>
     </ol>
   </section>
@@ -23,7 +23,7 @@
           <div class="icon">
             <i class="ion ion-ios-list-outline"></i>
           </div>
-          <a href="/admin/topic/list" class="small-box-footer">更多 <i class="fa fa-arrow-circle-right"></i></a>
+          <a href="/forum/admin/topic/list" class="small-box-footer">更多 <i class="fa fa-arrow-circle-right"></i></a>
         </div>
       </div>
       <!-- ./col -->
@@ -38,7 +38,7 @@
           <div class="icon">
             <i class="ion ion-pricetags"></i>
           </div>
-          <a href="/admin/tag/list" class="small-box-footer">更多 <i class="fa fa-arrow-circle-right"></i></a>
+          <a href="/forum/admin/tag/list" class="small-box-footer">更多 <i class="fa fa-arrow-circle-right"></i></a>
         </div>
       </div>
       <!-- ./col -->
@@ -53,7 +53,7 @@
           <div class="icon">
             <i class="ion ion-chatboxes"></i>
           </div>
-          <a href="/admin/comment/list" class="small-box-footer">更多 <i class="fa fa-arrow-circle-right"></i></a>
+          <a href="/forum/admin/comment/list" class="small-box-footer">更多 <i class="fa fa-arrow-circle-right"></i></a>
         </div>
       </div>
       <!-- ./col -->
@@ -68,7 +68,7 @@
           <div class="icon">
             <i class="ion ion-person-add"></i>
           </div>
-          <a href="/admin/user/list" class="small-box-footer">更多 <i class="fa fa-arrow-circle-right"></i></a>
+          <a href="/forum/admin/user/list" class="small-box-footer">更多 <i class="fa fa-arrow-circle-right"></i></a>
         </div>
       </div>
       <!-- ./col -->

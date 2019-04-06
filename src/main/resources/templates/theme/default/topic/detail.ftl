@@ -34,7 +34,7 @@
               <span>${topic.view!1}次点击</span>
               <#if _user?? && topic.userId == _user.id>
                 <span>•</span>
-                <span><a href="/topic/edit/${topic.id}">编辑</a></span>
+                <span><a href="/forum/topic/edit/${topic.id}">编辑</a></span>
                 <span>•</span>
                 <span><a href="javascript:;" id="deleteTopic">删除</a></span>
               </#if>
@@ -50,7 +50,7 @@
         ${model.formatContent(topic.content)}
         <div>
 
-          <a href="/topic/tag/${tags.id}"><span class="label label-info">${tags.name}</span></a>
+          <a href="/forum/topic/tag/${tags.id}"><span class="label label-info">${tags.name}</span></a>
 
         </div>
       </div>

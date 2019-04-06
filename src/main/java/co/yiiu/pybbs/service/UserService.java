@@ -17,6 +17,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -49,6 +50,10 @@ public class UserService {
   private SystemConfigService systemConfigService;
   @Autowired
   private RedisService redisService;
+  @Value("${spring.tokenurl}")
+  private String tokenUrl;
+  @Value("${spring.httpurl}")
+  private String httpUrl;
 
   // 根据用户名查询用户，用于获取用户的信息比对密码
   public User selectByUsername(String username) {
@@ -161,21 +166,17 @@ public class UserService {
 
   //查询x平台用户信息
   public Message<Data> userMessage(Integer id ){
-    //User user=userService.selectById(userid);
-    String url="http://xpro.adl.io/service/memcenter/api/v1/inner/member/getUserInfo?id="+id;
+    String url=httpUrl+"/service/memcenter/api/v1/inner/member/getUserInfo?id="+id;
     String message = HttpClientUtil.doGet(url);
     Gson gson = new Gson();
-    //Map<String, Object> map = new HashMap<String, Object>();
     Type type=new TypeToken<Message<Data>>(){}.getType();
     Message<Data> dataMessage = gson.fromJson(message, type);
-    //Row row=dataMessage.getData().getRow();
-    //System.out.println(row.getRealname());
     return dataMessage;
   }
 
   //查询x平台用户是否有登陆论坛的权限
   public Boolean hasPermission(Integer id){
-    String url="http://service.adl.io/memcenter/api/v1/inner/forum/userHasPermission?userId="+id;
+    String url=tokenUrl+"/memcenter/api/v1/inner/forum/userHasPermission?userId="+id;
     String message=HttpClientUtil.doGet(url);
     Gson gson = new Gson();
     Type type=new TypeToken<Message<Data>>(){}.getType();
@@ -190,17 +191,15 @@ public class UserService {
 
   //刷新token
   public void refresh(Integer id,String token){
-    String url="http://service.adl.io/sessionmgr/api/v1/inner/delayToken";
+    String url=tokenUrl+"/sessionmgr/api/v1/inner/delayToken";
     Map<String, Object> map= new HashMap<>();
-//    token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbWVtY2VudGVyLnhwcm8vbWVtY2VudGVyL2FwaS92MS9leHQvbWVtYmVyL3Nob3dVc2VySW5mbyIsImlhdCI6MTU1Mjg3NTI5MywibmJmIjoxNTUyODc1MjkzLCJqdGkiOiJlS2FlTXYwWU15emc0SVdsIiwic3ViIjpudWxsLCJwcnYiOiI4MzYwMzZiYmQwZDhjOTM4MzhkMzk3MGZhNWRhNjhlYzRhOGIyMGNkIiwiaXRlbSI6ImV5SnBkaUk2SWx3dk0wRTNOVEF4VG1STE9UaG5TRXRoVG1SalVGVkJQVDBpTENKMllXeDFaU0k2SWs1dGVqZG9lVGhhV2taNU1HeFZSMGhITVZjcmIyMWhaMDVTZFdsY0wzbHJjamhWZDBwWWJGTkJVSGhwTVZKM1pVUjFka3BtVVc1VE5ua3hkREp1Um1kdlhDOUJUbWhQUkU1TWFqSkZSVFZTV2poTmN6aEZYQzlLY0d0Q1NteFZNbE5SYTNOTldrazNXRk5JWVN0bVJVSkVjM2xSZUdaV2VYVmNMMXBJZHpWRlYwWnJjRTlVZGtSaE1GbFlNVFJQZW5nd1UwODBhMHROVWsxbmJFOXBWRWRPWWtGd1ZYSmpjVVFyVVdKdWFsTm1TSGxKUTA5SGRrRmlVMDVjTHpVcmFtNUZNRUV5ZUVKaWVWSkpXWE5NTTJkY0wwOURUM05OTjBKaVhDOXRhM2hsU1dkcVZrRmFNa1JGYjBJeGVYaFRiRFpPV1c0NVRYbEdURFJjTHpRelNrNVlSM1F3Y21kVllsRTNPRXg2UmxkUk1rWnRjR0p1UjJ0SFJUbHJVSEZTWW5FeE0wNDJVMHhNUTFZM1NIcFhhRFJ0ZERaTlREZEVWbTVWZFhwWFJrZFBaa3RTWmpCbVVrSlhkbmN6VXpaemFrcFhWVXBPUVdwU1JYSkpUMGxqTTNsUk9YUk5aRWRKWnpWRWRITk9RbEkxVXlzM1pscDRTSEU0UldWUmJ6azBRMXd2Yld4SWJ6ZEZUVnd2TnpWYU9VRlVYQzlNVTJ0clUyTjNlbTUwTjBKUFVGUmFLMVl3UkVsdlJuTTRjV1pJYjJwVkszRjZhMHhYUzNoRE1qWllWRnd2ZFdKMWIzbDVlRVpuVG1OamNqVTRXVVJpVm1SNFRuZE1kRlZMZUZablZWaFRha2hCVGs5dlpXbEdVMUJ6WjJKSmJVNXViR2RpZUhWRk1TdG1TRk01Y2tFelEyNXFTWFZaZERSd2FGcE1NMUZuZW1scVIwUXpZMkpZUlhBeFpWbHdUSGhRY0VocVFtZGNMMU4zZDNGRk9Gd3Zha2hPUlhCVFJHc3lkbmgzYlRFNE1EWk1OSFZLWVU1SGF6UXlJaXdpYldGaklqb2laV015WldWaE5UVmpPRE5rTURnell6Qm1aakZsWWpGbE1HSTBZekJoTmpnd05EaG1OVEV5WkRJd1lXWmpaRGRpWldJNE9UQTVabU5qTldVMFpUWTRPQ0o5In0.zq-ntH4cC_ZpP9Ad3X--2jSLHI98W-uiNBxiHgHnvl8";
-//    id=1195;
     map.put("token",token);
     map.put("userId",id);
     map.put("expireTime",1800);
     map.put("prefix","memcenter");
     String json=JsonUtil.objectToJson(map);
     String message=HttpClientUtil.doPostJson(url,json);
-    System.out.println("message:"+message);
+    System.out.println("当前message:"+message);
   }
 
 

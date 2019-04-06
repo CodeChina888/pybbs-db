@@ -24,7 +24,7 @@ import java.util.List;
  * https://yiiu.co
  */
 @Controller
-@RequestMapping("/admin/admin_user")
+@RequestMapping("/forum/admin/admin_user")
 public class AdminUserAdminController extends BaseAdminController {
 
   @Autowired
@@ -60,7 +60,7 @@ public class AdminUserAdminController extends BaseAdminController {
     adminUser.setInTime(new Date());
     adminUser.setPassword(new BCryptPasswordEncoder().encode(adminUser.getPassword()));
     adminUserService.insert(adminUser);
-    return redirect("/admin/admin_user/list");
+    return redirect("/forum/admin/admin_user/list");
   }
 
   @RequiresPermissions("admin_user:edit")
@@ -89,14 +89,14 @@ public class AdminUserAdminController extends BaseAdminController {
     }
 
     adminUserService.update(adminUser);
-    return redirect("/admin/admin_user/list");
+    return redirect("/forum/admin/admin_user/list");
   }
 
   @RequiresPermissions("admin_user:delete")
   @GetMapping("/delete")
   public String delete(Integer id) {
     adminUserService.delete(id);
-    return redirect("/admin/admin_user/list");
+    return redirect("/forum/admin/admin_user/list");
   }
 
   @GetMapping("/detail/{name}")

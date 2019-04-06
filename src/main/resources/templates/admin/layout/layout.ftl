@@ -57,7 +57,6 @@
       <div class="content-wrapper" style="padding: 50px 0 40px;">
       <#nested>
       </div>
-    <#include "footer.ftl"/>
     </div>
   </body>
   </html>

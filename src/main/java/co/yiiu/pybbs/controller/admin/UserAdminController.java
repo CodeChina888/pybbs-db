@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
  * https://yiiu.co
  */
 @Controller
-@RequestMapping("/admin/user")
+@RequestMapping("/forum/admin/user")
 public class UserAdminController extends BaseAdminController {
 
   @Autowired

@@ -6,8 +6,8 @@
       <small>设置</small> <small class="text-danger">是数字的千万不要填成字母，请务必按照格式填写</small>
     </h1>
     <ol class="breadcrumb">
-      <li><a href="/admin/index"><i class="fa fa-dashboard"></i> 首页</a></li>
-      <li><a href="/admin/system/edit">系统</a></li>
+      <li><a href="/forum/admin/index"><i class="fa fa-dashboard"></i> 首页</a></li>
+      <li><a href="/forum/admin/system/edit">系统</a></li>
       <li class="active">设置</li>
     </ol>
   </section>
@@ -69,7 +69,7 @@
       // TODO 增加相应输入框红色边框，提示用户应该配置哪地方
     } else {
       $.ajax({
-        url: "/admin/system/edit",
+        url: "/forum/admin/system/edit",
         contentType:"application/json; charset=utf-8",
         type: 'post',
         dataType: 'json',

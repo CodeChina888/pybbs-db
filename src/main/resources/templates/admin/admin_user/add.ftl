@@ -6,8 +6,8 @@
       <small>添加</small>
     </h1>
     <ol class="breadcrumb">
-      <li><a href="/admin/index"><i class="fa fa-dashboard"></i> 首页</a></li>
-      <li><a href="/admin/user/list">用户</a></li>
+      <li><a href="/forum/admin/index"><i class="fa fa-dashboard"></i> 首页</a></li>
+      <li><a href="/forum/admin/user/list">用户</a></li>
       <li class="active">添加</li>
     </ol>
   </section>
@@ -20,7 +20,7 @@
       <div class="box-body">
         <div class="row">
           <div class="col-sm-6">
-            <form id="form" action="/admin/admin_user/add" method="post">
+            <form id="form" action="/forum/admin/admin_user/add" method="post">
               <div class="form-group">
                 <label>用户名</label>
                 <input type="text" id="username" name="username" class="form-control" placeholder="用户名">
@@ -86,7 +86,7 @@
         return false;
       }
       $.ajax({
-        url: '/admin/admin_user/add',
+        url: '/forum/admin/admin_user/add',
         async: true,
         cache: false,
         type: 'post',

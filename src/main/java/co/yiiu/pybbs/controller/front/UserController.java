@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  * https://yiiu.co
  */
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/forum/user")
 public class UserController extends BaseController {
 
   @Autowired
@@ -56,14 +56,16 @@ public class UserController extends BaseController {
     model.addAttribute("username", username);
     model.addAttribute("oAuthUsers", oAuthUsers);
     model.addAttribute("collectCount", collectCount);
-//    int orginId=(int)session.getAttribute("originid");
-//    userService.refresh(orginId);
+    User users = (User) session.getAttribute("_user");
+    String token=(String)session.getAttribute("_token");
+    userService.refresh(users.getOriginId(),token);
     return render("user/profile");
   }
   @GetMapping("/{username}/topics")
   public String topics(@PathVariable String username, @RequestParam(defaultValue = "1") Integer pageNo, Model model,HttpSession session) {
-//    int orginId=(int)session.getAttribute("originid");
-//    userService.refresh(orginId);
+    User user = (User) session.getAttribute("_user");
+    String token=(String)session.getAttribute("_token");
+    userService.refresh(user.getOriginId(),token);
     model.addAttribute("username", username);
     model.addAttribute("pageNo", pageNo);
     return render("user/topics");
@@ -72,8 +74,9 @@ public class UserController extends BaseController {
   @GetMapping("/{username}/comments")
   public String comments(@PathVariable String username, @RequestParam(defaultValue = "1") Integer pageNo, Model model,HttpSession session) {
     model.addAttribute("username", username);
-//    int orginId=(int)session.getAttribute("originid");
-//    userService.refresh(orginId);
+    User user = (User) session.getAttribute("_user");
+    String token=(String)session.getAttribute("_token");
+    userService.refresh(user.getOriginId(),token);
     model.addAttribute("pageNo", pageNo);
     return render("user/comments");
   }
@@ -83,8 +86,9 @@ public class UserController extends BaseController {
   public String collects(@PathVariable String username, @RequestParam(defaultValue = "1") Integer pageNo, Model model,HttpSession session) {
     model.addAttribute("username", username);
     model.addAttribute("pageNo", pageNo);
-//    int orginId=(int)session.getAttribute("originid");
-//    userService.refresh(orginId);
+    User user = (User) session.getAttribute("_user");
+    String token=(String)session.getAttribute("_token");
+    userService.refresh(user.getOriginId(),token);
     return render("user/collects");
   }
 }

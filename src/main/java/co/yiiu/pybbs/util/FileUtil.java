@@ -4,6 +4,7 @@ import co.yiiu.pybbs.service.SystemConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +26,8 @@ public class FileUtil {
 
   @Autowired
   private SystemConfigService systemConfigService;
+  @Value("${file.path}")
+  private String path;
 
   /**
    * 上传文件
@@ -62,5 +65,26 @@ public class FileUtil {
       log.error(e.getMessage());
       return null;
     }
+  }
+
+  public String uploadFile(MultipartFile file,String filePath){
+    try {
+      String fileName=file.getOriginalFilename();
+      String fileNameSuffix=fileName.substring(fileName.lastIndexOf(".")+1);
+      String fileNamePrefix = fileName.substring(0 , fileName.lastIndexOf("."));
+      fileName = fileNamePrefix + "-" + System.currentTimeMillis() + "." + fileNameSuffix;//获取上传文件名
+      File targetFile=new File(path+filePath+"/"+fileName);
+      if (!targetFile.getParentFile().exists())
+        //不存在创建文件夹
+        targetFile.getParentFile().mkdirs();
+        //6.将上传文件写到服务器上指定的文件
+      file.transferTo(targetFile);
+      log.info("文件上传成功,当前路径为:"+path+filePath+ "/" + fileName);
+      return path+filePath+ "/" + fileName;
+    }catch (Exception e){
+      e.printStackTrace();
+      log.error(e.getMessage());
+    }
+    return null;
   }
 }

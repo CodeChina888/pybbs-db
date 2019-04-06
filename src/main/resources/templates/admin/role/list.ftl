@@ -6,8 +6,8 @@
       <small>列表</small>
     </h1>
     <ol class="breadcrumb">
-      <li><a href="/admin/index"><i class="fa fa-dashboard"></i> 首页</a></li>
-      <li><a href="/admin/role/list">角色</a></li>
+      <li><a href="/forum/admin/index"><i class="fa fa-dashboard"></i> 首页</a></li>
+      <li><a href="/forum/admin/role/list">角色</a></li>
       <li class="active">列表</li>
     </ol>
   </section>
@@ -16,7 +16,7 @@
       <div class="box-header with-border">
         <h3 class="box-title">角色列表</h3>
         <#if sec.hasPermission('role:add')>
-          <a href="/admin/role/add" class="btn btn-xs btn-primary pull-right">添加</a>
+          <a href="/forum/admin/role/add" class="btn btn-xs btn-primary pull-right">添加</a>
         </#if>
       </div>
       <!-- /.box-header -->
@@ -36,7 +36,7 @@
               <td>${role.name!}</td>
               <td>
                 <#if sec.hasPermission('role:edit')>
-                  <a href="/admin/role/edit?id=${role.id}" class="btn btn-xs btn-warning">编辑</a>
+                  <a href="/forum/admin/role/edit?id=${role.id}" class="btn btn-xs btn-warning">编辑</a>
                 </#if>
                 <#if sec.hasPermission('role:delete')>
                   <button onclick="deleteRole(${role.id})" class="btn btn-xs btn-danger">删除</button>

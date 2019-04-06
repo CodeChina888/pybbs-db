@@ -5,8 +5,8 @@
       <small>列表</small>
     </h1>
     <ol class="breadcrumb">
-      <li><a href="/admin/index"><i class="fa fa-dashboard"></i> 首页</a></li>
-      <li><a href="/admin/tag/list">板块</a></li>
+      <li><a href="/forum/admin/index"><i class="fa fa-dashboard"></i> 首页</a></li>
+      <li><a href="/forum/admin/tag/list">板块</a></li>
       <li class="active">添加</li>
     </ol>
   </section>
@@ -17,7 +17,7 @@
       </div>
       <!-- /.box-header -->
       <div class="box-body">
-        <form id="form" action="/admin/tag/add" method="post" enctype="multipart/form-data">
+        <form id="form" action="/forum/admin/tag/add" method="post" enctype="multipart/form-data">
           <#--<input type="hidden" value="${tag.id}" name="id">-->
           <div class="form-group">
             <label>名称</label>

@@ -17,14 +17,17 @@ import javax.sql.DataSource;
 @Configuration
 public class DataSourceConfig {
 
-  @Value("${datasource_driver}")
-  private String driver;
-  @Value("${datasource_url}")
-  private String url;
-  @Value("${datasource_username}")
-  private String username;
-  @Value("${datasource_password}")
-  private String password;
+    @Value("${spring.datasource.driver-class-name}")
+    private String driver;
+
+    @Value("${spring.datasource.url}")
+    private String url;
+
+    @Value("${spring.datasource.username}")
+    private String username;
+
+    @Value("${spring.datasource.password}")
+    private String password;
 
   private HikariDataSource dataSource;
 

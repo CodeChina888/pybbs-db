@@ -21,7 +21,7 @@ import java.util.Map;
  * https://yiiu.co
  */
 @Controller
-@RequestMapping("/admin/comment")
+@RequestMapping("/forum/admin/comment")
 public class CommentAdminController extends BaseAdminController {
 
   @Autowired

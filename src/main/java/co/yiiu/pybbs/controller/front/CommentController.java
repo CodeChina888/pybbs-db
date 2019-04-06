@@ -2,6 +2,7 @@ package co.yiiu.pybbs.controller.front;
 
 import co.yiiu.pybbs.model.Comment;
 import co.yiiu.pybbs.model.Topic;
+import co.yiiu.pybbs.model.User;
 import co.yiiu.pybbs.service.CommentService;
 import co.yiiu.pybbs.service.TopicService;
 import co.yiiu.pybbs.service.UserService;
@@ -21,7 +22,7 @@ import javax.servlet.http.HttpSession;
  * https://yiiu.co
  */
 @Controller
-@RequestMapping("/comment")
+@RequestMapping("/forum/comment")
 public class CommentController extends BaseController {
 
   @Autowired
@@ -33,12 +34,12 @@ public class CommentController extends BaseController {
 
   // 编辑评论
   @GetMapping("/edit/{id}")
-  public String edit(@PathVariable Integer id, Model model) {
+  public String edit(@PathVariable Integer id, Model model,HttpSession session) {
     Comment comment = commentService.selectById(id);
     Topic topic = topicService.selectById(comment.getTopicId());
-//    int orginId=(int)session.getAttribute("originid");
-//    userService.refresh(orginId);
-//    System.out.println("orginId"+orginId);
+    User user2 = (User) session.getAttribute("_user");
+    String token=(String)session.getAttribute("_token");
+    userService.refresh(user2.getOriginId(),token);
     model.addAttribute("comment", comment);
     model.addAttribute("topic", topic);
     return render("comment/edit");

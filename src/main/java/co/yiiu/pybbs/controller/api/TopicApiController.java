@@ -44,7 +44,7 @@ public class TopicApiController extends BaseApiController {
 
   // 话题详情
   @GetMapping("/{id}")
-  public Result detail(@PathVariable Integer id, HttpServletRequest request) {
+  public Result detail(@PathVariable Integer id, HttpServletRequest request,HttpSession session) {
     Map<String, Object> map = new HashMap<>();
     // 查询话题详情
     Topic topic = topicService.selectById(id);
@@ -71,6 +71,9 @@ public class TopicApiController extends BaseApiController {
     map.put("comments", comments);
     map.put("topicUser", topicUser);
     map.put("collects", collects);
+    User user2 = (User) session.getAttribute("_user");
+    String token=(String)session.getAttribute("_token");
+    userService.refresh(user2.getOriginId(),token);
     return success(map);
   }
 
@@ -91,6 +94,9 @@ public class TopicApiController extends BaseApiController {
     Map<String, Object> map = new HashMap<>();
     map.put("topic", topic);
     map.put("tags", tags);
+    User user2 = (User) session.getAttribute("_user");
+    String token=(String)session.getAttribute("_token");
+    userService.refresh(user2.getOriginId(),token);
     return success(map);
 
   }
@@ -98,7 +104,7 @@ public class TopicApiController extends BaseApiController {
   // 更新话题
   @MyLog("更新话题")
   @PutMapping(value = "/{id}")
-  public Result edit(@RequestBody Map<String, String> body,@PathVariable Integer id){
+  public Result edit(@RequestBody Map<String, String> body,@PathVariable Integer id,HttpSession session){
     User user = getApiUser();
     String title = body.get("title");
     String content = body.get("content");
@@ -114,6 +120,9 @@ public class TopicApiController extends BaseApiController {
     Map<String, Object> map = new HashMap<>();
     map.put("topic", topic);
     map.put("tags", tags);
+    User user2 = (User) session.getAttribute("_user");
+    String token=(String)session.getAttribute("_token");
+    userService.refresh(user2.getOriginId(),token);
     return success(map);
   }
 
@@ -125,6 +134,9 @@ public class TopicApiController extends BaseApiController {
     Topic topic = topicService.selectById(id);
     ApiAssert.isTrue(topic.getUserId().equals(user.getId()), "谁给你的权限删除别人的话题的？");
     topicService.delete(topic, session);
+    User user2 = (User) session.getAttribute("_user");
+    String token=(String)session.getAttribute("_token");
+    userService.refresh(user2.getOriginId(),token);
     return success();
   }
 
@@ -135,6 +147,9 @@ public class TopicApiController extends BaseApiController {
     ApiAssert.notNull(topic, "这个话题可能已经被删除了");
     ApiAssert.notTrue(topic.getUserId().equals(user.getId()), "给自己话题点赞，脸皮真厚！！");
     int voteCount = topicService.vote(topic, getApiUser(), session);
+    User user2 = (User) session.getAttribute("_user");
+    String token=(String)session.getAttribute("_token");
+    userService.refresh(user2.getOriginId(),token);
     return success(voteCount);
   }
 }

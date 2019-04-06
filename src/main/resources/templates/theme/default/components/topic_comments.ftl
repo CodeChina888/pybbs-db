@@ -10,8 +10,8 @@
             <div class="media" id="comment${comment.id}" style="padding-left: ${comment.layer * 30}px;">
               <div class="media-body">
                 <div class="media-heading gray">
-                  <a href="/user/${comment.username}"><img src="${comment.avatar!}" class="avatar avatar-sm" alt=""/></a>
-                  <a href="/user/${comment.username!}">${comment.username!} </a>
+                  <a href="/forum/user/${comment.username}"><img src="${comment.avatar!}" class="avatar avatar-sm" alt=""/></a>
+                  <a href="/forum/user/${comment.username!}">${comment.username!} </a>
                   <#if topicUser?? && topicUser.id == comment.userId>
                     <span class="text-success">[楼主]</span>
                   </#if>
@@ -27,7 +27,7 @@
                   <span id="vote_count_${comment.id}">${model.getUpIds(comment.upIds)?size}</span>&nbsp;
                   <#if _user??>
                     <#if _user.id == comment.userId>
-                      <a href="/comment/edit/${comment.id}"><span class="glyphicon glyphicon-edit"></span></a>
+                      <a href="/forum/comment/edit/${comment.id}"><span class="glyphicon glyphicon-edit"></span></a>
                       <a href="javascript:;" onclick="deleteComment(${comment.id})"><span
                           class="glyphicon glyphicon-trash"></span></a>&nbsp;
                     </#if>

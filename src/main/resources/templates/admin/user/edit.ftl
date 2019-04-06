@@ -6,8 +6,8 @@
       <small>编辑</small>
     </h1>
     <ol class="breadcrumb">
-      <li><a href="/admin/index"><i class="fa fa-dashboard"></i> 首页</a></li>
-      <li><a href="/admin/user/list">用户</a></li>
+      <li><a href="/forum/admin/index"><i class="fa fa-dashboard"></i> 首页</a></li>
+      <li><a href="/forum/admin/user/list">用户</a></li>
       <li class="active">编辑</li>
     </ol>
   </section>
@@ -64,7 +64,7 @@
                   <script>
                     function refreshToken(self) {
                       $(self).button("loading");
-                      $.get("/admin/user/refreshToken?id=${user.id}", function(data) {
+                      $.get("/forum/admin/user/refreshToken?id=${user.id}", function(data) {
                         if (data.code === 200) {
                           toast("成功", "success");
                           $("#token").val(data.detail.token);
@@ -98,11 +98,11 @@
   $(function () {
     // 保存用户信息
     $("#btn").click(function () {
-      $.post("/admin/user/edit", $("#form").serialize(), function (data) {
+      $.post("/forum/admin/user/edit", $("#form").serialize(), function (data) {
         if (data.code === 200) {
           toast("编辑成功", "success");
           setTimeout(function () {
-            window.location.href = "/admin/user/list";
+            window.location.href = "/forum/admin/user/list";
           }, 700);
         } else {
           toast(data.description);

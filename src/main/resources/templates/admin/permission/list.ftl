@@ -6,8 +6,8 @@
       <small>列表</small>
     </h1>
     <ol class="breadcrumb">
-      <li><a href="/admin/index"><i class="fa fa-dashboard"></i> 首页</a></li>
-      <li><a href="/admin/permission/list">权限</a></li>
+      <li><a href="/forum/admin/index"><i class="fa fa-dashboard"></i> 首页</a></li>
+      <li><a href="/forum/admin/permission/list">权限</a></li>
       <li class="active">列表</li>
     </ol>
   </section>
@@ -33,7 +33,7 @@
                     <#if sec.hasPermission("permission:delete")>
                       <a href="javascript:;" class="text-danger" onclick="deletePermission(${permission.id})">删除</a>
                     </#if>
-                    <a href="/admin/permission/list?pid=${permission.id!}">
+                    <a href="/forum/admin/permission/list?pid=${permission.id!}">
                       ${permission.name!}
                     </a>
                   </li>
@@ -134,11 +134,11 @@
   <#if sec.hasPermission("permission:delete")>
     function deletePermission(id) {
       if (confirm('确定要删除这个权限吗？')) {
-        $.get("/admin/permission/delete?id=" + id, function (data) {
+        $.get("/forum/admin/permission/delete?id=" + id, function (data) {
           if (data.code === 200) {
             toast("成功", "success");
             setTimeout(function () {
-              window.location.href = "/admin/permission/list";
+              window.location.href = "/forum/admin/permission/list";
             }, 700);
           } else {
             toast(data.description);
@@ -160,13 +160,13 @@
         return;
       }
       var id = $("#id").val();
-      var url = "/admin/permission/add";
-      if (id) url = "/admin/permission/edit";
+      var url = "/forum/admin/permission/add";
+      if (id) url = "/forum/admin/permission/edit";
       $.post(url, $("#form").serialize(), function (data) {
         if (data.code === 200) {
           toast("成功", "success");
           setTimeout(function () {
-            window.location.href = "/admin/permission/list?pid=" + data.detail;
+            window.location.href = "/forum/admin/permission/list?pid=" + data.detail;
           }, 700);
         } else {
           toast(data.description);

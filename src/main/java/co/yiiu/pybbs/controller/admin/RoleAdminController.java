@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  * https://yiiu.co
  */
 @Controller
-@RequestMapping("/admin/role")
+@RequestMapping("/forum/admin/role")
 public class RoleAdminController extends BaseAdminController {
 
   @Autowired
@@ -53,7 +53,7 @@ public class RoleAdminController extends BaseAdminController {
   @PostMapping("/add")
   public String save(String name, Integer[] permissionIds) {
     roleService.insert(name, permissionIds);
-    return redirect("/admin/role/list");
+    return redirect("/forum/admin/role/list");
   }
 
   @RequiresPermissions("role:edit")
@@ -71,7 +71,7 @@ public class RoleAdminController extends BaseAdminController {
   @PostMapping("/edit")
   public String update(Integer id, String name, Integer[] permissionIds) {
     roleService.update(id, name, permissionIds);
-    return redirect("/admin/role/list");
+    return redirect("/forum/admin/role/list");
   }
 
   @RequiresPermissions("role:delete")

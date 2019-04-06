@@ -1,9 +1,14 @@
 package co.yiiu.pybbs.controller.front;
 
+import co.yiiu.pybbs.model.Data;
+import co.yiiu.pybbs.model.Message;
 import co.yiiu.pybbs.model.User;
 import co.yiiu.pybbs.service.SystemConfigService;
 import co.yiiu.pybbs.service.UserService;
 import co.yiiu.pybbs.util.CookieUtil;
+import co.yiiu.pybbs.util.HttpClient;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -11,12 +16,14 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -30,6 +37,7 @@ import java.util.Locale;
  * https://yiiu.co
  */
 @Controller
+@RequestMapping("/forum")
 public class IndexController extends BaseController {
 
   private Logger log = LoggerFactory.getLogger(IndexController.class);
@@ -40,37 +48,77 @@ public class IndexController extends BaseController {
   private SystemConfigService systemConfigService;
   @Autowired
   private UserService userService;
+  @Value("${spring.tokenurl}")
+  private String tokenUrl;
+  @Autowired
+  private User user;
 
   // 首页
-  @GetMapping({"/", "/index", "/index.html"})
-  public String index(@RequestParam(defaultValue = "all") String tab, @RequestParam(defaultValue = "1") Integer pageNo, Model model) {
+  @GetMapping({"", "/index", "/index.html"})
+  public String index(@RequestParam(defaultValue = "all") String tab, @RequestParam(defaultValue = "1") Integer pageNo, Model model,HttpSession session,String token) {
     model.addAttribute("tab", tab);
     model.addAttribute("pageNo", pageNo);
+    if(token!=null){
+      String url=tokenUrl+"/memcenter/api/v1/inner/auth/validateAuth";
+      String json= HttpClient.sendPostRequest(url,null,token);
+      JSONObject jsonObject= JSON.parseObject(json);
+      String code=jsonObject.getString("code");
+      if(code.equals("40401")){
+        log.error("----TokenError----");
+        return render("tokenError");
+      }
+      String data=jsonObject.getString("data");
+      JSONObject dataObjects= JSON.parseObject(data);
+      String row =dataObjects.getString("row");
+      JSONObject rowObject= JSON.parseObject(row);
+      String id=rowObject.getString("id");
+      String avatar=rowObject.getString("avatar");
+      String username=rowObject.getString("username");
+      if(!userService.hasPermission(Integer.valueOf(id))){
+        log.error("----NoPermission----");
+        return render("components/error");
+      }
+      session.setAttribute("_token",token);
+      if(userService.isExist(Integer.valueOf(id))){
+        user=userService.selectByoriginId(Integer.valueOf(id));
+        Message<Data> message = userService.userMessage(user.getOriginId());
+        user.setAvatar(message.getData().getRow().getAvatar());
+        user.setUsername(message.getData().getRow().getUsername());
+        userService.update(user);
+        session.setAttribute("_user", user);
+        log.error("----IsAuthenticated----");
+        return render("index");
+      }
+      user=userService.addUser(Integer.valueOf(id),username,"123456",avatar,null, null);
+      session.setAttribute("_user", user);
+    }
     return render("index");
   }
 
   @GetMapping("/top100")
-  public String top100() {
+  public String top100(HttpSession session) {
+      User user = (User) session.getAttribute("_user");
+      String token=(String)session.getAttribute("_token");
+      userService.refresh(user.getOriginId(),token);
     return render("top100");
   }
 
-  @GetMapping("/settings")
-  public String settings(HttpSession session, Model model) {
-    // 再查一遍，保证数据的最新
-    User user = (User) session.getAttribute("_user");
-    String token=(String)session.getAttribute("_token");
-    System.out.println(token);
-    user = userService.selectById(user.getId());
-    model.addAttribute("user", user);
-    return render("user/settings");
+  @GetMapping("/error")
+  public String error(){
+    return render("components/error");
+  }
+
+  @GetMapping("/tokenError")
+  public String tokenError(){
+    return render("tokenError");
   }
 
   @GetMapping("/tags")
   public String tags(@RequestParam(defaultValue = "1") Integer pageNo, Model model,HttpSession session) {
     model.addAttribute("pageNo", pageNo);
-//    String token=(String) session.getAttribute("token");
-    System.out.println("当前sessionID:"+session.getId());
-//    System.out.println("token"+token);
+    User user = (User) session.getAttribute("_user");
+    String token=(String)session.getAttribute("_token");
+    userService.refresh(user.getOriginId(),token);
     return render("tag/tags");
   }
 
@@ -101,10 +149,11 @@ public class IndexController extends BaseController {
       userService.delRedisUser(user);
       // 清除session里的用户信息
       session.removeAttribute("_user");
+      session.removeAttribute("_token");
       // 清除cookie里的用户token
       cookieUtil.clearCookie(systemConfigService.selectAllConfig().get("cookie_name").toString());
     }
-    return redirect("/");
+    return redirect("/forum");
   }
 
   // 登录后台
@@ -136,10 +185,10 @@ public class IndexController extends BaseController {
         log.error(e.getMessage());
         redirectAttributes.addFlashAttribute("error", "用户名或密码错误");
         redirectAttributes.addFlashAttribute("username", username);
-        return redirect("/adminlogin");
+        return redirect("/forum/adminlogin");
       }
     }
-    return redirect("/admin/index");
+    return redirect("/forum/admin/index");
   }
 
   @GetMapping("/search")

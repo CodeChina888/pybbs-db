@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 // 不用默认配置的数据源，自己配置
 @SpringBootApplication(exclude = {
@@ -15,4 +16,5 @@ public class PybbsApplication {
   public static void main(String[] args) {
     SpringApplication.run(PybbsApplication.class, args);
   }
+
 }

@@ -3,7 +3,7 @@
     <div class="panel-heading">
       积分榜
       <#if !top100>
-        <span class="pull-right"><a href="/top100">Top100</a></span>
+        <span class="pull-right"><a href="/forum/top100">Top100</a></span>
       </#if>
     </div>
     <table class="table">
@@ -16,7 +16,7 @@
       <@tag_score limit=limit>
         <#list users as user>
           <tr>
-            <td><a href="/user/${user.username}">${user.username}</a></td>
+            <td><a href="/forum/user/${user.username}">${user.username}</a></td>
             <td>${user.score}</td>
           </tr>
         </#list>

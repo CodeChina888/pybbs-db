@@ -6,8 +6,8 @@
       <small>列表</small>
     </h1>
     <ol class="breadcrumb">
-      <li><a href="/admin/index"><i class="fa fa-dashboard"></i> 首页</a></li>
-      <li><a href="/admin/user/list">用户</a></li>
+      <li><a href="/forum/admin/index"><i class="fa fa-dashboard"></i> 首页</a></li>
+      <li><a href="/forum/admin/user/list">用户</a></li>
       <li class="active">列表</li>
     </ol>
   </section>
@@ -16,7 +16,7 @@
       <div class="box-header with-border">
         <h3 class="box-title">用户列表</h3>
         <#if sec.hasPermission('admin_user:add')>
-          <a href="/admin/admin_user/add" class="btn btn-xs btn-primary pull-right">添加</a>
+          <a href="/forum/admin/admin_user/add" class="btn btn-xs btn-primary pull-right">添加</a>
         </#if>
       </div>
       <!-- /.box-header -->
@@ -40,10 +40,10 @@
               <td>${adminUser.inTime?datetime}</td>
               <td>
                 <#if sec.hasPermission('admin_user:edit')>
-                  <a href="/admin/admin_user/edit?id=${adminUser.id}" class="btn btn-xs btn-warning">编辑</a>
+                  <a href="/forum/admin/admin_user/edit?id=${adminUser.id}" class="btn btn-xs btn-warning">编辑</a>
                 </#if>
                 <#if sec.hasPermission('admin_user:delete')>
-                  <a href="javascript:if(confirm('确定要删除吗？')) location.href='/admin/admin_user/delete?id=${adminUser.id}'" class="btn btn-xs btn-danger">删除</a>
+                  <a href="javascript:if(confirm('确定要删除吗？')) location.href='/forum/admin/admin_user/delete?id=${adminUser.id}'" class="btn btn-xs btn-danger">删除</a>
                 </#if>
               </td>
             </tr>

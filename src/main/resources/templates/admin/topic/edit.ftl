@@ -6,8 +6,8 @@
       <small>编辑</small>
     </h1>
     <ol class="breadcrumb">
-      <li><a href="/admin/index"><i class="fa fa-dashboard"></i> 首页</a></li>
-      <li><a href="/admin/topic/list">话题</a></li>
+      <li><a href="/forum/admin/index"><i class="fa fa-dashboard"></i> 首页</a></li>
+      <li><a href="/forum/admin/topic/list">话题</a></li>
       <li class="active">编辑</li>
     </ol>
   </section>
@@ -73,7 +73,7 @@
         toast("请输入标签，且最多只能填5个");
         return;
       }
-      $.post("/admin/topic/edit", {
+      $.post("/forum/admin/topic/edit", {
         id: ${topic.id},
         title: title,
         content: content,
@@ -82,7 +82,7 @@
         if (data.code === 200) {
           toast("更新成功", "success");
           setTimeout(function () {
-            window.location.href = "/admin/topic/list";
+            window.location.href = "/forum/admin/topic/list";
           }, 700);
         } else {
           toast(data.description);

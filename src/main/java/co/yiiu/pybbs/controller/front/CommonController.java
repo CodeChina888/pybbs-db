@@ -30,7 +30,7 @@ import java.io.IOException;
  * https://yiiu.co
  */
 @Controller
-@RequestMapping("/common")
+@RequestMapping("/forum/common")
 public class CommonController extends BaseApiController {
 
   // gif 验证码

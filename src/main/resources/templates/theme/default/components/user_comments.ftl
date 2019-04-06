@@ -11,11 +11,11 @@
           <#list comments.records as comment>
             <tr>
               <td>
-                <a href="/user/${comment.commentUsername}">${comment.commentUsername}</a>
+                <a href="/forum/user/${comment.commentUsername}">${comment.commentUsername}</a>
                 ${model.formatDate(comment.inTime)!}
                 评论了
-                <a href="/user/${comment.topicUsername}">${comment.topicUsername}</a>
-                创建的话题 › <a href="/topic/${comment.topicId}">${comment.title!?html}</a>
+                <a href="/forum/user/${comment.topicUsername}">${comment.topicUsername}</a>
+                创建的话题 › <a href="/forum/topic/${comment.topicId}">${comment.title!?html}</a>
               </td>
             </tr>
             <tr class="user_comments">
@@ -33,7 +33,7 @@
         </#if>
         <#if isFooter>
           <div class="panel-footer">
-            <a href="/user/${username}/comments">${username}更多评论&gt;&gt;</a>
+            <a href="/forum/user/${username}/comments">${username}更多评论&gt;&gt;</a>
           </div>
         </#if>
       </#if>

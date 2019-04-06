@@ -16,7 +16,6 @@
   </select>
   <update id="updateTag">
     update tag, admin_user u set tag.admin_id = u.id where u.tag_id=tag.id and tag.id=#{tagId}
-
   </update>
   <update id="updateAdminName">
     update tag, admin_user u set tag.admin_name=u.username where u.tag_id=tag.id and tag.id=#{tagId}

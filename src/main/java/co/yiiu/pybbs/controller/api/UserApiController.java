@@ -8,6 +8,7 @@ import co.yiiu.pybbs.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +36,7 @@ public class UserApiController extends BaseApiController {
   NotificationService notificationService;
   // 用户的个人信息
   @GetMapping("/{username}")
-  public Result profile(@PathVariable String username) {
+  public Result profile(@PathVariable String username, HttpSession session) {
     // 查询用户个人信息
     User user = userService.selectByUsername(username);
     // 查询oauth登录的用户信息
@@ -54,12 +55,15 @@ public class UserApiController extends BaseApiController {
     map.put("topics", topics);
     map.put("comments", comments);
     map.put("collectCount", collectCount);
+    User user2 = (User) session.getAttribute("_user");
+    String token=(String)session.getAttribute("_token");
+    userService.refresh(user2.getOriginId(),token);
     return success(map);
   }
 
   // 用户发布的话题
   @GetMapping("/{username}/topics")
-  public Result topics(@PathVariable String username, @RequestParam(defaultValue = "1") Integer pageNo) {
+  public Result topics(@PathVariable String username, @RequestParam(defaultValue = "1") Integer pageNo,HttpSession session) {
     // 查询用户个人信息
     User user = userService.selectByUsername(username);
     // 查询用户的话题
@@ -67,12 +71,15 @@ public class UserApiController extends BaseApiController {
     Map<String, Object> map = new HashMap<>();
     map.put("user", user);
     map.put("topics", topics);
+    User user2 = (User) session.getAttribute("_user");
+    String token=(String)session.getAttribute("_token");
+    userService.refresh(user2.getOriginId(),token);
     return success(map);
   }
 
   // 用户评论列表
   @GetMapping("/{username}/comments")
-  public Result comments(@PathVariable String username, @RequestParam(defaultValue = "1") Integer pageNo) {
+  public Result comments(@PathVariable String username, @RequestParam(defaultValue = "1") Integer pageNo,HttpSession session) {
     // 查询用户个人信息
     User user = userService.selectByUsername(username);
     // 查询用户参与的评论
@@ -80,12 +87,15 @@ public class UserApiController extends BaseApiController {
     Map<String, Object> map = new HashMap<>();
     map.put("user", user);
     map.put("comments", comments);
+    User user2 = (User) session.getAttribute("_user");
+    String token=(String)session.getAttribute("_token");
+    userService.refresh(user2.getOriginId(),token);
     return success(map);
   }
 
   // 用户收藏的话题
   @GetMapping("/{username}/collects")
-  public Result collects(@PathVariable String username, @RequestParam(defaultValue = "1") Integer pageNo) {
+  public Result collects(@PathVariable String username, @RequestParam(defaultValue = "1") Integer pageNo,HttpSession session) {
     // 查询用户个人信息
     User user = userService.selectByUsername(username);
     // 查询用户参与的评论
@@ -93,6 +103,9 @@ public class UserApiController extends BaseApiController {
     Map<String, Object> map = new HashMap<>();
     map.put("user", user);
     map.put("collects", collects);
+    User user2 = (User) session.getAttribute("_user");
+    String token=(String)session.getAttribute("_token");
+    userService.refresh(user2.getOriginId(),token);
     return success(map);
   }
 }

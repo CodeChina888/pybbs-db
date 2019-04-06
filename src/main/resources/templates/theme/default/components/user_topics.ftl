@@ -17,9 +17,9 @@
                   </a>
                 </div>
                 <p>
-                  <span><a href="/user/${topic.username}">${topic.username}</a></span>
+                  <span><a href="/forum/user/${topic.username}">${topic.username}</a></span>
                   <span class="hidden-sm hidden-xs">•</span>
-                  <span class="hidden-sm hidden-xs"><a href="/topic/${topic.id}">${topic.commentCount}个评论</a></span>
+                  <span class="hidden-sm hidden-xs"><a href="/forum/topic/${topic.id}">${topic.commentCount}个评论</a></span>
                   <span class="hidden-sm hidden-xs">•</span>
                   <span class="hidden-sm hidden-xs">${topic.view}次浏览</span>
                   <span>•</span>
@@ -45,7 +45,7 @@
         </div>
         <#if isFooter>
           <div class="panel-footer">
-            <a href="/user/${username}/topics">${username}更多话题&gt;&gt;</a>
+            <a href="/forum/user/${username}/topics">${username}更多话题&gt;&gt;</a>
           </div>
         </#if>
       </#if>

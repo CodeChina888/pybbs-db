@@ -93,7 +93,7 @@
           if (data.code === 200) {
             toast("更新成功", "success");
             setTimeout(function () {
-              window.location.href = "/topic/" + data.detail.topic.id
+              window.location.href = "/forum/topic/" + data.detail.topic.id
             }, 700);
           } else {
             toast(data.description);

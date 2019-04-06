@@ -11,7 +11,7 @@
           ${tag.name}
           <small>共有${tag.topicCount!0}篇话题</small>
           <#if _user??>
-            <a href="/topic/create?tag=${tag.name}" class="btn btn-sm btn-info pull-right">发布话题</a>
+            <a href="/forum/topic/create?tag=${tag.name}" class="btn btn-sm btn-info pull-right">发布话题</a>
           </#if>
         </h4>
         <small>${tag.description!}</small>

@@ -20,7 +20,7 @@
             <div class="input-group">
               <input type="text" class="form-control" id="captcha" name="captcha" placeholder="验证码"/>
               <span class="input-group-btn">
-                <img style="border: 1px solid #ccc;" src="/common/captcha" id="changeCaptcha"/>
+                <img style="border: 1px solid #ccc;" src="/forum/common/captcha" id="changeCaptcha"/>
               </span>
             </div>
           </div>
@@ -40,7 +40,7 @@
   $(function () {
     $("#changeCaptcha").click(function () {
       var date = new Date();
-      $(this).attr("src", "/common/captcha?ver=" + date.getTime());
+      $(this).attr("src", "/forum/common/captcha?ver=" + date.getTime());
     })
     $("#login_btn").click(function () {
       var username = $("#username").val();

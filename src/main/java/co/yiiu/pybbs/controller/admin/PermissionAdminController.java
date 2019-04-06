@@ -20,7 +20,7 @@ import java.util.List;
  * https://yiiu.co
  */
 @Controller
-@RequestMapping("/admin/permission")
+@RequestMapping("/forum/admin/permission")
 public class PermissionAdminController extends BaseAdminController {
 
   @Autowired

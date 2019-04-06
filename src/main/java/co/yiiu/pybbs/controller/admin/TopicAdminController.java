@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  * https://yiiu.co
  */
 @Controller
-@RequestMapping("/admin/topic")
+@RequestMapping("/forum/admin/topic")
 public class TopicAdminController extends BaseAdminController {
 
   @Autowired

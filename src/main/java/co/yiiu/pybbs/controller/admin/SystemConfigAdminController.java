@@ -17,7 +17,7 @@ import java.util.Map;
  * https://yiiu.co
  */
 @Controller
-@RequestMapping("/admin/system")
+@RequestMapping("/forum/admin/system")
 public class SystemConfigAdminController extends BaseAdminController {
 
   @Autowired

@@ -23,7 +23,7 @@ import javax.servlet.http.HttpSession;
  * https://yiiu.co
  */
 @Controller
-@RequestMapping("/admin/tag")
+@RequestMapping("/forum/admin/tag")
 public class TagAdminController extends BaseAdminController {
 
   @Autowired
@@ -61,7 +61,7 @@ public class TagAdminController extends BaseAdminController {
     //tag.setTopicCount(topicCount);
     tag.setAdminId(0);
     tagService.insertTag(tag);
-    return redirect("/admin/tag/list");
+    return redirect("/forum/admin/tag/list");
   }
 
   @RequiresPermissions("tag:edit")
@@ -82,7 +82,7 @@ public class TagAdminController extends BaseAdminController {
     tag.setDescription(description);
     tag.setTopicCount(topicCount);
     tagService.update(tag);
-    return redirect("/admin/tag/list");
+    return redirect("/forum/admin/tag/list");
   }
 
   @RequiresPermissions("tag:delete")

@@ -23,16 +23,16 @@ public class DataSourceHelper {
 
   private Logger log = LoggerFactory.getLogger(DataSourceHelper.class);
 
-  @Value("${datasource_driver}")
+  @Value("${spring.datasource.driver-class-name}")
   private String driver;
 
-  @Value("${datasource_url}")
+  @Value("${spring.datasource.url}")
   private String url;
 
-  @Value("${datasource_username}")
+  @Value("${spring.datasource.username}")
   private String username;
 
-  @Value("${datasource_password}")
+  @Value("${spring.datasource.password}")
   private String password;
 
   @PostConstruct

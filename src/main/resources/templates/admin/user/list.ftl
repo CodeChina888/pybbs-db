@@ -6,8 +6,8 @@
       <small>列表</small>
     </h1>
     <ol class="breadcrumb">
-      <li><a href="/admin/index"><i class="fa fa-dashboard"></i> 首页</a></li>
-      <li><a href="/admin/user/list">用户</a></li>
+      <li><a href="/forum/admin/index"><i class="fa fa-dashboard"></i> 首页</a></li>
+      <li><a href="/forum/admin/user/list">用户</a></li>
       <li class="active">列表</li>
     </ol>
   </section>
@@ -39,7 +39,7 @@
             <td>${user.inTime?datetime}</td>
             <td>
               <#if sec.hasPermission("user:edit")>
-                <a href="/admin/user/edit?id=${user.id}" class="btn btn-xs btn-warning">编辑</a>
+                <a href="/forum/admin/user/edit?id=${user.id}" class="btn btn-xs btn-warning">编辑</a>
               </#if>
               <#if sec.hasPermission("user:delete")>
                 <button onclick="deleteUser('${user.id}')" class="btn btn-xs btn-danger">删除</button>
@@ -52,13 +52,13 @@
       </div>
     </div>
     <#include "../layout/paginate.ftl">
-    <@paginate currentPage=page.current totalPage=page.pages actionUrl="/admin/user/list" urlParas=""/>
+    <@paginate currentPage=page.current totalPage=page.pages actionUrl="/forum/admin/user/list" urlParas=""/>
   </section>
 <script>
   <#if sec.hasPermission("user:delete")>
     function deleteUser(id) {
       if(confirm("确定要删除这个用户吗？\n 删除用户后，它发的帖子评论以及收藏就都没了，还请三思!!")) {
-        $.get("/admin/user/delete?id=" + id, function (data) {
+        $.get("/forum/admin/user/delete?id=" + id, function (data) {
           if (data.code === 200) {
             toast("删除成功", "success");
             setTimeout(function () {

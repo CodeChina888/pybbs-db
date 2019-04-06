@@ -33,7 +33,7 @@ public class RecordService {
     }
 
     public IPage<Record> selectAll(Integer pageNo) {
-        MyPage<Record> page = new MyPage<>(pageNo, Integer.parseInt((String) systemConfigService.selectAllConfig().get("page_size")));
+        MyPage<Record> page = new MyPage<>(pageNo,Integer.parseInt((String) systemConfigService.selectAllConfig().get("page_size")));
         page.setAsc("id");
         return recordMapper.selectPage(page, null);
     }

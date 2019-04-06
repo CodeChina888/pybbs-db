@@ -49,16 +49,20 @@ public class CommentApiController extends BaseApiController {
       topicUser.setMessage(topicUser.getMessage()+1);
       userService.update(topicUser);
     }else {
-      User commentUser=userService.selectById(comment.getUserId());
+      Comment c=commentService.selectById(commentId);
+      User commentUser=userService.selectById(c.getUserId());
       commentUser.setMessage(commentUser.getMessage()+1);
     }
+    User user2 = (User) session.getAttribute("_user");
+    String token=(String)session.getAttribute("_token");
+    userService.refresh(user2.getOriginId(),token);
     return success(comment);
   }
 
   // 更新评论
   @MyLog("更新评论")
   @PutMapping("/{id}")
-  public Result update(@RequestBody Map<String, String> body,@PathVariable Integer id) {
+  public Result update(@RequestBody Map<String, String> body,@PathVariable Integer id,HttpSession session) {
     User user = getApiUser();
     String content = body.get("content");
     ApiAssert.notNull(id, "评论ID呢？");
@@ -68,6 +72,9 @@ public class CommentApiController extends BaseApiController {
     ApiAssert.isTrue(comment.getUserId().equals(user.getId()), "请给你的权限让你编辑别人的评论？");
     comment.setContent(content);
     commentService.update(comment);
+    User user2 = (User) session.getAttribute("_user");
+    String token=(String)session.getAttribute("_token");
+    userService.refresh(user2.getOriginId(),token);
     return success(comment);
   }
 
@@ -80,6 +87,9 @@ public class CommentApiController extends BaseApiController {
     ApiAssert.notNull(comment, "这个评论可能已经被删除了，多发点对别人有帮助的评论吧");
     ApiAssert.isTrue(comment.getUserId().equals(user.getId()), "请给你的权限让你删除别人的评论？");
     commentService.delete(id, session);
+    User user2 = (User) session.getAttribute("_user");
+    String token=(String)session.getAttribute("_token");
+    userService.refresh(user2.getOriginId(),token);
     return success();
   }
 
@@ -91,6 +101,9 @@ public class CommentApiController extends BaseApiController {
     ApiAssert.notNull(comment, "这个评论可能已经被删除了");
     ApiAssert.notTrue(comment.getUserId().equals(user.getId()), "给自己评论点赞，脸皮真厚！！");
     int voteCount = commentService.vote(comment, user, session);
+    User user2 = (User) session.getAttribute("_user");
+    String token=(String)session.getAttribute("_token");
+    userService.refresh(user2.getOriginId(),token);
     return success(voteCount);
   }
 }

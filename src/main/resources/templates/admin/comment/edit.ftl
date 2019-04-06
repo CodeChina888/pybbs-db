@@ -6,8 +6,8 @@
       <small>列表</small>
     </h1>
     <ol class="breadcrumb">
-      <li><a href="/admin/index"><i class="fa fa-dashboard"></i> 首页</a></li>
-      <li><a href="/admin/comment/list">评论</a></li>
+      <li><a href="/forum/admin/index"><i class="fa fa-dashboard"></i> 首页</a></li>
+      <li><a href="/forum/admin/comment/list">评论</a></li>
       <li class="active">编辑</li>
     </ol>
   </section>
@@ -57,14 +57,14 @@
         toast("请输入内容");
         return ;
       }
-      $.post("/admin/comment/edit", {
+      $.post("/forum/admin/comment/edit", {
         id: ${comment.id},
         content: content
       }, function (data) {
         if (data.code === 200) {
           toast("更新成功", "success");
           setTimeout(function () {
-            window.location.href = "/admin/comment/list";
+            window.location.href = "/forum/admin/comment/list";
           }, 700);
         } else {
           toast(data.description);

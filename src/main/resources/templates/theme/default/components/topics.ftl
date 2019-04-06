@@ -2,11 +2,11 @@
   <#list page.records as topic>
     <div class="media">
       <div class="media-left">
-        <a href="/user/${topic.username!}"><img src="${topic.avatar!}" class="avatar" alt=""></a>
+        <a href="/forum/user/${topic.username!}"><img src="${topic.avatar!}" class="avatar" alt=""></a>
       </div>
       <div class="media-body">
         <div class="title">
-          <a href="/topic/${topic.id}">${topic.title!?html}</a>
+          <a href="/forum/topic/${topic.id}">${topic.title!?html}</a>
         </div>
         <p class="gray">
           <#--<#if (topic.up - topic.down) &gt; 0>
@@ -21,9 +21,9 @@
             <span class="label label-info">精华</span>
             <span>•</span>
           </#if>
-          <span><a href="/user/${topic.username!}">${topic.username!}</a></span>
+          <span><a href="/forum/user/${topic.username!}">${topic.username!}</a></span>
           <span class="hidden-sm hidden-xs">•</span>
-          <span class="hidden-sm hidden-xs"><a href="/topic/${topic.id}">${topic.commentCount!0}个评论</a></span>
+          <span class="hidden-sm hidden-xs"><a href="/forum/topic/${topic.id}">${topic.commentCount!0}个评论</a></span>
           <span class="hidden-sm hidden-xs">•</span>
           <span class="hidden-sm hidden-xs">${topic.view!0}次浏览</span>
           <span>•</span>
@@ -31,7 +31,7 @@
           <#if tags>
             <span>•</span>
              <#list topic.tags as tag>
-              <a href="/topic/tag/${tag.id}"><span class="label label-info">${tag.name}</span></a>
+              <a href="/forum/topic/tag/${tag.id}"><span class="label label-info">${tag.name}</span></a>
             </#list>
           </#if>
         </p>

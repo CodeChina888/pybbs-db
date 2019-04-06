@@ -3,6 +3,7 @@ package co.yiiu.pybbs.model;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -12,6 +13,7 @@ import java.util.Date;
  * Copyright (c) 2018, All Rights Reserved.
  * https://yiiu.co
  */
+@Component
 public class User implements Serializable {
 
   private static final long serialVersionUID = -5051120337175047163L;

@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
-@RequestMapping("/admin/record")
+@RequestMapping("/forum/admin/record")
 public class RecordController {
 
     @Autowired
     private RecordService recordService;
 
-    @RequiresPermissions("record:list")
+    @RequiresPermissions("records:list")
     @GetMapping("/list")
     public String list(@RequestParam(defaultValue = "1") Integer pageNo, Model model){
         IPage<Record> iPage = recordService.selectAll(pageNo);

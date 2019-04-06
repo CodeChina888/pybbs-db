@@ -6,8 +6,8 @@
       <small>列表</small>
     </h1>
     <ol class="breadcrumb">
-      <li><a href="/admin/index"><i class="fa fa-dashboard"></i> 首页</a></li>
-      <li><a href="/admin/record/list">日志</a></li>
+      <li><a href="/forum/admin/index"><i class="fa fa-dashboard"></i> 首页</a></li>
+      <li><a href="/forum/admin/record/list">日志</a></li>
       <li class="active">列表</li>
     </ol>
   </section>
@@ -47,6 +47,6 @@
       </div>
     </div>
     <#include "../layout/paginate.ftl">
-    <@paginate currentPage=page.current totalPage=page.pages actionUrl="/admin/record/list" urlParas=""/>
+    <@paginate currentPage=page.current totalPage=page.pages actionUrl="/forum/admin/record/list" urlParas=""/>
   </section>
 </@html>

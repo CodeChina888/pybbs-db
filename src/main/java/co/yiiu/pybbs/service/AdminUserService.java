@@ -72,7 +72,6 @@ public class AdminUserService {
     if (adminUserMapper.selectById(id).getTagId()!=0)
     {
       Tag tag = tagMapper.selectById(adminUserMapper.selectById(id).getTagId());
-
       tag.setAdminId(0);
       tag.setAdminName("");
       tagMapper.updateById(tag);

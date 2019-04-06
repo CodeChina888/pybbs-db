@@ -11,6 +11,7 @@ import java.util.Date;
 public class Collect implements Serializable {
 
   private static final long serialVersionUID = 7610730966340643542L;
+
   private Integer topicId;
   private Integer userId;
   private Date inTime;

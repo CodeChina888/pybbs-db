@@ -44,6 +44,9 @@ public class SettingsApiController extends BaseApiController {
     userService.update(user1);
     //更新session里用户信息
     if (session != null) session.setAttribute("_user", user1);
+    User user2 = (User) session.getAttribute("_user");
+    String token=(String)session.getAttribute("_token");
+    userService.refresh(user2.getOriginId(),token);
     return success();
   }
 
@@ -97,6 +100,9 @@ public class SettingsApiController extends BaseApiController {
     userService.update(user1);
     // 将最新的用户信息更新在session里
     if (session != null) session.setAttribute("_user", user1);
+    User user2 = (User) session.getAttribute("_user");
+    String token=(String)session.getAttribute("_token");
+    userService.refresh(user2.getOriginId(),token);
     return success();
   }
 

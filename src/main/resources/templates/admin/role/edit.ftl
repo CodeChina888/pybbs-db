@@ -6,8 +6,8 @@
       <small>编辑</small>
     </h1>
     <ol class="breadcrumb">
-      <li><a href="/admin/index"><i class="fa fa-dashboard"></i> 首页</a></li>
-      <li><a href="/admin/role/list">角色</a></li>
+      <li><a href="/forum/admin/index"><i class="fa fa-dashboard"></i> 首页</a></li>
+      <li><a href="/forum/admin/role/list">角色</a></li>
       <li class="active">编辑</li>
     </ol>
   </section>
@@ -18,7 +18,7 @@
       </div>
       <!-- /.box-header -->
       <div class="box-body">
-        <form id="form" action="/admin/role/edit" method="post">
+        <form id="form" action="/forum/admin/role/edit" method="post">
           <input type="hidden" name="id" value="${role.id}">
           <div class="form-group">
             <label>角色名</label>

@@ -295,7 +295,6 @@ public class CommentService {
   }
 
   public int countTodayByadminId(Integer adminId) {
-
     return commentMapper.countTodayByadminId(adminId);
   }
 }

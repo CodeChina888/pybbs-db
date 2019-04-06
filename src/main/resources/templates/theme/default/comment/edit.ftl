@@ -4,7 +4,7 @@
   <div class="col-md-9">
     <div class="panel panel-info">
       <div class="panel-heading">
-        <a href="/">主页</a> / <a href="/topic/${topic.id}">${topic.title}</a> / 编辑评论
+        <a href="/forum/">主页</a> / <a href="/forum/topic/${topic.id}">${topic.title}</a> / 编辑评论
         <a href="javascript:;" id="uploadImageBtn" class="pull-right">上传图片</a>
       </div>
       <textarea name="content" id="content" class="form-control">${comment.content?html}</textarea>
@@ -65,7 +65,7 @@
           if (data.code === 200) {
             toast("更新成功", "success");
             setTimeout(function () {
-              window.location.href = "/topic/${comment.topicId}";
+              window.location.href = "/forum/topic/${comment.topicId}";
             }, 700);
           } else {
             toast(data.description);

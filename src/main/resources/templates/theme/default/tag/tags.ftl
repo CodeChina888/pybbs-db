@@ -12,7 +12,7 @@
                         <img src="http://bbs.jeecms.com/r/cms/www/blue/bbs_forum/img/top/tie002.gif" style="height:4rem;margin-top:.5rem" class="sponsor-tag-img" alt="pretty good">
                     </div>
                     <div class="col-md-10" style="margin-left:1rem">
-                        <a href="/topic/tag/${tag.id}">
+                        <a href="/forum/topic/tag/${tag.id}">
                             <span class="label label-info">${tag.name}</span>
                         </a>
                         <span class="text-muted" style="font-size:13px">当前话题数:${tag.topicCount}</span>

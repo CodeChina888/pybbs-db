@@ -45,7 +45,7 @@
       <#if error??>
         <div class="text-red">${error}</div>
       </#if>
-      <form id="form" action="/adminlogin" method="post">
+      <form id="form" action="/forum/adminlogin" method="post">
         <div class="form-group has-feedback">
           <input type="text" class="form-control" id="username" name="username" placeholder="用户名">
           <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
@@ -58,7 +58,7 @@
           <div class="input-group">
             <input type="text" class="form-control" id="code" name="code" placeholder="验证码"/>
             <span class="input-group-btn">
-            <img style="border: 1px solid #ccc;" src="/common/captcha" id="changeCode"/>
+            <img style="border: 1px solid #ccc;" src="/forum/common/captcha" id="changeCode"/>
           </span>
           </div>
         </div>
@@ -80,7 +80,7 @@
     $(function() {
       $("#changeCode").click(function () {
         var date = new Date();
-        $(this).attr("src", "/common/captcha?ver=" + date.getTime());
+        $(this).attr("src", "/forum/common/captcha?ver=" + date.getTime());
       })
     });
   </script>

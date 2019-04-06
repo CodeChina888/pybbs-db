@@ -133,6 +133,9 @@ public class IndexApiController extends BaseApiController {
       return error("上传图片类型不在处理范围内");
     }
     if (url == null) return error("上传的文件不存在或者上传过程发生了错误，请重试一下");
+    User user2 = (User) session.getAttribute("_user");
+    String token=(String)session.getAttribute("_token");
+    userService.refresh(user2.getOriginId(),token);
     return success(url);
   }
 }

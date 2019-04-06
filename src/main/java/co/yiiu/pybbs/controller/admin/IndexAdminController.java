@@ -20,7 +20,7 @@ import java.lang.management.ManagementFactory;
  * https://yiiu.co
  */
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("/forum/admin")
 public class IndexAdminController extends BaseAdminController {
 
   @Autowired
