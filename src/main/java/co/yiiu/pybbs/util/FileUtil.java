@@ -70,17 +70,22 @@ public class FileUtil {
   public String uploadFile(MultipartFile file,String filePath){
     try {
       String fileName=file.getOriginalFilename();
+      //获得文件上传的路径
+      String path=systemConfigService.selectAllConfig().get("upload_path").toString();
+      //文件名的后缀
       String fileNameSuffix=fileName.substring(fileName.lastIndexOf(".")+1);
+      //文件名的前缀
       String fileNamePrefix = fileName.substring(0 , fileName.lastIndexOf("."));
-      fileName = fileNamePrefix + "-" + System.currentTimeMillis() + "." + fileNameSuffix;//获取上传文件名
+      //获取上传文件名
+      fileName = fileNamePrefix + "-" + System.currentTimeMillis() + "." + fileNameSuffix;
       File targetFile=new File(path+filePath+"/"+fileName);
       if (!targetFile.getParentFile().exists())
         //不存在创建文件夹
         targetFile.getParentFile().mkdirs();
-        //6.将上传文件写到服务器上指定的文件
+      //6.将上传文件写到服务器上指定的文件
       file.transferTo(targetFile);
-      log.info("文件上传成功,当前路径为:"+path+filePath+ "/" + fileName);
-      return path+filePath+ "/" + fileName;
+      log.info("文件上传成功,当前访问路径为:"+systemConfigService.selectAllConfig().get("static_url").toString()+filePath+ "/" + fileName);
+      return systemConfigService.selectAllConfig().get("static_url").toString()+filePath+ "/" + fileName;
     }catch (Exception e){
       e.printStackTrace();
       log.error(e.getMessage());
