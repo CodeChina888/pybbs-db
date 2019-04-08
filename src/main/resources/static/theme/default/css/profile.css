@@ -1,0 +1,12 @@
+
+/* css for profile.ftl */
+.profile-top {
+
+}
+.head-container{
+    width: 230px;
+    height: 230px;
+    border-radius: 50%;
+    margin: 0 auto;
+    overflow: hidden
+}
