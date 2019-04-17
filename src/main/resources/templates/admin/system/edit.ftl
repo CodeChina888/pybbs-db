@@ -25,9 +25,9 @@
                 <div>
                   <h5>${system.description!}</h5>
                   <#--<input type="hidden" name="key" value="${system.key}" class="form-control"/>-->
-                  <#if system.type == "email">
-                    <input type="email" id="${system.key!}" name="${system.key!}" value="${system.value!}" class="form-control"/>
-                  <#elseif system.type == "text">
+<#--                  <#if system.type == "email">-->
+<#--                    <input type="email" id="${system.key!}" name="${system.key!}" value="${system.value!}" class="form-control"/>-->
+                  <#if system.type == "text">
                     <input type="text" id="${system.key!}" name="${system.key!}" value="${system.value!}" class="form-control"/>
                   <#elseif system.type == "password">
                     <input type="password" id="${system.key!}" name="${system.key!}" value="${system.value!}" class="form-control"/>

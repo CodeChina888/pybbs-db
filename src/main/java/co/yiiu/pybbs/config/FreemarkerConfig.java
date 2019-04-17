@@ -1,6 +1,7 @@
 package co.yiiu.pybbs.config;
 
 import co.yiiu.pybbs.directive.*;
+import co.yiiu.pybbs.service.SoftwareDirective;
 import co.yiiu.pybbs.util.BaseModel;
 import co.yiiu.pybbs.util.LocaleMessageSourceUtil;
 import freemarker.template.TemplateModelException;
@@ -50,7 +51,8 @@ public class FreemarkerConfig {
   private ShiroTag shiroTag;
   @Autowired
   private LocaleMessageSourceUtil localeMessageSourceUtil;
-
+  @Autowired
+  private SoftwareDirective softwareDirective;
   @PostConstruct
   public void setSharedVariable() throws TemplateModelException {
     //注入全局配置到freemarker
@@ -67,6 +69,7 @@ public class FreemarkerConfig {
     configuration.setSharedVariable("tag_score", scoreDirective);
     configuration.setSharedVariable("tag_search", searchDirective);
     configuration.setSharedVariable("tag_tags", tagsDirective);
+    configuration.setSharedVariable("software_categorylist",softwareDirective );
     configuration.setSharedVariable("tag_user_topics", userTopicsDirective);
     configuration.setSharedVariable("tag_user_comments", userCommentsDirective);
     configuration.setSharedVariable("tag_user_collects", userCollectsDirective);

@@ -32,8 +32,6 @@ public class DocumentCenterController extends BaseAdminController
     private DocumentCenterService documentCenterService;
     @Value("${spring.servlet.multipart.max-file-size}")
     private String uploadAvatarSizeLimit;
-    @Value("${file.path}")
-    private String filePath;
 
     //文件上传
     @RequiresPermissions("document:upload")

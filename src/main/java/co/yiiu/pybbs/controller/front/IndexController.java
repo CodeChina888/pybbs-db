@@ -118,7 +118,8 @@ public class IndexController extends BaseController {
     model.addAttribute("pageNo", pageNo);
     User user = (User) session.getAttribute("_user");
     String token=(String)session.getAttribute("_token");
-    userService.refresh(user.getOriginId(),token);
+    if (user!=null && token!=null)
+      userService.refresh(user.getOriginId(),token);
     return render("tag/tags");
   }
 
@@ -160,7 +161,7 @@ public class IndexController extends BaseController {
   @GetMapping("/adminlogin")
   public String adminlogin() {
     Subject subject = SecurityUtils.getSubject();
-    if (subject.isAuthenticated()) return redirect("/admin/index");
+    if (subject.isAuthenticated()) return redirect("/forum/admin/index");
     return "admin/login";
   }
 
@@ -189,6 +190,12 @@ public class IndexController extends BaseController {
       }
     }
     return redirect("/forum/admin/index");
+  }
+
+  @GetMapping("/software/categorylist")
+  public String software(@RequestParam(defaultValue = "1") Integer pageNo, Model model){
+    model.addAttribute("pageNo",pageNo);
+    return render("software/categorylist");
   }
 
   @GetMapping("/search")

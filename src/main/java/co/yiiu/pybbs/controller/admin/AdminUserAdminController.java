@@ -2,11 +2,9 @@ package co.yiiu.pybbs.controller.admin;
 
 import co.yiiu.pybbs.mapper.AdminUserMapper;
 import co.yiiu.pybbs.model.AdminUser;
+import co.yiiu.pybbs.model.Plate;
 import co.yiiu.pybbs.model.Tag;
-import co.yiiu.pybbs.service.AdminUserService;
-import co.yiiu.pybbs.service.RoleService;
-import co.yiiu.pybbs.service.TagService;
-import co.yiiu.pybbs.service.UserService;
+import co.yiiu.pybbs.service.*;
 import co.yiiu.pybbs.util.bcrypt.BCryptPasswordEncoder;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +33,8 @@ public class AdminUserAdminController extends BaseAdminController {
   private TagService tagService;
   @Autowired
   private AdminUserMapper adminUserMapper;
+  @Autowired
+  private PlateServies plateServies;
 
   @RequiresPermissions("admin_user:list")
   @GetMapping("/list")
@@ -43,14 +43,33 @@ public class AdminUserAdminController extends BaseAdminController {
     return "admin/admin_user/list";
   }
 
+//  @RequiresPermissions("admin_user:add")
+//  @GetMapping("/add")
+//  public String add(Model model) {
+//    // 查询所有的角色
+//    model.addAttribute("roles", roleService.selectAll());
+//    //查询所有的模块
+//    List<Tag> tags=tagService.selectAllByAdminId();
+//    model.addAttribute("tags",tags);
+//    return "admin/admin_user/add";
+//  }
+//
+//  @RequiresPermissions("admin_user:add")
+//  @PostMapping("/add")
+//  public String save(AdminUser adminUser) {
+//    adminUser.setInTime(new Date());
+//    adminUser.setPassword(new BCryptPasswordEncoder().encode(adminUser.getPassword()));
+//    adminUserService.insert(adminUser);
+//    return redirect("/forum/admin/admin_user/list");
+//  }
   @RequiresPermissions("admin_user:add")
   @GetMapping("/add")
   public String add(Model model) {
     // 查询所有的角色
     model.addAttribute("roles", roleService.selectAll());
     //查询所有的模块
-    List<Tag> tags=tagService.selectAllByAdminId();
-    model.addAttribute("tags",tags);
+    //List<Tag> tags=tagService.selectAllByAdminId();
+    model.addAttribute("plate",plateServies.selectall());
     return "admin/admin_user/add";
   }
 
@@ -59,8 +78,9 @@ public class AdminUserAdminController extends BaseAdminController {
   public String save(AdminUser adminUser) {
     adminUser.setInTime(new Date());
     adminUser.setPassword(new BCryptPasswordEncoder().encode(adminUser.getPassword()));
+    adminUser.setTagId(0);
     adminUserService.insert(adminUser);
-    return redirect("/forum/admin/admin_user/list");
+    return redirect("/admin/admin_user/list");
   }
 
   @RequiresPermissions("admin_user:edit")

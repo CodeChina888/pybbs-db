@@ -26,8 +26,6 @@ public class FileUtil {
 
   @Autowired
   private SystemConfigService systemConfigService;
-  @Value("${file.path}")
-  private String path;
 
   /**
    * 上传文件

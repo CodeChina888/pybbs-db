@@ -2,10 +2,7 @@ package co.yiiu.pybbs.controller.api;
 
 import co.yiiu.pybbs.exception.ApiAssert;
 import co.yiiu.pybbs.model.User;
-import co.yiiu.pybbs.service.SystemConfigService;
-import co.yiiu.pybbs.service.TagService;
-import co.yiiu.pybbs.service.TopicService;
-import co.yiiu.pybbs.service.UserService;
+import co.yiiu.pybbs.service.*;
 import co.yiiu.pybbs.util.CookieUtil;
 import co.yiiu.pybbs.util.FileUtil;
 import co.yiiu.pybbs.util.MyPage;
@@ -41,6 +38,8 @@ public class IndexApiController extends BaseApiController {
   private TagService tagService;
   @Autowired
   private FileUtil fileUtil;
+  @Autowired
+  private UploadFileServies uploadFileServies;
 
   // 首页接口
   @GetMapping({"/", "/index"})
@@ -137,5 +136,10 @@ public class IndexApiController extends BaseApiController {
     String token=(String)session.getAttribute("_token");
     userService.refresh(user2.getOriginId(),token);
     return success(url);
+  }
+
+  @GetMapping("/software/categorylist")
+  public Result categorylist(@RequestParam(defaultValue = "1") Integer pageNo) {
+    return success(uploadFileServies.selectAllCategory(pageNo,null,null));
   }
 }
