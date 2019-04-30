@@ -1,7 +1,6 @@
 package co.yiiu.pybbs.config;
 
 import co.yiiu.pybbs.directive.*;
-import co.yiiu.pybbs.service.SoftwareDirective;
 import co.yiiu.pybbs.util.BaseModel;
 import co.yiiu.pybbs.util.LocaleMessageSourceUtil;
 import freemarker.template.TemplateModelException;
@@ -53,6 +52,9 @@ public class FreemarkerConfig {
   private LocaleMessageSourceUtil localeMessageSourceUtil;
   @Autowired
   private SoftwareDirective softwareDirective;
+  @Autowired
+  private DocumentDirective documentDirective;
+
   @PostConstruct
   public void setSharedVariable() throws TemplateModelException {
     //注入全局配置到freemarker
@@ -74,7 +76,7 @@ public class FreemarkerConfig {
     configuration.setSharedVariable("tag_user_comments", userCommentsDirective);
     configuration.setSharedVariable("tag_user_collects", userCollectsDirective);
     configuration.setSharedVariable("tag_topic_comments", topicCommentsDirective);
-
+    configuration.setSharedVariable("document_list",documentDirective);
     configuration.setSharedVariable("i18n", localeMessageSourceUtil);
     log.info("freemarker自定义标签配置完成!");
   }

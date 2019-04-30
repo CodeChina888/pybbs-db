@@ -2,10 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.yiiu.pybbs.mapper.UploadFileMapper">
 
-    <insert id="insertMessage" >
-        INSERT into uploadfile(file_name,size,url,category_id,in_time) values (#{fileName},#{size},#{url},#{categoryId},#{inTime})
+    <insert id="Insert" parameterType="co.yiiu.pybbs.model.Uploadfile" useGeneratedKeys="true" keyProperty="id">
+
+        INSERT into uploadfile(file_name,size,url,category_id,in_time,version,description,code,origin_name) values (#{fileName},#{size},#{url},#{categoryId},#{inTime},#{version},#{description},#{code},#{originName})
     </insert>
 
+    <insert id="handleLabelRelation">
+        insert into file_label (file_id,label_id) VALUES (#{fileId},#{labelId})
+    </insert>
 
+    <select id="selectIdByName" >
+        select id from uploadfile where file_name=#{fileName}
+    </select>
+
+    <delete id="deleteLabelRelation">
+        delete from file_label where  file_id=#{fileId}
+    </delete>
 
 </mapper>

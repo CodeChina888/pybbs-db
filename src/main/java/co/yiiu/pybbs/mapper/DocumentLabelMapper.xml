@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="co.yiiu.pybbs.mapper.DocumentLabelMapper">
+
+    <insert id="insertForEach" parameterType="co.yiiu.pybbs.model.DocumentLabel">
+        insert into document_label(doc_id, label_id)
+        values
+        <foreach collection="lists" item="list" index="index" separator=",">
+            (#{list.docId},
+             #{list.labelId})
+        </foreach>
+
+    </insert>
+
+    <delete id="deleteById">
+        delete from document_label where doc_id=#{id}
+    </delete>
+</mapper>

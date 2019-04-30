@@ -9,14 +9,14 @@
       </div>
       <div class="panel-body">
         <#include "components/notification.ftl"/>
-        <#--<@notification userId=_user.id read=0 limit=-1/>-->
+        <@notification userId=_user.id read=0 limit=-1/>
       </div>
     </div>
     <div class="panel panel-info">
       <div class="panel-heading">已读消息</div>
       <div class="panel-body">
         <#include "components/notification.ftl"/>
-        <#--<@notification userId=_user.id read=1 limit=20/>-->
+        <@notification userId=_user.id read=1 limit=20/>
       </div>
     </div>
   </div>

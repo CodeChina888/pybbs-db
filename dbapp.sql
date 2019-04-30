@@ -11,7 +11,7 @@
  Target Server Version : 80015
  File Encoding         : 65001
 
- Date: 17/04/2019 21:13:02
+ Date: 30/04/2019 15:33:26
 */
 
 SET NAMES utf8mb4;
@@ -93,14 +93,27 @@ CREATE TABLE `comment` (
   KEY `topic_id` (`topic_id`) USING BTREE,
   KEY `user_id` (`user_id`) USING BTREE,
   CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+-- ----------------------------
+-- Records of comment
+-- ----------------------------
+BEGIN;
+INSERT INTO `comment` VALUES (61, '111', 39, 8, '2019-04-25 08:55:39', NULL, NULL);
+INSERT INTO `comment` VALUES (62, '222', 39, 8, '2019-04-25 09:00:43', NULL, NULL);
+INSERT INTO `comment` VALUES (63, '222', 39, 8, '2019-04-25 09:01:50', NULL, NULL);
+INSERT INTO `comment` VALUES (64, '222', 39, 8, '2019-04-25 09:03:38', NULL, NULL);
+INSERT INTO `comment` VALUES (65, '1\n@老舰长不靠浆 11', 39, 8, '2019-04-25 09:07:22', 61, NULL);
+INSERT INTO `comment` VALUES (66, '111', 39, 8, '2019-04-25 09:14:55', NULL, NULL);
+INSERT INTO `comment` VALUES (67, '@老舰长不靠浆 22', 39, 8, '2019-04-25 09:15:01', 66, NULL);
+COMMIT;
 
 -- ----------------------------
 -- Table structure for document
 -- ----------------------------
 DROP TABLE IF EXISTS `document`;
 CREATE TABLE `document` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(25) NOT NULL AUTO_INCREMENT,
   `document_class` varchar(255) NOT NULL,
   `document_type` varchar(255) NOT NULL,
   `document_classify` varchar(255) NOT NULL,
@@ -108,14 +121,75 @@ CREATE TABLE `document` (
   `in_time` datetime NOT NULL,
   `url` varchar(255) NOT NULL,
   `path` varchar(255) NOT NULL,
+  `code` varchar(255) NOT NULL,
+  `fullpath` varchar(255) NOT NULL,
+  `origin_name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of document
 -- ----------------------------
 BEGIN;
-INSERT INTO `document` VALUES (1, '明御', '安全网关', '安装', '网关安装说明', '2019-04-16 07:53:09', 'MY/AQWG/install', 'http://127.0.0.1:8080/static/upload/MY/AQWG/install/java开发_程鸿志-1555401189450.pdf');
+INSERT INTO `document` VALUES (1, '明天鉴', '安全网关', '安装', '网关安装说明', '2019-04-29 11:16:30', '/forum/document/download/c49e1c04f0a54feeb5a8f3cf4d774987', '/Users/chenghongzhi/GitHub/pybbs/pybbs-db/static/upload/明天鉴/安全网关/安装/网关安装说明/', 'c49e1c04f0a54feeb5a8f3cf4d774987', '/Users/chenghongzhi/GitHub/pybbs/pybbs-db/static/upload/明天鉴/安全网关/安装/网关安装说明/Java_manual-1556536590051.pdf', 'Java_manual.pdf');
+INSERT INTO `document` VALUES (2, '明鉴', '路由器', '安装', '网关安装说明', '2019-04-30 06:02:29', '/forum/document/download/c662c35d933b4a7e9302be70fcadcb10', '/Users/chenghongzhi/GitHub/pybbs/pybbs-db/static/upload/明鉴/路由器/安装/网关安装说明/', 'c662c35d933b4a7e9302be70fcadcb10', '/Users/chenghongzhi/GitHub/pybbs/pybbs-db/static/upload/明鉴/路由器/安装/网关安装说明/SpringBoot实战(第4版)清晰版@www.java1234.com-1556604148967.pdf', 'SpringBoot实战(第4版)清晰版@www.java1234.com.pdf');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for document_label
+-- ----------------------------
+DROP TABLE IF EXISTS `document_label`;
+CREATE TABLE `document_label` (
+  `doc_id` int(11) DEFAULT NULL,
+  `label_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of document_label
+-- ----------------------------
+BEGIN;
+INSERT INTO `document_label` VALUES (56, 1);
+INSERT INTO `document_label` VALUES (56, 2);
+INSERT INTO `document_label` VALUES (56, 3);
+INSERT INTO `document_label` VALUES (1, 1);
+INSERT INTO `document_label` VALUES (1, 2);
+INSERT INTO `document_label` VALUES (2, 14);
+INSERT INTO `document_label` VALUES (2, 15);
+INSERT INTO `document_label` VALUES (2, 16);
+INSERT INTO `document_label` VALUES (2, 17);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for file_label
+-- ----------------------------
+DROP TABLE IF EXISTS `file_label`;
+CREATE TABLE `file_label` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `file_id` int(11) NOT NULL,
+  `label_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
+
+-- ----------------------------
+-- Records of file_label
+-- ----------------------------
+BEGIN;
+INSERT INTO `file_label` VALUES (85, 76, 12);
+INSERT INTO `file_label` VALUES (86, 76, 11);
+INSERT INTO `file_label` VALUES (87, 76, 10);
+INSERT INTO `file_label` VALUES (88, 76, 9);
+INSERT INTO `file_label` VALUES (89, 77, 12);
+INSERT INTO `file_label` VALUES (90, 78, 12);
+INSERT INTO `file_label` VALUES (91, 78, 11);
+INSERT INTO `file_label` VALUES (92, 78, 10);
+INSERT INTO `file_label` VALUES (93, 78, 9);
+INSERT INTO `file_label` VALUES (94, 79, 9);
+INSERT INTO `file_label` VALUES (95, 80, 201);
+INSERT INTO `file_label` VALUES (96, 80, 200);
+INSERT INTO `file_label` VALUES (97, 81, 201);
+INSERT INTO `file_label` VALUES (98, 81, 200);
+INSERT INTO `file_label` VALUES (99, 82, 201);
+INSERT INTO `file_label` VALUES (100, 82, 200);
 COMMIT;
 
 -- ----------------------------
@@ -145,6 +219,223 @@ INSERT INTO `flyway_schema_history` VALUES (1, '1', 'initialize', 'SQL', 'V1__in
 COMMIT;
 
 -- ----------------------------
+-- Table structure for label
+-- ----------------------------
+DROP TABLE IF EXISTS `label`;
+CREATE TABLE `label` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '标签标示',
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '标签名称',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=202 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+
+-- ----------------------------
+-- Records of label
+-- ----------------------------
+BEGIN;
+INSERT INTO `label` VALUES (1, '杭州办', '杭州办');
+INSERT INTO `label` VALUES (2, '福州办', '福州办');
+INSERT INTO `label` VALUES (3, '昆明办', '昆明办');
+INSERT INTO `label` VALUES (4, '成都办', '成都办');
+INSERT INTO `label` VALUES (5, '西安办', '西安办');
+INSERT INTO `label` VALUES (6, '深圳办', '深圳办');
+INSERT INTO `label` VALUES (7, '上海办', '上海办');
+INSERT INTO `label` VALUES (8, '济南办', '济南办');
+INSERT INTO `label` VALUES (9, '郑州办', '郑州办');
+INSERT INTO `label` VALUES (10, '武汉办', '武汉办');
+INSERT INTO `label` VALUES (11, '内蒙办', '内蒙办');
+INSERT INTO `label` VALUES (12, '广州办', '广州办');
+INSERT INTO `label` VALUES (13, '沈阳办', '沈阳办');
+INSERT INTO `label` VALUES (14, '安恒全国渠道', '安恒全国渠道');
+INSERT INTO `label` VALUES (15, '安恒技术服务中心', '安恒技术服务中心');
+INSERT INTO `label` VALUES (16, '安恒渠道用户', '安恒渠道用户');
+INSERT INTO `label` VALUES (17, '安恒渠道经理', '安恒渠道经理');
+INSERT INTO `label` VALUES (18, '长春办', '长春办');
+INSERT INTO `label` VALUES (19, '长沙办', '长沙办');
+INSERT INTO `label` VALUES (20, '合肥办', '合肥办');
+INSERT INTO `label` VALUES (21, '认证考试测试', '认证考试测试');
+INSERT INTO `label` VALUES (22, 'default', 'default');
+INSERT INTO `label` VALUES (23, '去标签', '去标签');
+INSERT INTO `label` VALUES (24, '南京办', '南京办');
+INSERT INTO `label` VALUES (25, '7月13日WAF售前初级认证', '7月13日WAF售前初级认证');
+INSERT INTO `label` VALUES (26, '7月13日USM售前初级认证', '7月13日USM售前初级认证');
+INSERT INTO `label` VALUES (27, '7月13日USM售后初级认证', '7月13日USM售后初级认证');
+INSERT INTO `label` VALUES (28, '7月13日WAF售后初级认证', '7月13日WAF售后初级认证');
+INSERT INTO `label` VALUES (29, 'Sheet2', 'Sheet2');
+INSERT INTO `label` VALUES (30, 'Sheet3', 'Sheet3');
+INSERT INTO `label` VALUES (31, '渠道经理', '渠道经理');
+INSERT INTO `label` VALUES (32, '技术服务中心', '技术服务中心');
+INSERT INTO `label` VALUES (33, '720WAF售前', '720WAF售前');
+INSERT INTO `label` VALUES (34, '720WAF售后', '720WAF售后');
+INSERT INTO `label` VALUES (35, '720USM售前', '720USM售前');
+INSERT INTO `label` VALUES (36, '720USM售后', '720USM售后');
+INSERT INTO `label` VALUES (37, '720SOC售前', '720SOC售前');
+INSERT INTO `label` VALUES (38, '720SOC售后', '720SOC售后');
+INSERT INTO `label` VALUES (39, '720DB售前', '720DB售前');
+INSERT INTO `label` VALUES (40, '720DB售后', '720DB售后');
+INSERT INTO `label` VALUES (41, '721WAF售前', '721WAF售前');
+INSERT INTO `label` VALUES (42, '722WAF售前', '722WAF售前');
+INSERT INTO `label` VALUES (43, '北京办', '北京办');
+INSERT INTO `label` VALUES (44, '重庆办', '重庆办');
+INSERT INTO `label` VALUES (45, '727NGFW售后', '727NGFW售后');
+INSERT INTO `label` VALUES (46, '727APT售后', '727APT售后');
+INSERT INTO `label` VALUES (47, '727DB售前', '727DB售前');
+INSERT INTO `label` VALUES (48, '727DB售后', '727DB售后');
+INSERT INTO `label` VALUES (49, '727USM售前', '727USM售前');
+INSERT INTO `label` VALUES (50, '727USM售后', '727USM售后');
+INSERT INTO `label` VALUES (51, '727WAF售前', '727WAF售前');
+INSERT INTO `label` VALUES (52, '727WAF售后', '727WAF售后');
+INSERT INTO `label` VALUES (53, '727SOC售前', '727SOC售前');
+INSERT INTO `label` VALUES (54, '727SOC售后', '727SOC售后');
+INSERT INTO `label` VALUES (55, '安恒', '安恒');
+INSERT INTO `label` VALUES (56, '贵州办', '贵州办');
+INSERT INTO `label` VALUES (57, '太原办', '太原办');
+INSERT INTO `label` VALUES (58, '1808WAF售前', '1808WAF售前');
+INSERT INTO `label` VALUES (59, '1808WAF售后', '1808WAF售后');
+INSERT INTO `label` VALUES (60, '1808USM售前', '1808USM售前');
+INSERT INTO `label` VALUES (61, '1808USM售后', '1808USM售后');
+INSERT INTO `label` VALUES (62, '1808DB售前', '1808DB售前');
+INSERT INTO `label` VALUES (63, '1808DB售后', '1808DB售后');
+INSERT INTO `label` VALUES (64, '1808SOC售前', '1808SOC售前');
+INSERT INTO `label` VALUES (65, '1808SOC售后', '1808SOC售后');
+INSERT INTO `label` VALUES (66, '1808APT售前', '1808APT售前');
+INSERT INTO `label` VALUES (67, '1808APT售后', '1808APT售后');
+INSERT INTO `label` VALUES (68, '1808NGFW售前', '1808NGFW售前');
+INSERT INTO `label` VALUES (69, '1808NGFW售后', '1808NGFW售后');
+INSERT INTO `label` VALUES (70, '安恒信息', '安恒信息');
+INSERT INTO `label` VALUES (71, 'Sheet1', 'Sheet1');
+INSERT INTO `label` VALUES (72, '测试', '测试');
+INSERT INTO `label` VALUES (73, '黑龙江网络安全知识线上竞赛', '黑龙江网络安全知识线上竞赛');
+INSERT INTO `label` VALUES (74, '黑龙江CTF夺旗赛线上竞赛', '黑龙江CTF夺旗赛线上竞赛');
+INSERT INTO `label` VALUES (75, '网络空间安全协会', '网络空间安全协会');
+INSERT INTO `label` VALUES (76, '广西办', '广西办');
+INSERT INTO `label` VALUES (77, '兰州办', '兰州办');
+INSERT INTO `label` VALUES (78, '1809WAF售前', '1809WAF售前');
+INSERT INTO `label` VALUES (79, '1809WAF售后', '1809WAF售后');
+INSERT INTO `label` VALUES (80, '1809USM售前', '1809USM售前');
+INSERT INTO `label` VALUES (81, '1809USM售后', '1809USM售后');
+INSERT INTO `label` VALUES (82, '1809DB售前', '1809DB售前');
+INSERT INTO `label` VALUES (83, '1809DB售后', '1809DB售后');
+INSERT INTO `label` VALUES (84, '1809SOC售前', '1809SOC售前');
+INSERT INTO `label` VALUES (85, '1809SOC售后', '1809SOC售后');
+INSERT INTO `label` VALUES (86, '1809APT售前', '1809APT售前');
+INSERT INTO `label` VALUES (87, '1809APT售后', '1809APT售后');
+INSERT INTO `label` VALUES (88, '1809NGFW售前', '1809NGFW售前');
+INSERT INTO `label` VALUES (89, '1809NGFW售后', '1809NGFW售后');
+INSERT INTO `label` VALUES (90, '瓯网杯', '瓯网杯');
+INSERT INTO `label` VALUES (91, '温州职业技术学院', '温州职业技术学院');
+INSERT INTO `label` VALUES (92, '瓯网杯决赛', '瓯网杯决赛');
+INSERT INTO `label` VALUES (93, '泉州参赛证', '泉州参赛证');
+INSERT INTO `label` VALUES (94, '团队赛', '团队赛');
+INSERT INTO `label` VALUES (95, '个人赛', '个人赛');
+INSERT INTO `label` VALUES (96, '天翼杯决赛', '天翼杯决赛');
+INSERT INTO `label` VALUES (97, '四川公安参赛', '四川公安参赛');
+INSERT INTO `label` VALUES (98, '川职参赛', '川职参赛');
+INSERT INTO `label` VALUES (99, '1810WAF售前', '1810WAF售前');
+INSERT INTO `label` VALUES (100, '1810WAF售后', '1810WAF售后');
+INSERT INTO `label` VALUES (101, '1810USM售前', '1810USM售前');
+INSERT INTO `label` VALUES (102, '1810USM售后', '1810USM售后');
+INSERT INTO `label` VALUES (103, '1810DB售前', '1810DB售前');
+INSERT INTO `label` VALUES (104, '1810DB售后', '1810DB售后');
+INSERT INTO `label` VALUES (105, '1810SOC售前', '1810SOC售前');
+INSERT INTO `label` VALUES (106, '1810SOC售后', '1810SOC售后');
+INSERT INTO `label` VALUES (107, '1810NGFW售前', '1810NGFW售前');
+INSERT INTO `label` VALUES (108, '1810NGFW售后', '1810NGFW售后');
+INSERT INTO `label` VALUES (109, '1810APT售前', '1810APT售前');
+INSERT INTO `label` VALUES (110, '1810APT售后', '1810APT售后');
+INSERT INTO `label` VALUES (111, '1', '1');
+INSERT INTO `label` VALUES (113, '安恒员工认证', '安恒员工认证');
+INSERT INTO `label` VALUES (114, '福职院', '福职院');
+INSERT INTO `label` VALUES (115, '新疆办', '新疆办');
+INSERT INTO `label` VALUES (116, '1811WAF售前', '1811WAF售前');
+INSERT INTO `label` VALUES (117, '1811WAF售后', '1811WAF售后');
+INSERT INTO `label` VALUES (118, '1811USM售前', '1811USM售前');
+INSERT INTO `label` VALUES (119, '1811USM售后', '1811USM售后');
+INSERT INTO `label` VALUES (120, '1811DB售前', '1811DB售前');
+INSERT INTO `label` VALUES (121, '1811DB售后', '1811DB售后');
+INSERT INTO `label` VALUES (122, '1811SOC售前', '1811SOC售前');
+INSERT INTO `label` VALUES (123, '1811SOC售后', '1811SOC售后');
+INSERT INTO `label` VALUES (124, '1811NGFW售前', '1811NGFW售前');
+INSERT INTO `label` VALUES (125, '1811NGFW售后', '1811NGFW售后');
+INSERT INTO `label` VALUES (126, '1811APT售前', '1811APT售前');
+INSERT INTO `label` VALUES (127, '1811APT售后', '1811APT售后');
+INSERT INTO `label` VALUES (128, '1811EDR售前', '1811EDR售前');
+INSERT INTO `label` VALUES (129, '1811EDR售后', '1811EDR售后');
+INSERT INTO `label` VALUES (130, '1811WPT售前', '1811WPT售前');
+INSERT INTO `label` VALUES (131, '1811WPT售后', '1811WPT售后');
+INSERT INTO `label` VALUES (132, '加标记', '加标记');
+INSERT INTO `label` VALUES (133, '北联大', '北联大');
+INSERT INTO `label` VALUES (134, '重庆科技学院', '重庆科技学院');
+INSERT INTO `label` VALUES (135, '贵阳办', '贵阳办');
+INSERT INTO `label` VALUES (136, '苏州办', '苏州办');
+INSERT INTO `label` VALUES (137, 'WAF售前1812', 'WAF售前1812');
+INSERT INTO `label` VALUES (138, 'WAF售后1812', 'WAF售后1812');
+INSERT INTO `label` VALUES (139, 'USM售前1812', 'USM售前1812');
+INSERT INTO `label` VALUES (140, 'USM售后1812', 'USM售后1812');
+INSERT INTO `label` VALUES (141, 'DB售前1812', 'DB售前1812');
+INSERT INTO `label` VALUES (142, 'DB售后1812', 'DB售后1812');
+INSERT INTO `label` VALUES (143, 'SOC售前1812', 'SOC售前1812');
+INSERT INTO `label` VALUES (144, 'SOC售后1812', 'SOC售后1812');
+INSERT INTO `label` VALUES (145, 'NGFW售前1812', 'NGFW售前1812');
+INSERT INTO `label` VALUES (146, 'NGFW售后1812', 'NGFW售后1812');
+INSERT INTO `label` VALUES (147, 'APT售前1812', 'APT售前1812');
+INSERT INTO `label` VALUES (148, 'APT售后1812', 'APT售后1812');
+INSERT INTO `label` VALUES (149, 'EDR售前1812', 'EDR售前1812');
+INSERT INTO `label` VALUES (150, 'EDR售后1812', 'EDR售后1812');
+INSERT INTO `label` VALUES (151, 'WPT售前1812', 'WPT售前1812');
+INSERT INTO `label` VALUES (152, 'WPT售后1812', 'WPT售后1812');
+INSERT INTO `label` VALUES (153, '技术中心', '技术中心');
+INSERT INTO `label` VALUES (154, '天津教育行业赛', '天津教育行业赛');
+INSERT INTO `label` VALUES (155, '南宁办', '南宁办');
+INSERT INTO `label` VALUES (156, '海南办', '海南办');
+INSERT INTO `label` VALUES (157, '乌鲁木齐办', '乌鲁木齐办');
+INSERT INTO `label` VALUES (158, '厦门办', '厦门办');
+INSERT INTO `label` VALUES (159, '媒体&互联网事业部', '媒体&互联网事业部');
+INSERT INTO `label` VALUES (160, 'APT售后1903C', 'APT售后1903C');
+INSERT INTO `label` VALUES (161, 'APT售前1903C', 'APT售前1903C');
+INSERT INTO `label` VALUES (162, 'DB售后1903C', 'DB售后1903C');
+INSERT INTO `label` VALUES (163, 'DB售前1903C', 'DB售前1903C');
+INSERT INTO `label` VALUES (164, 'EDR售后', 'EDR售后');
+INSERT INTO `label` VALUES (165, 'EDR售前1903C', 'EDR售前1903C');
+INSERT INTO `label` VALUES (166, 'NGFW售后1903C', 'NGFW售后1903C');
+INSERT INTO `label` VALUES (167, 'NGFW售前1903C', 'NGFW售前1903C');
+INSERT INTO `label` VALUES (168, 'SOC售后1903C', 'SOC售后1903C');
+INSERT INTO `label` VALUES (169, 'SOC售前1903C', 'SOC售前1903C');
+INSERT INTO `label` VALUES (170, 'USM售后1903C', 'USM售后1903C');
+INSERT INTO `label` VALUES (171, 'USM售前1903C', 'USM售前1903C');
+INSERT INTO `label` VALUES (172, 'USM售前1903G', 'USM售前1903G');
+INSERT INTO `label` VALUES (173, 'USM售后1903G', 'USM售后1903G');
+INSERT INTO `label` VALUES (174, 'WAF售后1903C', 'WAF售后1903C');
+INSERT INTO `label` VALUES (175, 'WAF售前1903C', 'WAF售前1903C');
+INSERT INTO `label` VALUES (176, 'WAF售后1903G', 'WAF售后1903G');
+INSERT INTO `label` VALUES (177, 'WAF售前1903G', 'WAF售前1903G');
+INSERT INTO `label` VALUES (178, 'Webprotect售前1903C', 'Webprotect售前1903C');
+INSERT INTO `label` VALUES (179, 'Webprotect售后1903C', 'Webprotect售后1903C');
+INSERT INTO `label` VALUES (180, 'EDR售后1903C', 'EDR售后1903C');
+INSERT INTO `label` VALUES (181, '南昌办', '南昌办');
+INSERT INTO `label` VALUES (182, '西湖论剑大赛', '西湖论剑大赛');
+INSERT INTO `label` VALUES (183, 'xihulunjian', 'xihulunjian');
+INSERT INTO `label` VALUES (184, '浙大', '浙大');
+INSERT INTO `label` VALUES (185, '农信', '农信');
+INSERT INTO `label` VALUES (186, 'WPT售前1904C', 'WPT售前1904C');
+INSERT INTO `label` VALUES (187, 'WPT售后1904C', 'WPT售后1904C');
+INSERT INTO `label` VALUES (188, 'WAF售前1904C', 'WAF售前1904C');
+INSERT INTO `label` VALUES (189, 'WAF售后1904C', 'WAF售后1904C');
+INSERT INTO `label` VALUES (190, 'USM售前1904C', 'USM售前1904C');
+INSERT INTO `label` VALUES (191, 'USM售后1904C', 'USM售后1904C');
+INSERT INTO `label` VALUES (192, 'SOC售前1904C', 'SOC售前1904C');
+INSERT INTO `label` VALUES (193, 'SOC售后1904C', 'SOC售后1904C');
+INSERT INTO `label` VALUES (194, 'NGFW售前1904C', 'NGFW售前1904C');
+INSERT INTO `label` VALUES (195, 'NGFW售后1904C', 'NGFW售后1904C');
+INSERT INTO `label` VALUES (196, 'EDR售前1904C', 'EDR售前1904C');
+INSERT INTO `label` VALUES (197, 'EDR售后1904C', 'EDR售后1904C');
+INSERT INTO `label` VALUES (198, 'DB售前1904C', 'DB售前1904C');
+INSERT INTO `label` VALUES (199, 'DB售后1904C', 'DB售后1904C');
+INSERT INTO `label` VALUES (200, 'APT售前1904C', 'APT售前1904C');
+INSERT INTO `label` VALUES (201, 'APT售后1904C', 'APT售后1904C');
+COMMIT;
+
+-- ----------------------------
 -- Table structure for notification
 -- ----------------------------
 DROP TABLE IF EXISTS `notification`;
@@ -162,58 +453,13 @@ CREATE TABLE `notification` (
   KEY `user_id` (`user_id`) USING BTREE,
   KEY `target_user_id` (`target_user_id`) USING BTREE,
   CONSTRAINT `notification_ibfk_3` FOREIGN KEY (`target_user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of notification
 -- ----------------------------
 BEGIN;
-INSERT INTO `notification` VALUES (15, 7, 0, 4, 'check', '2019-03-10 08:06:13', b'1', 'two');
-INSERT INTO `notification` VALUES (16, 6, 0, 4, 'check', '2019-03-10 08:06:19', b'1', 'one');
-INSERT INTO `notification` VALUES (17, 7, 5, 4, 'COMMENT', '2019-03-10 08:06:44', b'1', '二');
-INSERT INTO `notification` VALUES (18, 7, 0, 4, 'check', '2019-03-11 01:43:29', b'1', 'two');
-INSERT INTO `notification` VALUES (19, 7, 0, 4, 'check', '2019-03-11 01:44:48', b'1', 'two');
-INSERT INTO `notification` VALUES (20, 7, 5, 4, 'COMMENT', '2019-03-11 01:59:16', b'1', '三');
-INSERT INTO `notification` VALUES (21, 7, 5, 4, 'COMMENT', '2019-03-11 01:59:23', b'1', '四');
-INSERT INTO `notification` VALUES (22, 6, 5, 4, 'COMMENT', '2019-03-11 03:06:22', b'1', '一');
-INSERT INTO `notification` VALUES (23, 6, 5, 4, 'COMMENT', '2019-03-11 03:06:28', b'1', '二');
-INSERT INTO `notification` VALUES (24, 6, 4, 5, 'REPLY', '2019-03-11 04:22:54', b'0', '@yujiajun 这样吗');
-INSERT INTO `notification` VALUES (25, 6, 4, 5, 'REPLY', '2019-03-11 04:29:31', b'0', '@yujiajun 就这样把');
-INSERT INTO `notification` VALUES (26, 6, 5, 4, 'COMMENT', '2019-03-11 04:51:30', b'1', '四');
-INSERT INTO `notification` VALUES (27, 6, 5, 4, 'COMMENT', '2019-03-11 04:51:40', b'1', '五');
-INSERT INTO `notification` VALUES (28, 6, 4, 5, 'REPLY', '2019-03-11 04:52:31', b'0', '@yujiajun 好困');
-INSERT INTO `notification` VALUES (29, 7, 5, 4, 'COMMENT', '2019-03-11 05:01:25', b'1', '五');
-INSERT INTO `notification` VALUES (30, 6, 4, 5, 'REPLY', '2019-03-11 05:03:47', b'0', '@yujiajun 再试一次');
-INSERT INTO `notification` VALUES (31, 6, 4, 5, 'REPLY', '2019-03-11 05:10:24', b'0', '@yujiajun 还来');
-INSERT INTO `notification` VALUES (32, 7, 5, 4, 'COMMENT', '2019-03-11 05:24:15', b'1', '@yujiajun saddsad');
-INSERT INTO `notification` VALUES (33, 6, 4, 5, 'REPLY', '2019-03-11 06:11:02', b'0', '@yujiajun 功能测试');
-INSERT INTO `notification` VALUES (34, 6, 6, 4, 'COMMENT', '2019-03-15 04:42:04', b'0', '111');
-INSERT INTO `notification` VALUES (35, 6, 6, 4, 'COMMENT', '2019-03-15 04:45:09', b'0', '222');
-INSERT INTO `notification` VALUES (36, 7, 6, 4, 'COMMENT', '2019-03-15 05:25:00', b'0', '333');
-INSERT INTO `notification` VALUES (37, 6, 6, 4, 'COMMENT', '2019-03-15 05:50:47', b'0', '3');
-INSERT INTO `notification` VALUES (38, 7, 6, 4, 'COMMENT', '2019-03-15 05:56:48', b'0', '4');
-INSERT INTO `notification` VALUES (39, 7, 6, 4, 'COMMENT', '2019-03-15 06:05:21', b'0', '5');
-INSERT INTO `notification` VALUES (40, 7, 6, 4, 'COMMENT', '2019-03-15 06:15:58', b'0', '2');
-INSERT INTO `notification` VALUES (41, 7, 6, 4, 'COMMENT', '2019-03-15 06:17:37', b'0', '666');
-INSERT INTO `notification` VALUES (42, 7, 6, 4, 'COMMENT', '2019-03-15 06:18:41', b'0', '999');
-INSERT INTO `notification` VALUES (43, 7, 6, 4, 'COMMENT', '2019-03-15 06:22:13', b'0', '222323213');
-INSERT INTO `notification` VALUES (44, 7, 6, 4, 'COMMENT', '2019-03-15 06:29:15', b'0', '22');
-INSERT INTO `notification` VALUES (45, 7, 6, 4, 'COMMENT', '2019-03-15 06:33:18', b'0', '44');
-INSERT INTO `notification` VALUES (46, 7, 6, 4, 'COMMENT', '2019-03-15 06:36:22', b'0', '1');
-INSERT INTO `notification` VALUES (47, 7, 6, 4, 'COMMENT', '2019-03-15 06:40:12', b'0', '222');
-INSERT INTO `notification` VALUES (48, 7, 6, 4, 'COMMENT', '2019-03-15 06:50:01', b'0', '111');
-INSERT INTO `notification` VALUES (49, 7, 6, 4, 'COMMENT', '2019-03-15 06:53:31', b'0', '312312');
-INSERT INTO `notification` VALUES (50, 7, 6, 4, 'COMMENT', '2019-03-15 06:55:30', b'0', '678');
-INSERT INTO `notification` VALUES (51, 7, 6, 4, 'COMMENT', '2019-03-15 06:57:36', b'0', '77');
-INSERT INTO `notification` VALUES (52, 7, 6, 4, 'COMMENT', '2019-03-15 06:59:16', b'0', '88');
-INSERT INTO `notification` VALUES (53, 7, 6, 4, 'COMMENT', '2019-03-15 07:07:22', b'0', '22');
-INSERT INTO `notification` VALUES (54, 7, 6, 4, 'COMMENT', '2019-03-15 07:08:46', b'0', '2');
-INSERT INTO `notification` VALUES (55, 7, 6, 4, 'COMMENT', '2019-03-15 07:09:14', b'0', '2');
-INSERT INTO `notification` VALUES (56, 7, 6, 4, 'COMMENT', '2019-03-15 07:12:42', b'0', '333');
-INSERT INTO `notification` VALUES (57, 7, 6, 4, 'COMMENT', '2019-03-15 07:13:28', b'0', '333');
-INSERT INTO `notification` VALUES (58, 7, 6, 4, 'COMMENT', '2019-03-15 07:14:29', b'0', '44');
-INSERT INTO `notification` VALUES (59, 7, 6, 4, 'COMMENT', '2019-03-15 07:17:41', b'0', '333');
-INSERT INTO `notification` VALUES (60, 7, 6, 4, 'COMMENT', '2019-03-15 07:28:35', b'0', '11313');
+INSERT INTO `notification` VALUES (68, 39, 0, 8, 'check', '2019-04-25 08:55:30', b'0', '111');
 COMMIT;
 
 -- ----------------------------
@@ -247,7 +493,7 @@ CREATE TABLE `permission` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `name` (`name`) USING BTREE,
   UNIQUE KEY `value` (`value`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of permission
@@ -286,7 +532,6 @@ INSERT INTO `permission` VALUES (30, '权限列表', 'permission:list', 8);
 INSERT INTO `permission` VALUES (31, '权限编辑', 'permission:edit', 8);
 INSERT INTO `permission` VALUES (32, '权限删除', 'permission:delete', 8);
 INSERT INTO `permission` VALUES (33, '角色', 'role', 0);
-INSERT INTO `permission` VALUES (34, '日志', 'log', 0);
 INSERT INTO `permission` VALUES (35, '角色列表', 'role:list', 33);
 INSERT INTO `permission` VALUES (36, '角色编辑', 'role:edit', 33);
 INSERT INTO `permission` VALUES (37, '角色删除', 'role:delete', 33);
@@ -294,7 +539,6 @@ INSERT INTO `permission` VALUES (38, '系统设置', 'system:edit', 9);
 INSERT INTO `permission` VALUES (39, '后台用户列表', 'admin_user:list', 10);
 INSERT INTO `permission` VALUES (40, '后台用户编辑', 'admin_user:edit', 10);
 INSERT INTO `permission` VALUES (41, '后台用户创建', 'admin_user:add', 10);
-INSERT INTO `permission` VALUES (42, '日志列表', 'log:list', 34);
 INSERT INTO `permission` VALUES (43, '用户刷新Token', 'user:refresh_token', 5);
 INSERT INTO `permission` VALUES (44, '权限添加', 'permission:add', 8);
 INSERT INTO `permission` VALUES (45, '索引单个话题', 'topic:index', 2);
@@ -304,16 +548,20 @@ INSERT INTO `permission` VALUES (49, '删除所有话题索引', 'topic:delete_a
 INSERT INTO `permission` VALUES (50, '添加板块', 'tag:add', 7);
 INSERT INTO `permission` VALUES (51, '后台用户删除', 'admin_user:delete', 10);
 INSERT INTO `permission` VALUES (52, '话题审核', 'topic:check', 2);
-INSERT INTO `permission` VALUES (53, '记录列表', 'record:list', 11);
 INSERT INTO `permission` VALUES (56, '软件', 'software', 0);
 INSERT INTO `permission` VALUES (57, '软件列表', 'software:list', 56);
 INSERT INTO `permission` VALUES (58, '软件上传', 'software:add', 56);
 INSERT INTO `permission` VALUES (59, '分类列表', 'software:categorylist', 56);
 INSERT INTO `permission` VALUES (60, '分类添加', 'software:categoryadd', 56);
-INSERT INTO `permission` VALUES (61, '文档中心', 'documents:list', 0);
-INSERT INTO `permission` VALUES (62, '文档列表', 'document:list', 61);
-INSERT INTO `permission` VALUES (63, '文档上传', 'document:upload', 61);
-INSERT INTO `permission` VALUES (64, '文档添加', 'document:add', 61);
+INSERT INTO `permission` VALUES (70, '日志', 'record:list', 0);
+INSERT INTO `permission` VALUES (71, '日志列表', 'records:list', 70);
+INSERT INTO `permission` VALUES (73, '文档', 'documents:list', 0);
+INSERT INTO `permission` VALUES (74, '文档上传', 'document:upload', 73);
+INSERT INTO `permission` VALUES (75, '文档添加', 'document:add', 73);
+INSERT INTO `permission` VALUES (76, '文档列表', 'document:list', 73);
+INSERT INTO `permission` VALUES (77, '文档删除', 'document:delete', 73);
+INSERT INTO `permission` VALUES (78, '软件修改', 'software:edit', 56);
+INSERT INTO `permission` VALUES (79, '软件删除', 'software:delete', 56);
 COMMIT;
 
 -- ----------------------------
@@ -348,7 +596,7 @@ CREATE TABLE `record` (
   `params` varchar(10000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `in_time` datetime NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=140 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=146 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of record
@@ -365,6 +613,12 @@ INSERT INTO `record` VALUES (136, 0, 'test', '发表评论', 'create', '{\"topic
 INSERT INTO `record` VALUES (137, 0, 'test', '创建话题', 'create', '{\"title\":\"我的一个小测试2\",\"content\":\"2\",\"tags\":\"java\"}', '2019-03-18 05:52:04');
 INSERT INTO `record` VALUES (138, 0, 'test', '创建话题', 'create', '{\"title\":\"我的一个小测试2\",\"content\":\"1\",\"tags\":\"C#\"}', '2019-03-18 08:53:24');
 INSERT INTO `record` VALUES (139, 116, '于富洋', '创建话题', 'create', '{\"title\":\"回家\",\"content\":\"\",\"tags\":\"springmvc\"}', '2019-03-25 05:29:35');
+INSERT INTO `record` VALUES (140, 1195, '老舰长不靠浆', '创建话题', 'create', '{\"title\":\"我的一个小测试2\",\"content\":\"111\",\"tags\":\"产品需求\"}', '2019-04-25 08:54:15');
+INSERT INTO `record` VALUES (141, 1195, '老舰长不靠浆', '发表评论', 'create', '{\"topicId\":\"39\",\"commentId\":\"61\",\"content\":\"1\\n@老舰长不靠浆 11\"}', '2019-04-25 09:07:22');
+INSERT INTO `record` VALUES (142, 1195, '老舰长不靠浆', '发表评论', 'create', '{\"topicId\":\"39\",\"commentId\":\"\",\"content\":\"111\"}', '2019-04-25 09:14:55');
+INSERT INTO `record` VALUES (143, 1195, '老舰长不靠浆', '发表评论', 'create', '{\"topicId\":\"39\",\"commentId\":\"66\",\"content\":\"@老舰长不靠浆 22\"}', '2019-04-25 09:15:01');
+INSERT INTO `record` VALUES (144, 1195, '老舰长不靠浆', '编辑话题', 'edit', '{\"topic\":{\"pass\":true,\"tagId\":26,\"collectCount\":0,\"title\":\"我的一个小测试2\",\"good\":false,\"userId\":8,\"content\":\"111\",\"commentCount\":7,\"inTime\":1556182455000,\"view\":13,\"modifyTime\":1556182530000,\"top\":false,\"id\":39},\"list\":[\"产品需求\",\"快问快答\",\"技术论坛\",\"文档中心\",\"知识库\",\"许可申请\",\"软件下载\"],\"tags\":\"产品需求\"}', '2019-04-25 09:16:08');
+INSERT INTO `record` VALUES (145, 1195, '老舰长不靠浆', '更新话题', 'edit', '{\"title\":\"我的一个小测试2\",\"content\":\"22\",\"tags\":\"产品需求\"}', '2019-04-25 09:16:11');
 COMMIT;
 
 -- ----------------------------
@@ -458,37 +712,43 @@ INSERT INTO `role_permission` VALUES (1, 51);
 INSERT INTO `role_permission` VALUES (1, 35);
 INSERT INTO `role_permission` VALUES (1, 36);
 INSERT INTO `role_permission` VALUES (1, 37);
-INSERT INTO `role_permission` VALUES (1, 42);
 INSERT INTO `role_permission` VALUES (1, 57);
 INSERT INTO `role_permission` VALUES (1, 58);
 INSERT INTO `role_permission` VALUES (1, 59);
 INSERT INTO `role_permission` VALUES (1, 60);
-INSERT INTO `role_permission` VALUES (1, 62);
-INSERT INTO `role_permission` VALUES (1, 63);
-INSERT INTO `role_permission` VALUES (1, 64);
+INSERT INTO `role_permission` VALUES (1, 78);
+INSERT INTO `role_permission` VALUES (1, 79);
+INSERT INTO `role_permission` VALUES (1, 71);
+INSERT INTO `role_permission` VALUES (1, 74);
+INSERT INTO `role_permission` VALUES (1, 75);
+INSERT INTO `role_permission` VALUES (1, 76);
+INSERT INTO `role_permission` VALUES (1, 77);
 COMMIT;
 
 -- ----------------------------
--- Table structure for softcategory
+-- Table structure for soft_category
 -- ----------------------------
-DROP TABLE IF EXISTS `softcategory`;
-CREATE TABLE `softcategory` (
+DROP TABLE IF EXISTS `soft_category`;
+CREATE TABLE `soft_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `in_time` datetime NOT NULL,
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `cg_id` int(11) NOT NULL DEFAULT '0',
+  `layer` int(11) NOT NULL DEFAULT '0',
+  `has_sg` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
--- Records of softcategory
+-- Records of soft_category
 -- ----------------------------
 BEGIN;
-INSERT INTO `softcategory` VALUES (5, '天池', 'D:/Files', '2019-04-08 02:06:31', 'aaaaaaa');
-INSERT INTO `softcategory` VALUES (6, '攻防平台', 'D:/Files', '2019-04-16 06:46:28', '渔夫阳');
-INSERT INTO `softcategory` VALUES (7, '大数据', 'D:/Files', '2019-04-16 07:48:21', '大大大大大');
-INSERT INTO `softcategory` VALUES (8, '测试', 'D:\\Files', '2019-04-17 06:09:47', '测试添加等级');
+INSERT INTO `soft_category` VALUES (26, '安恒', 'D:\\Files', '2019-04-29 05:28:04', '杭州安恒股份有限公司', 0, 1, b'1');
+INSERT INTO `soft_category` VALUES (27, '网络安全学院', 'D:\\Files\\WL', '2019-04-29 05:29:37', '专注网络安全', 26, 2, b'1');
+INSERT INTO `soft_category` VALUES (28, '天池', 'D:\\Files\\WL\\天池', '2019-04-29 07:30:16', '阿瑟东', 27, 3, b'0');
+INSERT INTO `soft_category` VALUES (29, '安恒信息', '/Users/chenghongzhi/GitHub/pybbs/pybbs-db/static/upload/明天鉴/', '2019-04-30 07:12:29', 'test', 0, 1, b'0');
 COMMIT;
 
 -- ----------------------------
@@ -582,7 +842,7 @@ INSERT INTO `tag` VALUES (22, '知识库', '内容：涉及各个产品的配置
 INSERT INTO `tag` VALUES (23, '许可申请', '推进许可自动化，逐步将OA系统的许可申请迁移至社区平台\r\n', NULL, 0, '2019-04-03 00:55:21', 0, NULL);
 INSERT INTO `tag` VALUES (24, '快问快答', '话题广场：所有人员（外部+内部）都可以提交话题，安恒总部技术（400L2/产品组）回答问题\r\n智能客服：智能机器人+在线客服（400L1）\r\n', NULL, 0, '2019-04-03 00:56:04', 0, NULL);
 INSERT INTO `tag` VALUES (25, '技术论坛', '内容：交流帖子、技术分享、改进建议等\r\n来源：面向所有人，包括安恒员工、安恒客户、渠道工程师等\r\n管理：资料不做审核，但是需要管理维护\r\n', NULL, 0, '2019-04-03 00:56:50', 0, NULL);
-INSERT INTO `tag` VALUES (26, '产品需求', '内容：产品改进建议或者功能需求\r\n来源：面向所有安恒员工开放\r\n管理：400L2首次审核，产品组二次审核，研发最终审核\r\n奖励：接纳的需求给予相关奖励\r\n', NULL, 0, '2019-04-03 00:57:36', 0, NULL);
+INSERT INTO `tag` VALUES (26, '产品需求', '内容：产品改进建议或者功能需求\r\n来源：面向所有安恒员工开放\r\n管理：400L2首次审核，产品组二次审核，研发最终审核\r\n奖励：接纳的需求给予相关奖励\r\n', NULL, 1, '2019-04-03 00:57:36', 0, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -607,7 +867,15 @@ CREATE TABLE `topic` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `title` (`title`) USING BTREE,
   KEY `user_id` (`user_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+-- ----------------------------
+-- Records of topic
+-- ----------------------------
+BEGIN;
+INSERT INTO `topic` VALUES (38, '我的一个小测试', '111', '2019-04-25 08:51:51', NULL, 8, 0, 0, 1, b'0', b'0', NULL, 26, b'0');
+INSERT INTO `topic` VALUES (39, '我的一个小测试2', '22', '2019-04-25 08:54:15', '2019-04-25 09:16:11', 8, 7, 0, 17, b'0', b'0', NULL, 26, b'1');
+COMMIT;
 
 -- ----------------------------
 -- Table structure for topic_tag
@@ -636,8 +904,20 @@ CREATE TABLE `uploadfile` (
   `version` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `Grade` int(11) NOT NULL DEFAULT '1',
+  `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `origin_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
+
+-- ----------------------------
+-- Records of uploadfile
+-- ----------------------------
+BEGIN;
+INSERT INTO `uploadfile` VALUES (79, '微信图片-1556603503019.jpg', 80089, 'D:\\Files\\WL\\天池/微信图片-1556603503019.jpg', '2019-04-30 05:51:43', 28, 't', '', 1, '13oZVyFE', '微信图片.jpg');
+INSERT INTO `uploadfile` VALUES (80, 'bbs-1556608468578.sql', 35377, '/Users/chenghongzhi/GitHub/pybbs/pybbs-db/static/upload/明天鉴//bbs-1556608468578.sql', '2019-04-30 07:14:29', 29, '1.0', '11', 1, 'n8wHMiHI', 'bbs.sql');
+INSERT INTO `uploadfile` VALUES (81, 'bbs-1556608478292.sql', 35377, '/Users/chenghongzhi/GitHub/pybbs/pybbs-db/static/upload/明天鉴//bbs-1556608478292.sql', '2019-04-30 07:14:38', 29, '1.0', '11', 1, 'Xf7xZp9u', 'bbs.sql');
+INSERT INTO `uploadfile` VALUES (82, 'bbs-1556608498146.sql', 35377, '/Users/chenghongzhi/GitHub/pybbs/pybbs-db/static/upload/明天鉴//bbs-1556608498146.sql', '2019-04-30 07:14:58', 29, '1.0', '1', 1, '2zFEt2JY', 'bbs.sql');
+COMMIT;
 
 -- ----------------------------
 -- Table structure for user
@@ -660,16 +940,14 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `username` (`username`) USING BTREE,
   UNIQUE KEY `token` (`token`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
 BEGIN;
-INSERT INTO `user` VALUES (4, 116, '于富洋', '$2a$10$MKpzmLCebYMqeCLW8pD2/ecWU6ofKYnjNkfnykWzs6YHQjrrv2WV6', NULL, NULL, NULL, 65, '2019-03-10 07:50:54', 'b04b1ac5-d45f-4808-84b0-d8eac1b15682', NULL, b'0', 0);
-INSERT INTO `user` VALUES (5, 1159, 'yujiajun', '$2a$10$p8CEhzMRsAFph2khMSPNtORwFDVyjFqnZsiNV1DwmYxZZCHmRaGoG', NULL, NULL, NULL, 45, '2019-03-10 08:05:49', '310655ee-121d-45c5-b2a2-938a645b32a5', NULL, b'0', 0);
 INSERT INTO `user` VALUES (6, 115, 'test', '$2a$10$fPKYEXWvltG2xGpXjqLWCOeV/25sMa06.YATRiLQumAL7mliCL7MK', 'http://127.0.0.1:8080/static/upload/avatar/test/avatar.jpeg?v=5', NULL, NULL, 410, '2019-03-11 06:01:11', '5e431eb4-7ae1-460c-846b-293cc9c8673d', NULL, b'0', 0);
-INSERT INTO `user` VALUES (7, 1195, '会员0b3f0a635e719f04', '$2a$10$c1JVjk75gKvDqjX9fhslIuf3eekm.SG0Ztm9Yqw7nGIkFQnlMoYii', 'http://p1q3gxdny.bkt.clouddn.com/default-avatar.png', '', NULL, 0, '2019-03-14 02:16:43', 'f80d861c-edb4-4255-a3b8-4adc7d3713cf', NULL, b'0', 0);
+INSERT INTO `user` VALUES (8, 1195, '老舰长不靠浆', '$2a$10$4yaWpl47C0hcKDr2amw/BO1NLjz0XCNet0Qs9u2TK2gl1INgOclTq', 'http://p1q3gxdny.bkt.clouddn.com/default-avatar.png', NULL, NULL, 55, '2019-04-25 06:55:53', '0aad27a4-f666-41f9-b2c3-37a97fd7a2c2', NULL, b'0', 2);
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;

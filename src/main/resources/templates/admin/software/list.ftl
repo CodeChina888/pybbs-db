@@ -7,7 +7,7 @@
     </h1>
     <ol class="breadcrumb">
       <li><a href="/forum/admin/index"><i class="fa fa-dashboard"></i> 首页</a></li>
-      <li><a href="/forum/admin/tag/list">板块</a></li>
+        <li><a href="/forum/admin/software/categorylist">软件</a></li>
       <li class="active">列表</li>
     </ol>
   </section>
@@ -48,17 +48,17 @@
           <#list page.records as software>
             <tr>
               <td>${software.id}</td>
-              <td>${software.fileName!}</td>
+              <td>${software.originName!}</td>
               <td>${software.size}</td>
               <td>${software.url}</td>
               <td>${software.inTime?string("yyyy.dd.mm. HH:mm:ss")}</td>
               <td>${software.version}</td>
               <td>${software.description}</td>
               <td>
-                <#if sec.hasPermission('tag:edit')>
-                  <a href="/forum/admin/tag/edit?id=${software.id}" class="btn btn-xs btn-warning">编辑</a>
+                <#if sec.hasPermission('software:edit')>
+                  <a href="/forum/admin/software/edit?id=${software.id}" class="btn btn-xs btn-warning">编辑</a>
                 </#if>
-                <#if sec.hasPermission('tag:delete')>
+                <#if sec.hasPermission('software:delete')>
                   <button onclick="actionBtn('${software.id}','delete', this)" class="btn btn-xs btn-danger">删除</button>
                 </#if>
               </td>
@@ -72,7 +72,8 @@
       </div>
     </div>
     <#include "../layout/paginate.ftl">
-    <@paginate currentPage=page.current totalPage=page.pages actionUrl="/forum/admin/software/list" urlParas="&name=${name!}"/>
+    <@paginate currentPage=page.current totalPage=page.pages actionUrl="/forum/admin/software/list/"
+    urlParas="&categoryId=${categoryId!}"/>
   </section>
 <script>
     <#if sec.hasPermissionOr("software:delete")>
@@ -80,8 +81,8 @@
         var msg, url;
         var tip = $(self).text().replace(/[\r\n]/g, '').trim();
          if(action === 'delete') {
-            url = '/forum/admin/tag/delete?id=' + id;
-            msg = '确定要删除这个板块吗？';
+            url = '/forum/admin/software/delete?softId=' + id;
+            msg = '确定要删除这个软件吗？';
         }
 
         if (confirm(msg)) {

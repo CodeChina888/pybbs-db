@@ -61,7 +61,7 @@ public class IndexController extends BaseController {
     if(token!=null){
       String url=tokenUrl+"/memcenter/api/v1/inner/auth/validateAuth";
       String json= HttpClient.sendPostRequest(url,null,token);
-      JSONObject jsonObject= JSON.parseObject(json);
+      JSONObject jsonObject= JSONObject.parseObject(json);
       String code=jsonObject.getString("code");
       if(code.equals("40401")){
         log.error("----TokenError----");
@@ -86,7 +86,7 @@ public class IndexController extends BaseController {
         user.setUsername(message.getData().getRow().getUsername());
         userService.update(user);
         session.setAttribute("_user", user);
-        log.error("----IsAuthenticated----");
+        log.info("----IsAuthenticated----");
         return render("index");
       }
       user=userService.addUser(Integer.valueOf(id),username,"123456",avatar,null, null);
@@ -193,28 +193,34 @@ public class IndexController extends BaseController {
   }
 
   @GetMapping("/software/categorylist")
-  public String software(@RequestParam(defaultValue = "1") Integer pageNo, Model model){
-    model.addAttribute("pageNo",pageNo);
-    return render("software/categorylist");
-  }
-
-  @GetMapping("/search")
-  public String search(@RequestParam(defaultValue = "1") Integer pageNo, @RequestParam String keyword, Model model) {
-    Assert.isTrue(systemConfigService.selectAllConfig().get("search").toString().equals("1"), "网站没有启动搜索功能，联系站长问问看");
+  public String software(@RequestParam(defaultValue = "1") Integer pageNo,Model model,@RequestParam(defaultValue = "0") int categoryId){
     model.addAttribute("pageNo", pageNo);
-    model.addAttribute("keyword", keyword);
-    return render("search");
+    model.addAttribute("categoryId",categoryId);
+    return  render("software/categorylist");
   }
 
-  // 切换语言
-  @GetMapping("changeLanguage")
-  public String changeLanguage(String lang, HttpSession session, HttpServletRequest request) {
-    String referer = request.getHeader("referer");
-    if ("zh".equals(lang)) {
-      session.setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME, Locale.SIMPLIFIED_CHINESE);
-    } else if ("en".equals(lang)) {
-      session.setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME, Locale.US);
-    }
-    return StringUtils.isEmpty(referer) ? redirect("/") : redirect(referer);
-  }
+
+
+
+
+
+//  @GetMapping("/search")
+//  public String search(@RequestParam(defaultValue = "1") Integer pageNo, @RequestParam String keyword, Model model) {
+//    Assert.isTrue(systemConfigService.selectAllConfig().get("search").toString().equals("1"), "网站没有启动搜索功能，联系站长问问看");
+//    model.addAttribute("pageNo", pageNo);
+//    model.addAttribute("keyword", keyword);
+//    return render("search");
+//  }
+
+//  // 切换语言
+//  @GetMapping("changeLanguage")
+//  public String changeLanguage(String lang, HttpSession session, HttpServletRequest request) {
+//    String referer = request.getHeader("referer");
+//    if ("zh".equals(lang)) {
+//      session.setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME, Locale.SIMPLIFIED_CHINESE);
+//    } else if ("en".equals(lang)) {
+//      session.setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME, Locale.US);
+//    }
+//    return StringUtils.isEmpty(referer) ? redirect("/") : redirect(referer);
+//  }
 }

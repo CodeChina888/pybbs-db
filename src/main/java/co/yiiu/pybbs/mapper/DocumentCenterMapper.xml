@@ -5,5 +5,22 @@
 <!--namespace用于与DAO层的接口类进行绑定,这样我们无需实现DAO层的接口
   类,其接口类就能够自动的找到相关的SQL语句进行绑定实现-->
 <mapper namespace="co.yiiu.pybbs.mapper.DocumentCenterMapper">
+    <delete id="delectByCode">
+        delete from document where code=#{code}
+    </delete>
+
+    <select id="selectByCode" resultType="co.yiiu.pybbs.model.Document">
+        select * from document where code=#{code}
+    </select>
+
+    <select id="selectLabelByCode" resultType="java.lang.String">
+        select l.code from label l
+        left join document_label dl on l.id=dl.label_id
+        left join document d on d.id=dl.doc_id
+        where d.code=#{code}
+  </select>
+    <select id="selectIdByCode" resultType="java.lang.Integer">
+        select id from document where code=#{code}
+    </select>
 
 </mapper>

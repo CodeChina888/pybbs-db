@@ -44,7 +44,7 @@ public class CommentApiController extends BaseApiController {
     Topic topic = topicService.selectById(topicId);
     ApiAssert.notNull(topic, "你晚了一步，话题可能已经被删除了");
     Comment comment = commentService.insert(content, topic, user, commentId, session);
-    if (user.getId()!=topic.getUserId()){
+    if (user.getId()==topic.getUserId()){
       User topicUser=userService.selectById(topic.getUserId());
       topicUser.setMessage(topicUser.getMessage()+1);
       userService.update(topicUser);

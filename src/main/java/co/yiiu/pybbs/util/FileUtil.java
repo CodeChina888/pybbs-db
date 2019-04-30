@@ -1,6 +1,9 @@
 package co.yiiu.pybbs.util;
 
+import co.yiiu.pybbs.model.Document;
+import co.yiiu.pybbs.service.DocumentCenterService;
 import co.yiiu.pybbs.service.SystemConfigService;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +12,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.security.MessageDigest;
 
 /**
  * Created by tomoya.
@@ -26,7 +29,10 @@ public class FileUtil {
 
   @Autowired
   private SystemConfigService systemConfigService;
-
+  @Autowired
+  private DocumentCenterService documentCenterService;
+  @Autowired
+  private Document document;
   /**
    * 上传文件
    * @param file 要上传的文件对象
@@ -65,29 +71,121 @@ public class FileUtil {
     }
   }
 
-  public String uploadFile(MultipartFile file,String filePath){
+  // 上传文件
+  public String uploadFile(MultipartFile file,String filePath,String fileName){
     try {
-      String fileName=file.getOriginalFilename();
-      //获得文件上传的路径
-      String path=systemConfigService.selectAllConfig().get("upload_path").toString();
-      //文件名的后缀
-      String fileNameSuffix=fileName.substring(fileName.lastIndexOf(".")+1);
-      //文件名的前缀
-      String fileNamePrefix = fileName.substring(0 , fileName.lastIndexOf("."));
-      //获取上传文件名
-      fileName = fileNamePrefix + "-" + System.currentTimeMillis() + "." + fileNameSuffix;
-      File targetFile=new File(path+filePath+"/"+fileName);
+      File targetFile=new File(filePath+fileName);
       if (!targetFile.getParentFile().exists())
         //不存在创建文件夹
         targetFile.getParentFile().mkdirs();
       //6.将上传文件写到服务器上指定的文件
       file.transferTo(targetFile);
-      log.info("文件上传成功,当前访问路径为:"+systemConfigService.selectAllConfig().get("static_url").toString()+filePath+ "/" + fileName);
-      return systemConfigService.selectAllConfig().get("static_url").toString()+filePath+ "/" + fileName;
+      log.info("文件上传成功");
+      return "文件上传成功";
     }catch (Exception e){
       e.printStackTrace();
       log.error(e.getMessage());
     }
-    return null;
+    return "文件上传失败";
   }
+
+  // 下载文件
+  public String downloadFile(HttpServletResponse response,String code) throws UnsupportedEncodingException {
+    document=documentCenterService.selectByCode(code);
+    String fullPath = document.getFullpath();
+    String originName = document.getOriginName();
+    // 获取了文件名称
+    if (originName != null) {
+      //设置文件路径
+      File file = new File(fullPath);
+      if (file.exists()) {
+        response.setContentType("application/force-download");// 设置强制下载不打开
+        response.addHeader("Content-Disposition","attachment;fileName=" +new String(originName.getBytes("UTF-8"),"iso-8859-1"));
+        response.setCharacterEncoding("utf-8");
+        byte[] buffer = new byte[1024];
+        FileInputStream fis = null;
+        BufferedInputStream bis = null;
+        try {
+          fis = new FileInputStream(file);
+          bis = new BufferedInputStream(fis);
+          OutputStream os = response.getOutputStream();
+          int i = bis.read(buffer);
+          while (i != -1) {
+            os.write(buffer, 0, i);
+            i = bis.read(buffer);
+          }
+          return "下载成功";
+        } catch (Exception e) {
+          e.printStackTrace();
+        } finally {
+          if (bis != null) {
+            try {
+              bis.close();
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+          if (fis != null) {
+            try {
+              fis.close();
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+        }
+      }
+    }
+    return "下载失败";
+  }
+
+
+  // 删除文件
+  public boolean removeFile(String code){
+    document=documentCenterService.selectByCode(code);
+    String path=document.getFullpath();
+    File file=new File(path);
+    if (file.exists()) {
+      file.delete();
+      return true;
+    }
+    return false;
+  }
+
+  // md5文件校验
+  public String getFileMd5(String filePath){
+    File file = new File(filePath);
+    if(!file.exists() || !file.isFile()){
+      return "文件不存在，生成Md5失败";
+    }
+    byte[] buffer = new byte[2048];
+    try {
+      MessageDigest digest = MessageDigest.getInstance("MD5");
+      FileInputStream in = new FileInputStream(file);
+      while(true){
+        int len = in.read(buffer,0,2048);
+        if(len != -1){
+          digest.update(buffer, 0, len);
+        }else{
+          break;
+        }
+      }
+      in.close();
+      byte[] md5Bytes  = digest.digest();
+      StringBuffer hexValue = new StringBuffer();
+      for (int i = 0; i < md5Bytes.length; i++) {
+        int val = ((int) md5Bytes[i]) & 0xff;
+        if (val < 16) {
+          hexValue.append("0");
+        }
+        hexValue.append(Integer.toHexString(val));
+      }
+      return hexValue.toString();
+    } catch (Exception e) {
+      e.printStackTrace();
+      return "";
+    }
+  }
+
+
+
 }

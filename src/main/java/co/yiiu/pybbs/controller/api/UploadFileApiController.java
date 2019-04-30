@@ -1,7 +1,9 @@
 package co.yiiu.pybbs.controller.api;
 
 import co.yiiu.pybbs.controller.admin.BaseAdminController;
+import co.yiiu.pybbs.model.SoftCategory;
 import co.yiiu.pybbs.model.Uploadfile;
+import co.yiiu.pybbs.model.User;
 import co.yiiu.pybbs.service.UploadFileServies;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.net.URLEncoder;
 
@@ -23,7 +26,7 @@ public class UploadFileApiController extends BaseAdminController
     private UploadFileServies uploadFileServies;
 
     @GetMapping("/software/list/{categoryId}")
-    public String softwarelist(@RequestParam(defaultValue = "1") Integer pageNo, String name, Model model, @PathVariable int categoryId) {
+    public String softwareList(@RequestParam(defaultValue = "1") Integer pageNo, String name, Model model, @PathVariable int categoryId) {
         if (StringUtils.isEmpty(name)) name = null;
         IPage<Uploadfile> page = uploadFileServies.selectAllSoftware(pageNo, null, name,categoryId);
         model.addAttribute("page", page);
@@ -32,15 +35,25 @@ public class UploadFileApiController extends BaseAdminController
         return  render("software/softwarelist");
     }
 
+    @GetMapping("/software/categorylist")
+    public String categoryList(@RequestParam(defaultValue = "1") Integer pageNo, String name, @RequestParam(defaultValue = "0")int cgId, Model model) {
+        if (StringUtils.isEmpty(name)) name = null;
+        IPage<SoftCategory> page = uploadFileServies.selectAllCategory(pageNo, null, name,cgId);
+        model.addAttribute("page", page);
+        model.addAttribute("name", name);
+        return render("software/categorylist");
+    }
+
     @RequestMapping(value = "/software/download/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public String testDownload(HttpServletResponse res, HttpServletRequest request, @PathVariable Integer id) {
-
-
+    public String testDownload(HttpServletResponse res, HttpServletRequest request, HttpSession session, @PathVariable Integer id) {
+        // 获取用户信息
+        User user=(User) session.getAttribute("_user");
+        // 用户id
+        Integer userId=user.getOriginId();
         Uploadfile u=uploadFileServies.selectuploadfileById(id);
         File file = new File(u.getUrl());
         String fileName = u.getFileName();
-        //System.out.println(file);
         if (file.exists()){//判断文件是否存在
             //判断浏览器是否为火狐
             try {

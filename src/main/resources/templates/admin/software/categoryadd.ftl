@@ -6,7 +6,7 @@
     </h1>
     <ol class="breadcrumb">
       <li><a href="/forum/admin/index"><i class="fa fa-dashboard"></i> 首页</a></li>
-      <li><a href="/forum/admin/tag/list">板块</a></li>
+      <li><a href="/forum/admin/software/categorylist">软件</a></li>
       <li class="active">分类</li>
     </ol>
   </section>
@@ -18,14 +18,16 @@
       <!-- /.box-header -->
       <div class="box-body">
         <form id="form" action="/forum/admin/software/categoryadd" method="post" enctype="multipart/form-data">
-          <#--<input type="hidden" value="${tag.id}" name="id">-->
+          <input type="hidden" value="${cgId!0}" name="cgId">
+          <input type="hidden" value="${layer!0}" name="layer">
+          <!--<input type="hidden" value="${path!null}" name="parentPath"> -->
           <div class="form-group">
             <label>名称</label>
             <input type="text" name="name" value="" class="form-control">
           </div>
           <div class="form-group">
             <label>路径（请使用“/”）</label>
-            <input type="text" name="path" value="" class="form-control">
+            <input type="text" name="path" value="${path!null}" class="form-control">
             </div>
 
           <div class="form-group">

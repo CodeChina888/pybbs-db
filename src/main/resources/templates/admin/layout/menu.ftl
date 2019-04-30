@@ -21,70 +21,48 @@
           </a>
         </li>
       </#if>
-      <#if sec.hasPermission('topic:list')>
-        <li <#if page_tab=='topic'>class="active"</#if>>
-          <a href="/forum/admin/topic/list">
-            <i class="fa fa-list"></i>
-            <span>${i18n.getMessage("admin.topics")}</span>
-          </a>
-        </li>
-      </#if>
-      <#if sec.hasPermission('comment:list')>
-        <li <#if page_tab=='comment'>class="active"</#if>>
-          <a href="/forum/admin/comment/list">
-            <i class="fa fa-comment"></i>
-            <span>${i18n.getMessage("admin.comments")}</span>
-          </a>
-        </li>
-      </#if>
+
+      <#if sec.hasPermissionOr('tag:list', 'topic:list', 'comment:list')>
+      <li class="treeview">
+        <a href="#">
+          <i class="fa fa-server"></i> <span>论坛列表</span>
+          <span class="pull-right-container">
+             <i class="fa fa-angle-left pull-right"></i>
+           </span>
+        </a>
+        <ul class="treeview-menu">
+          <#if sec.hasPermission('tag:list')>
+            <li <#if page_tab=='tag'>class="active"</#if>>
+              <a href="/forum/admin/tag/list">
+                <i class="fa fa-tags"></i>
+                <span>${i18n.getMessage("admin.tags")}</span>
+              </a>
+            </li>
+          </#if>
+          <#if sec.hasPermission('topic:list')>
+            <li <#if page_tab=='topic'>class="active"</#if>>
+              <a href="/forum/admin/topic/list">
+                <i class="fa fa-circle-o"></i>
+                <span>${i18n.getMessage("admin.topics")}</span>
+              </a>
+            </li>
+          </#if>
+          <#if sec.hasPermission('comment:list')>
+            <li <#if page_tab=='comment'>class="active"</#if>>
+              <a href="/forum/admin/comment/list">
+                <i class="fa fa-circle-o"></i>
+                <span>${i18n.getMessage("admin.comments")}</span>
+              </a>
+            </li>
+          </#if>
+        </ul>
+        </#if>
+
       <#if sec.hasPermission('software:categorylist')>
         <li <#if page_tab=='software'>class="active"</#if>>
           <a href="/forum/admin/software/categorylist">
             <i class="fa fa-tags"></i>
             <span>软件中心</span>
-          </a>
-        </li>
-      </#if>
-<#--      <#if sec.hasPermissionOr('topic:list', 'comment:list')>-->
-<#--      <li class="treeview <#if page_tab?index_of("auth_") != -1>active</#if>">-->
-<#--        <a href="#">-->
-<#--          <i class="fa fa-server"></i> <span>${i18n.getMessage("admin.forum")}</span>-->
-<#--          <span class="pull-right-container">-->
-<#--             <i class="fa fa-angle-left pull-right"></i>-->
-<#--           </span>-->
-<#--        </a>-->
-<#--        <ul class="treeview-menu">-->
-<#--          <#if sec.hasPermission('tag:list')>-->
-<#--            <li <#if page_tab=='tag'>class="active"</#if>>-->
-<#--              <a href="/forum/admin/tag/list">-->
-<#--                <i class="fa fa-tags"></i>-->
-<#--                <span>${i18n.getMessage("admin.tags")}</span>-->
-<#--              </a>-->
-<#--            </li>-->
-<#--          </#if>-->
-<#--          <#if sec.hasPermission('topic:list')>-->
-<#--            <li <#if page_tab=='topic'>class="active"</#if>>-->
-<#--              <a href="/forum/admin/topic/list">-->
-<#--                <i class="fa fa-circle-o"></i>-->
-<#--                <span>${i18n.getMessage("admin.topics")}</span>-->
-<#--              </a>-->
-<#--            </li>-->
-<#--          </#if>-->
-<#--          <#if sec.hasPermission('comment:list')>-->
-<#--            <li <#if page_tab=='comment'>class="active"</#if>>-->
-<#--              <a href="/forum/admin/comment/list">-->
-<#--                <i class="fa fa-circle-o"></i>-->
-<#--                <span>${i18n.getMessage("admin.comments")}</span>-->
-<#--              </a>-->
-<#--            </li>-->
-<#--          </#if>-->
-<#--        </ul>-->
-<#--        </#if>-->
-      <#if sec.hasPermission('tag:list')>
-        <li <#if page_tab=='tag'>class="active"</#if>>
-          <a href="/forum/admin/tag/list">
-            <i class="fa fa-tags"></i>
-            <span>${i18n.getMessage("admin.tags")}</span>
           </a>
         </li>
       </#if>
@@ -96,22 +74,14 @@
             </a>
         </li>
       </#if>
-<#--      <#if sec.hasPermission('plate:list')>-->
-        <li <#if page_tab=='plate'>class="active"</#if>>
-          <a href="/forum/admin/plate/list">
-            <i class="fa fa-tags"></i>
-            <span>分类中心</span>
+<#--      <#if sec.hasPermission('records:list')>-->
+      <li <#if page_tab=='record'>class="active"</#if>>
+          <a href="/forum/admin/record/list">
+              <i class="fa fa-tags"></i>
+              <span>${i18n.getMessage("admin.records")}</span>
           </a>
-        </li>
+      </li>
 <#--      </#if>-->
-        <#if sec.hasPermission('records:list')>
-        <li <#if page_tab=='record'>class="active"</#if>>
-            <a href="/forum/admin/record/list">
-                <i class="fa fa-tags"></i>
-                <span>${i18n.getMessage("admin.records")}</span>
-            </a>
-        </li>
-        </#if>
       <#if sec.hasPermission('user:list')>
         <li <#if page_tab=='user'>class="active"</#if>>
           <a href="/forum/admin/user/list">
@@ -120,67 +90,73 @@
           </a>
         </li>
       </#if>
-      <#if sec.hasPermission('admin_user:list')>
-        <li <#if page_tab=='auth_admin_user'>class="active"</#if>>
+
+<#--    <#if sec.hasPermission('admin_user:list')>-->
+<#--        <li <#if page_tab=='auth_admin_user'>class="active"</#if>>-->
+<#--          <a href="/forum/admin/admin_user/list">-->
+<#--              <i class="fa fa-circle-o"></i>-->
+<#--              ${i18n.getMessage("admin.admin_users")}-->
+<#--          </a>-->
+<#--        </li>-->
+<#--      </#if>-->
+<#--      -->
+<#--    <#if sec.hasPermission('role:list')>-->
+<#--        <li <#if page_tab=='auth_role'>class="active"</#if>>-->
+<#--            <a href="/forum/admin/role/list">-->
+<#--                <i class="fa fa-circle-o"></i>-->
+<#--                ${i18n.getMessage("admin.roles")}-->
+<#--            </a>-->
+<#--        </li>-->
+<#--    </#if>-->
+<#--      -->
+<#--    <#if sec.hasPermission('permission:list')>-->
+<#--        <li <#if page_tab=='auth_permission'>class="active"</#if>>-->
+<#--            <a href="/forum/admin/permission/list">-->
+<#--                <i class="fa fa-circle-o"></i>-->
+<#--                ${i18n.getMessage("admin.permissions")}-->
+<#--            </a>-->
+<#--        </li>-->
+<#--    </#if>-->
+
+      <#if sec.hasPermissionOr('admin_user:list', 'role:list', 'permission:list')>
+        <li class="treeview">
           <a href="/forum/admin/admin_user/list">
-              <i class="fa fa-circle-o"></i>
-              ${i18n.getMessage("admin.admin_users")}
+            <i class="fa fa-server"></i> <span>${i18n.getMessage("admin.permission_config")}</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
           </a>
-        </li>
-      </#if>
-    <#if sec.hasPermission('role:list')>
-        <li <#if page_tab=='auth_role'>class="active"</#if>>
-            <a href="/forum/admin/role/list">
+          <ul class="treeview-menu">
+            <#if sec.hasPermission('admin_user:list')>
+              <li <#if page_tab=='auth_admin_user'>class="active"</#if>>
+                <a href="/forum/admin/admin_user/list">
+                  <i class="fa fa-circle-o"></i>
+                  ${i18n.getMessage("admin.admin_users")}
+                </a>
+              </li>
+            </#if>
+
+            <#if sec.hasPermission('role:list')>
+            <li <#if page_tab=='auth_role'>class="active"</#if>>
+              <a href="/forum/admin/role/list">
                 <i class="fa fa-circle-o"></i>
                 ${i18n.getMessage("admin.roles")}
-            </a>
-        </li>
-    </#if>
-    <#if sec.hasPermission('permission:list')>
-        <li <#if page_tab=='auth_permission'>class="active"</#if>>
-            <a href="/forum/admin/permission/list">
+              </a>
+            </li>
+            </#if>
+
+            <#if sec.hasPermission('permission:list')>
+            <li <#if page_tab=='auth_permission'>class="active"</#if>>
+              <a href="/forum/admin/permission/list">
                 <i class="fa fa-circle-o"></i>
                 ${i18n.getMessage("admin.permissions")}
-            </a>
+              </a>
+            </li>
+            </#if>
+          </ul>
         </li>
-    </#if>
+      </#if>
 
-      <#--<#if sec.hasPermissionOr('admin_user:list', 'role:list', 'permission:list')>-->
-        <#--<li class="treeview <#if page_tab?index_of("auth_") != -1>active</#if>">-->
-          <#--<a href="/forum/admin/admin_user/list">-->
-            <#--<i class="fa fa-server"></i> <span>${i18n.getMessage("admin.permission_config")}</span>-->
-            <#--<span class="pull-right-container">-->
-                <#--<i class="fa fa-angle-left pull-right"></i>-->
-              <#--</span>-->
-          <#--</a>-->
-          <#--<ul class="treeview-menu">-->
-            <#--<#if sec.hasPermission('admin_user:list')>-->
-              <#--<li <#if page_tab=='auth_admin_user'>class="active"</#if>>-->
-                <#--<a href="/forum/admin/admin_user/list">-->
-                  <#--<i class="fa fa-circle-o"></i>-->
-                  <#--${i18n.getMessage("admin.admin_users")}-->
-                <#--</a>-->
-              <#--</li>-->
-            <#--</#if>-->
-            <#--<#if sec.hasPermission('role:list')>-->
-            <#--<li <#if page_tab=='auth_role'>class="active"</#if>>-->
-              <#--<a href="/forum/admin/role/list">-->
-                <#--<i class="fa fa-circle-o"></i>-->
-                <#--${i18n.getMessage("admin.roles")}-->
-              <#--</a>-->
-            <#--</li>-->
-            <#--</#if>-->
-            <#--<#if sec.hasPermission('permission:list')>-->
-            <#--<li <#if page_tab=='auth_permission'>class="active"</#if>>-->
-              <#--<a href="/forum/admin/permission/list">-->
-                <#--<i class="fa fa-circle-o"></i>-->
-                <#--${i18n.getMessage("admin.permissions")}-->
-              <#--</a>-->
-            <#--</li>-->
-            <#--</#if>-->
-          <#--</ul>-->
-        <#--</li>-->
-      <#--</#if>-->
       <#if sec.hasPermission('system:edit')>
         <li <#if page_tab=='system'>class="active"</#if>>
           <a href="/forum/admin/system/edit">
@@ -189,6 +165,7 @@
           </a>
         </li>
       </#if>
+
       <li>
         <a href="/forum/admin/logout">
           <i class="fa fa-sign-out"></i>

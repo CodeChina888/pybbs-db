@@ -22,6 +22,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 
@@ -55,7 +56,7 @@ public class SysLogAspect {
         }
 
         //获取请求的类名
-        String className = joinPoint.getTarget().getClass().getName();
+        // String className = joinPoint.getTarget().getClass().getName();
         //获取请求的方法名
         String methodName = method.getName();
 //        record.setMethod(className + "." + methodName);
@@ -73,15 +74,10 @@ public class SysLogAspect {
         }
         //将参数所在的数组转换成json
         String params = "";
-       if(arguments!=null){
-           params=JSON.toJSONString(arguments);
-           JSONArray jsonObject=JSONObject.parseArray(params);
-           record.setParams(jsonObject.get(0).toString());
-//           String param=jsonObject.toString();
-//           if(param.contains("lastAccessedTime"))
-//               record.setParams(jsonObject.get(0).toString());
-//           else
-//               record.setParams(jsonObject.toJSONString());
+        if(arguments!=null){
+            params=JSON.toJSONString(arguments);
+            JSONArray jsonObject=JSONObject.parseArray(params);
+            record.setParams(jsonObject.get(0).toString());
         }
         record.setInTime(new Date());
         //从session中获得当前用户名

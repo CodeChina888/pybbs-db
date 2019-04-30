@@ -55,7 +55,6 @@ public class MybatisPlusConfig {
     // 官方文档太简陋，坑新手呀！！！！！！
     PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
     sqlSessionFactory.setPlugins(new Interceptor[]{paginationInterceptor});
-
     return sqlSessionFactory.getObject();
   }
 

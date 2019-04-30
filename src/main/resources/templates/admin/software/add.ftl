@@ -6,7 +6,7 @@
     </h1>
     <ol class="breadcrumb">
       <li><a href="/forum/admin/index"><i class="fa fa-dashboard"></i> 首页</a></li>
-      <li><a href="/forum/admin/tag/list">板块</a></li>
+      <li><a href="/forum/admin/software/categorylist">软件</a></li>
       <li class="active">添加</li>
     </ol>
   </section>
@@ -28,8 +28,15 @@
             <label>版本号</label>
             <input type="text" name="version" value="" class="form-control">
           </div>
-
-          <div class="form-group">
+        <div class="form-group">
+        <span >
+        <select name="label" multiple="multiple">
+           <#list Labels as label>
+             <option name="label" value ="${label.id}">${label.name!}</option>
+           </#list>
+        </select>
+        </span>
+            <div class="form-group">
             <label for="">描述</label>
             <textarea name="description" rows="7" class="form-control"></textarea>
           </div>

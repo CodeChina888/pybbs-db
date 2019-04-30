@@ -24,14 +24,15 @@
               <table class="table table-bordered">
                   <thead>
                   <tr>
-                      <th>ID</th>
-                      <th>文档类别</th>
-                      <th>文档种类</th>
+                      <th>编号</th>
+                      <th>产品名称</th>
+                      <th>产品种类</th>
                       <th>文档分类</th>
-                      <th>文档名称</th>
-                      <th>文档路径</th>
-                      <th>访问路径</th>
+                      <th>文档说明</th>
+                      <th>接口访问路径</th>
+                      <th>完整路径</th>
                       <th>上传时间</th>
+                      <th>操作</th>
                   </tr>
                   </thead>
               <tbody>
@@ -43,14 +44,37 @@
               <td>${record.documentClassify!}</td>
               <td>${record.documentName!}</td>
               <td>${record.url!}</td>
-              <td>${record.path!}</td>
+              <td>${record.fullpath!}</td>
               <td>${record.inTime?string('yyyy-MM-dd HH:mm:ss')}</td>
+              <td>
+                  <#if sec.hasPermission("document:delete")>
+                      <button onclick="deleteBtn('${record.code}')" class="btn btn-xs btn-danger">删除</button>
+                  </#if>
+              </td>
           </tr>
           </#list>
               </tbody>
               </table>
           </div>
       </div>
+      <script>
+          <#if sec.hasPermission("document:delete")>
+          function deleteBtn(code) {
+              if (confirm('确定要删除这个文档吗？')) {
+                  $.get("/forum/documentCenter/delete/" + code, function (data) {
+                      if (data.code === 200) {
+                          toast("成功", "success");
+                          setTimeout(function () {
+                              window.location.reload();
+                          }, 700);
+                      } else {
+                          toast(data.description);
+                      }
+                  })
+              }
+          }
+          </#if>
+      </script>
   <#include "../layout/paginate.ftl">
     <@paginate currentPage=page.current totalPage=page.pages actionUrl="/forum/documentCenter/list" urlParas=""/>
   </section>

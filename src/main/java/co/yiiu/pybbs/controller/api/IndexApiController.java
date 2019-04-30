@@ -138,8 +138,8 @@ public class IndexApiController extends BaseApiController {
     return success(url);
   }
 
-  @GetMapping("/software/categorylist")
-  public Result categorylist(@RequestParam(defaultValue = "1") Integer pageNo) {
-    return success(uploadFileServies.selectAllCategory(pageNo,null,null));
+  @GetMapping("/software/categorylist/")
+  public Result categorylist(@RequestParam(defaultValue = "1") Integer pageNo,@RequestParam(defaultValue = "0")int cgId) {
+    return success(uploadFileServies.selectAllCategory(pageNo,null,null,cgId));
   }
 }

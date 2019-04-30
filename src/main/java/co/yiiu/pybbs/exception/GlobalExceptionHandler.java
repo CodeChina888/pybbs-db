@@ -48,13 +48,14 @@ public class GlobalExceptionHandler {
    */
   @ExceptionHandler(value = Exception.class)
   public ModelAndView defaultErrorHandler(HttpServletRequest request, HttpServletResponse response, Exception e) throws Exception {
+    log.error("{}",e);
     log.error(e.getMessage());
     if (!HttpUtil.isApiRequest(request)) {
       response.setCharacterEncoding("utf-8");
       ModelAndView mav = new ModelAndView();
       mav.addObject("exception", e);
       mav.addObject("errorCode", getStatus(request));
-      mav.setViewName("theme/" + systemConfigService.selectAllConfig().get("theme").toString() + "/error");
+      mav.setViewName("theme/default/error");
       return mav;
     } else /*if (accept.contains("application/json"))*/ {
       Result result = new Result();

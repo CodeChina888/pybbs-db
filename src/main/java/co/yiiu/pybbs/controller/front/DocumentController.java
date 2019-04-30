@@ -1,0 +1,65 @@
+package co.yiiu.pybbs.controller.front;
+
+import co.yiiu.pybbs.controller.api.BaseApiController;
+import co.yiiu.pybbs.model.Document;
+import co.yiiu.pybbs.model.User;
+import co.yiiu.pybbs.service.DocumentCenterService;
+import co.yiiu.pybbs.service.UserService;
+import co.yiiu.pybbs.util.FileUtil;
+import co.yiiu.pybbs.util.Result;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.Iterator;
+import java.util.List;
+
+@Controller
+@RequestMapping("/forum/document")
+public class DocumentController extends BaseApiController {
+    @Autowired
+    private FileUtil fileUtil;
+    @Autowired
+    private DocumentCenterService documentCenterService;
+    @Autowired
+    private UserService userService;
+
+    @ResponseBody
+    @GetMapping("/download/{code}")
+    public Result downloadFile(HttpServletResponse response, @PathVariable String code, HttpSession session){
+        try {
+            User user=(User) session.getAttribute("_user");
+            Integer userId=user.getOriginId();
+            List userLabel=userService.getUserLabel(userId);
+            List requireLabel=documentCenterService.selectLabelByCode(code);
+            userLabel.retainAll(requireLabel);
+            if (!userLabel.isEmpty()) {
+                if ("下载成功".equals(fileUtil.downloadFile(response,code))) {
+                    return success("文件下载成功");
+                }
+            } else {
+                return error("没有权限操作！");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return error("文件下载失败，请重试");
+    }
+
+    @GetMapping("/views")
+    public String documentViews(){
+        return render("document/views");
+    }
+
+    @GetMapping("/list")
+    public String documentList(@RequestParam(defaultValue = "1") Integer pageNo, Model model) {
+        IPage<Document> page = documentCenterService.selectAll(pageNo);
+        model.addAttribute("pageNo", pageNo);
+        model.addAttribute("page", page);
+        return render("document/list");
+    }
+}

@@ -12,6 +12,7 @@ import co.yiiu.pybbs.util.JsonUtil;
 import co.yiiu.pybbs.util.MyPage;
 import co.yiiu.pybbs.util.bcrypt.BCryptPasswordEncoder;
 import co.yiiu.pybbs.util.identicon.Identicon;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.google.gson.Gson;
@@ -52,8 +53,6 @@ public class UserService {
   private RedisService redisService;
   @Value("${spring.tokenurl}")
   private String tokenUrl;
-  @Value("${spring.httpurl}")
-  private String httpUrl;
 
   // 根据用户名查询用户，用于获取用户的信息比对密码
   public User selectByUsername(String username) {
@@ -89,10 +88,11 @@ public class UserService {
     User user = new User();
     user.setOriginId(OriginId);
     user.setUsername(username);
-    if (!StringUtils.isEmpty(password)) user.setPassword(new BCryptPasswordEncoder().encode(password));
+    if (!StringUtils.isEmpty(password)) {
+      user.setPassword(new BCryptPasswordEncoder().encode(password));
+    }
     user.setToken(token);
     user.setInTime(new Date());
-//    if (avatar == null) avatar = identicon.generator(username);
     user.setAvatar(avatar);
     user.setEmail(email);
     userMapper.insert(user);
@@ -142,10 +142,13 @@ public class UserService {
 
   public boolean isExist(Integer originId) {
     Integer flag=userMapper.isExist(originId);
-    if(flag>0)
+    if(flag>0) {
       return true;
-    else
+    }
+    else {
       return false;
+    }
+
   }
 
   // 查询用户积分榜
@@ -166,7 +169,7 @@ public class UserService {
 
   //查询x平台用户信息
   public Message<Data> userMessage(Integer id ){
-    String url=httpUrl+"/service/memcenter/api/v1/inner/member/getUserInfo?id="+id;
+    String url=tokenUrl+"/memcenter/api/v1/inner/member/getUserInfo?id="+id;
     String message = HttpClientUtil.doGet(url);
     Gson gson = new Gson();
     Type type=new TypeToken<Message<Data>>(){}.getType();
@@ -199,11 +202,26 @@ public class UserService {
     map.put("prefix","memcenter");
     String json=JsonUtil.objectToJson(map);
     String message=HttpClientUtil.doPostJson(url,json);
-    System.out.println("当前message:"+message);
   }
 
-
-
+  // 从x平台获取标签
+  public List getUserLabel(Integer id){
+    String url=tokenUrl+"/memcenter/api/v1/inner/member/getUserLabels?id="+id;
+    String message = HttpClientUtil.doGet(url);
+    JSONObject jsonObject= JSONObject.parseObject(message);
+    JSONObject dataObject=jsonObject.getJSONObject("data");
+    JSONObject rowObject= dataObject.getJSONObject("row");
+    List labelList=new LinkedList();
+    Set setresult = rowObject.keySet();
+    Iterator iterator = setresult.iterator();
+    while (iterator.hasNext()) {
+      String value = (String) iterator.next();
+      JSONObject code=JSONObject.parseObject(rowObject.getString(value));
+      String name=code.getString("code");
+      labelList.add(name);
+    }
+    return labelList;
+  }
 
   // ------------------------------- admin ------------------------------------------
 

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class Uploadfile implements Serializable
@@ -16,6 +17,39 @@ public class Uploadfile implements Serializable
     private Date inTime;
     private String description;
     private  String version;
+    private int Grade;
+    private String code;
+    private String originName;
+
+    public String getCode()
+    {
+        return code;
+    }
+
+    public void setCode(String code)
+    {
+        this.code = code;
+    }
+
+    public String getOriginName()
+    {
+        return originName;
+    }
+
+    public void setOriginName(String originName)
+    {
+        this.originName = originName;
+    }
+
+    public int getGrade()
+    {
+        return Grade;
+    }
+
+    public void setGrade(int grade)
+    {
+        Grade = grade;
+    }
 
     public String getDescription()
     {

@@ -21,46 +21,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
-
-    <script>
-        /* 登录验证 */
-        (function() {
-            function GetUrlParam(paraName) {
-                var url = document.location.toString();
-                var arrObj = url.split("?");
-                if (arrObj.length > 1) {
-                    var arrPara = arrObj[1].split("&");
-                    var arr;
-                    for (var i = 0; i < arrPara.length; i++) {
-                        arr = arrPara[i].split("=");
-                        if (arr != null && arr[0] == paraName) {
-                            return arr[1];
-                        }
-                    }
-                    return "";
-                }
-                else {
-                    return "";
-                }
-            }
-            var token = GetUrlParam("jwtToken")
-            // const url = 'http://xpro.adl.io/forum/api/v1/forum/register'
-            const url = 'http://localhost:8080/forum'
-            const data = {token}
-            // 发送请求
-            $.ajax({
-                type:"GET",
-                url,
-                data,
-                success:function(data){
-                    console.log(data)
-                },
-                error:function(jqXHR){
-                    console.log("Error: "+jqXHR.status);
-                }
-            });
-        })()
-    </script>
     <script>
         function toast(txt, icon) {
             $.toast({
