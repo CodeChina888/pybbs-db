@@ -2,13 +2,15 @@ package co.yiiu.pybbs.controller.admin;
 
 
 import co.yiiu.pybbs.model.Label;
-import co.yiiu.pybbs.model.SoftCategory;
+import co.yiiu.pybbs.model.Softcategory;
 import co.yiiu.pybbs.model.Uploadfile;
+import co.yiiu.pybbs.service.FileLabelServise;
 import co.yiiu.pybbs.service.LabelService;
 import co.yiiu.pybbs.service.UploadFileServies;
 import co.yiiu.pybbs.util.Result;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,7 +28,10 @@ public class UploadFileAdminController extends BaseAdminController
     @Autowired
     private UploadFileServies uploadFileServies;
     @Autowired
-    private LabelService LabelService;
+    private LabelService labelService;
+    @Autowired
+    private FileLabelServise fileLabelServise;
+
 
     @RequiresPermissions("software:add")
     @PostMapping("/software/add")
@@ -148,8 +153,8 @@ public class UploadFileAdminController extends BaseAdminController
     @GetMapping("/software/add")
     public String softwareAdd(Model model, Integer categoryId)
     {
-        SoftCategory s = uploadFileServies.selecSoftcategorytById(categoryId);
-        List<Label> list = LabelService.selectall();
+        Softcategory s = uploadFileServies.selecSoftcategorytById(categoryId);
+        List<Label> list = labelService.selectall();
         model.addAttribute("path", s.getPath());
         model.addAttribute("categoryId", categoryId);
         model.addAttribute("Labels", list);
@@ -162,16 +167,14 @@ public class UploadFileAdminController extends BaseAdminController
     {
         model.addAttribute("layer", layer);
         model.addAttribute("cgId", cgId);
-        model.addAttribute("path", path);
         return "admin/software/categoryadd";
     }
 
     @RequiresPermissions("software:categoryadd")
     @PostMapping("/software/categoryadd")
-    public String categoryAdd(String name, String path, String description, int cgId, int layer, Model model)
+    public String categoryAdd(String name,String description, int cgId, int layer, Model model)
     {
-        System.out.println(layer);
-        uploadFileServies.insertCategory(name, path, description, cgId, layer);
+        uploadFileServies.insertCategory(name, description, cgId, layer);
         model.addAttribute("cgId", cgId);
         return redirect("/forum/admin/software/categorylist");
     }
@@ -184,9 +187,9 @@ public class UploadFileAdminController extends BaseAdminController
         if (StringUtils.isEmpty(name)) {
             name = null;
         }
-        IPage<SoftCategory> page = uploadFileServies.selectAllCategory(pageNo, null, name, cgId);
+        IPage<Softcategory> page = uploadFileServies.selectAllCategory(pageNo, null, name, cgId);
         IPage<Uploadfile> softs = uploadFileServies.selectAllSoftware(pageNo, null, name, cgId);
-        SoftCategory SoftCategory = uploadFileServies.selecSoftcategorytById(cgId);
+        Softcategory SoftCategory = uploadFileServies.selecSoftcategorytById(cgId);
         if (softs != null)
         {
             model.addAttribute("softs", softs);
@@ -221,10 +224,36 @@ public class UploadFileAdminController extends BaseAdminController
     @GetMapping("/software/edit")
     public String edit(Integer id, Model model) {
         model.addAttribute("software",uploadFileServies.selectuploadfileById(id));
-        model.addAttribute("Labels",LabelService.selectall());
+        model.addAttribute("labels",labelService.selectall());
+        model.addAttribute("categorys",uploadFileServies.selectall());
+        model.addAttribute("filelabels",fileLabelServise.softLabels(id));
         return "admin/software/edit";
     }
 
+    @RequiresPermissions("software:edit")
+    @PostMapping("/software/edit")
+    public String update(@RequestParam("id") Integer id,@RequestParam("originName") String originName,@RequestParam("version") String version,@RequestParam(name = "label",defaultValue ="") String[] labels ,@RequestParam("description")String description,@RequestParam("categorys") String categorys) throws IOException
+    {
+        Uploadfile uploadfile=uploadFileServies.selectuploadfileById(id);
+        Integer  categoryId=uploadfile.getCategoryId();
+        if (uploadfile.getCategoryId()!=Integer.parseInt(categorys)){
+            Softcategory softCategory=uploadFileServies.selecSoftcategorytById(Integer.parseInt(categorys));
+            File targetFile = new File(uploadfile.getUrl());
+            String fileNameSuffix = originName.substring(originName.lastIndexOf(".") + 1);
+            String fileNamePrefix = originName.substring(0, originName.lastIndexOf("."));
+            String fileName = fileNamePrefix + "-" + System.currentTimeMillis() + "." + fileNameSuffix;
+            File outputFile=new File(softCategory.getPath()+"/" + fileName);
+            FileUtils.moveFile(targetFile,outputFile);
+            uploadfile.setUrl(softCategory.getPath()+"/" + fileName);
+            uploadfile.setCategoryId(softCategory.getId());
+            categoryId=softCategory.getId();
+        }
+        uploadfile.setOriginName(originName);
+        uploadfile.setVersion(version);
+        uploadfile.setDescription(description);
+        uploadFileServies.updateFile(uploadfile,labels);
+        return redirect("/forum/admin/software/list?categoryId=" +categoryId);
+    }
 
 
 

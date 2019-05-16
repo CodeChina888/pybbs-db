@@ -13,7 +13,7 @@
                 <li class="xpro-nav-li"><a href="https://www.linkedbyx.com/studyCenter/types" class="">学习中心</a></li>
                 <li class="xpro-nav-li"><a href="https://www.linkedbyx.com/train/home" class="">认证培训</a></li>
                 <li class="xpro-nav-li"><a href="https://www.linkedbyx.com/market" class="">积分商城</a></li>
-                <li class="xpro-nav-li"><a href="https://www.linkedbyx.com/forum" class=""><strong>前往论坛</strong></a></li>
+<#--                <li class="xpro-nav-li"><a href="https://www.linkedbyx.com/forum" class=""><strong>前往论坛</strong></a></li>-->
             </ul>
         </div>
     </header>
@@ -27,7 +27,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/">安恒信息</a>
+                <a class="navbar-brand" href="/forum">安恒信息</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->

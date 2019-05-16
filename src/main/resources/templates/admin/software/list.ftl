@@ -19,10 +19,10 @@
       <!-- /.box-header -->
       <div class="box-body">
         <form action="/forum/admin/software/list" class="form-inline">
-          <div class="form-group" style="margin-bottom: 10px;">
-            <input type="text" name="name" value="${name!}" class="form-control" placeholder="软件名">
-            <button type="submit" class="btn btn-primary btn-sm">搜索</button>
-          </div>
+<#--          <div class="form-group" style="margin-bottom: 10px;">-->
+<#--            <input type="text" name="name" value="${name!}" class="form-control" placeholder="软件名">-->
+<#--            <button type="submit" class="btn btn-primary btn-sm">搜索</button>-->
+<#--          </div>-->
         </form>
 
           <form action="/forum/admin/software/add" class="form-inline">

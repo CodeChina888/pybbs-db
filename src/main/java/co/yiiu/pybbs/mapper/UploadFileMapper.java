@@ -13,4 +13,5 @@ public interface UploadFileMapper extends BaseMapper<Uploadfile>
      int handleLabelRelation(@Param("fileId")int fileId,@Param("labelId")int labelId);
      int selectIdByName(@Param("fileName") String fileName);
      void deleteLabelRelation(@Param("fileId")int fileId);
+
 }

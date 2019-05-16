@@ -51,7 +51,9 @@ public class ShiroConfig {
     map.put("/forum/admin/logout", "logout");
 
     //<!-- 过滤链定义，从上向下顺序执行，一般将/**放在最为下边 -->:这是一个坑呢，一不小心代码就不好使了;
-
+//    map.put("/api/software/download/**","authc");
+//    map.put("/forum/document/download/**","authc");
+//    map.put("/forum/document/previews/**","authc");
     //<!-- authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问-->
     map.put("/admin/**", "authc");
     // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面

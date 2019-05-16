@@ -90,7 +90,7 @@
             <form action="/forum/admin/software/add" class="form-inline">
                 <div class="form-group" style="margin-bottom: 10px;">
                     <input type="hidden" value="${categoryId!}" name="categoryId">
-                    <button type="submit" class="btn btn-primary btn-sm">上传软件</button>
+<#--                    <button type="submit" class="btn btn-primary btn-sm">上传软件</button>-->
                 </div>
             </form>
             <table class="table table-bordered table-striped">

@@ -8,6 +8,7 @@ import co.yiiu.pybbs.service.UserService;
 import co.yiiu.pybbs.util.FileUtil;
 import co.yiiu.pybbs.util.Result;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.apache.http.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -50,9 +52,26 @@ public class DocumentController extends BaseApiController {
         return error("文件下载失败，请重试");
     }
 
-    @GetMapping("/views")
-    public String documentViews(){
-        return render("document/views");
+    @ResponseBody
+    @GetMapping("/previews/{code}")
+    public Result documentViews(@PathVariable String code, HttpServletResponse response,HttpSession session) throws UnsupportedEncodingException {
+        try {
+            User user=(User) session.getAttribute("_user");
+            Integer userId=user.getOriginId();
+            List userLabel=userService.getUserLabel(userId);
+            List requireLabel=documentCenterService.selectLabelByCode(code);
+            userLabel.retainAll(requireLabel);
+            if (!userLabel.isEmpty()) {
+                if ("预览成功".equals(fileUtil.previewFile(response,code))) {
+                    return success("文件预览成功");
+                }
+            } else {
+                return error("没有权限操作！");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return error("文件预览失败，请重试");
     }
 
     @GetMapping("/list")

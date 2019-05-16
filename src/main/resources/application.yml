@@ -7,12 +7,11 @@ spring:
     username: root
     password: 12345678
     url: jdbc:mysql://127.0.0.1:3306/dbapp2?useSSL=false&characterEncoding=utf8&serverTimezone=GMT
-  tokenurl: http://service.adl.io
-  httpurl: http://xpro.adl.io
+  tokenurl: http://kong-internal-proxy.system:10083
   servlet:
     multipart:
-      max-file-size: 10MB
-      max-request-size: 10MB
+      max-file-size: 20000MB
+      max-request-size: 20000MB
 
   banner:
     location: ["classpath:banner.txt", "file:./banner.txt"]

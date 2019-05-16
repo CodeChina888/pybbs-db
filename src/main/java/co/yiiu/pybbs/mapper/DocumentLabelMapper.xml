@@ -11,8 +11,7 @@
         </foreach>
 
     </insert>
-
-    <delete id="deleteById">
+    <delete id="deleteLabelById">
         delete from document_label where doc_id=#{id}
     </delete>
 </mapper>

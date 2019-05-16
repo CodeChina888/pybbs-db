@@ -12,9 +12,9 @@
                 <table class="table table-bordered table-striped">
                     <thead>
                     <tr>
-                        <th>#</th>
+                        <th>编号</th>
                         <th>名称</th>
-                        <th>存放地址</th>
+<#--                        <th>存放地址</th>-->
                         <th>创建时间</th>
                         <th>描述</th>
                     </tr>
@@ -36,8 +36,8 @@
                                         <a href="/api/software/list/${category.id!}" class="btn btn-primary btn-sm">${category.name!}</a>
                                     </#if>
                                 </td>
-                                <td>${ category.path}</td>
-                                <td>${ category.inTime?string("yyyy.dd.mm. HH:mm:ss")}</td>
+<#--                                <td>${ category.path}</td>-->
+                                <td>${ category.inTime?string("yyyy-MM-dd HH:mm:ss")}</td>
                                 <td>${ category.description}</td>
                             </tr>
                             <#if  category.intro??>

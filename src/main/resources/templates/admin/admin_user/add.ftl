@@ -54,9 +54,8 @@
                 <label>模块</label>
                 <p>
                   <#list tags as tag>
-                  <input type="radio" name="tagId" value="${tag.id}" id="tag_${tag.id}"
-                  <#--<#if tag.id == adminUser.tagId>checked</#if>>&nbsp;-->
-                  <label for="tag_${tag.id}">${tag.name!}</label>
+                    <input type="radio" name="tagId" value="${tag.id}" id="tag_${tag.id}"
+                    <label for="tag_${tag.id}">${tag.name!}</label>
                   </#list>
                 </p>
               </div>

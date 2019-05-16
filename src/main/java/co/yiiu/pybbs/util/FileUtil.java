@@ -43,9 +43,13 @@ public class FileUtil {
    */
   public String upload(MultipartFile file, String fileName, String customPath) {
     try {
-      if (file == null || file.isEmpty()) return null;
+      if (file == null || file.isEmpty()) {
+        return null;
+      }
 
-      if (StringUtils.isEmpty(fileName)) fileName = StringUtil.uuid();
+      if (StringUtils.isEmpty(fileName)) {
+        fileName = StringUtil.uuid();
+      }
       String suffix = "." + file.getContentType().split("/")[1];
       // 如果存放目录不存在，则创建
       File savePath = new File(systemConfigService.selectAllConfig().get("upload_path").toString() + customPath);
@@ -99,7 +103,9 @@ public class FileUtil {
       //设置文件路径
       File file = new File(fullPath);
       if (file.exists()) {
-        response.setContentType("application/force-download");// 设置强制下载不打开
+        response.setContentType("application/force-download");
+        // 设置强制下载不打开
+//        response.setHeader("Content-Disposition","inline;fileName=" +new String(originName.getBytes("UTF-8"),"iso-8859-1"));
         response.addHeader("Content-Disposition","attachment;fileName=" +new String(originName.getBytes("UTF-8"),"iso-8859-1"));
         response.setCharacterEncoding("utf-8");
         byte[] buffer = new byte[1024];
@@ -149,6 +155,52 @@ public class FileUtil {
       return true;
     }
     return false;
+  }
+
+  public String previewFile(HttpServletResponse response,String code) throws UnsupportedEncodingException {
+    document=documentCenterService.selectByCode(code);
+    String fullPath = document.getFullpath();
+    String originName = document.getOriginName();
+    // 获取了文件名称
+    if (originName != null) {
+      //设置文件路径
+      File file = new File(fullPath);
+      if (file.exists()) {
+        response.setHeader("Content-Disposition","inline;fileName=" +new String(originName.getBytes("UTF-8"),"iso-8859-1"));
+        byte[] buffer = new byte[1024];
+        FileInputStream fis = null;
+        BufferedInputStream bis = null;
+        try {
+          fis = new FileInputStream(file);
+          bis = new BufferedInputStream(fis);
+          OutputStream os = response.getOutputStream();
+          int i = bis.read(buffer);
+          while (i != -1) {
+            os.write(buffer, 0, i);
+            i = bis.read(buffer);
+          }
+          return "预览成功";
+        } catch (Exception e) {
+          e.printStackTrace();
+        } finally {
+          if (bis != null) {
+            try {
+              bis.close();
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+          if (fis != null) {
+            try {
+              fis.close();
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+        }
+      }
+    }
+    return "预览失败";
   }
 
   // md5文件校验

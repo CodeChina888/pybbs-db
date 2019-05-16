@@ -1,9 +1,7 @@
 package co.yiiu.pybbs.directive;
 
 import co.yiiu.pybbs.model.Document;
-import co.yiiu.pybbs.model.SoftCategory;
 import co.yiiu.pybbs.service.DocumentCenterService;
-import co.yiiu.pybbs.service.UploadFileServies;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import freemarker.core.Environment;
 import freemarker.template.*;

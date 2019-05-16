@@ -17,6 +17,7 @@
                         <th>产品种类</th>
                         <th>文档分类</th>
                         <th>文档说明</th>
+                        <th>文档名称</th>
                         <th>上传时间</th>
                         <th>操作</th>
                     </tr>
@@ -30,10 +31,11 @@
                                 <td>${ document.documentType}</td>
                                 <td>${ document.documentClassify}</td>
                                 <td>${ document.documentName}</td>
-                                <td>${ document.inTime?string("yyyy.dd.mm. HH:mm:ss")}</td>
+                                <td>${ document.originName}</td>
+                                <td>${ document.inTime?string("yyyy-MM-dd HH:mm:ss")}</td>
                                 <td>
                                 <a href=${ document.url} class="btn btn-xs btn-danger">下载</a>
-                                <a href=${ document.url} class="btn btn-xs btn-primary">预览</a></td>
+                                <a href="/forum/document/previews/${document.code}" class="btn btn-xs btn-primary">预览</a></td>
                             </tr>
                         </#list>
                     </@document_list>

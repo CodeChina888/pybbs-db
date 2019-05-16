@@ -47,13 +47,14 @@ public class DocumentCenterController extends BaseAdminController {
     //文件上传
     @RequiresPermissions("document:upload")
     @PostMapping("/upload")
-    @ResponseBody
-    public Result upload(@RequestParam("file") MultipartFile file, Document document,Integer[]ids) {
+//    @ResponseBody
+    public String upload(@RequestParam("file") MultipartFile file, Document document,Integer[]ids) {
         String uploadPath=systemConfigService.selectAllConfig().get("upload_path").toString();
         List<DocumentLabel> list=new ArrayList<>();
         if (file.isEmpty() || file == null) {
             log.error("文件为空！");
-            return error("文件不能为空");
+//            return error("文件不能为空");
+            return null;
         }
         String fileName = file.getOriginalFilename();
         document.setOriginName(fileName);
@@ -61,7 +62,8 @@ public class DocumentCenterController extends BaseAdminController {
         String Suffix = "pdf/docx/doc";
         if (Suffix.indexOf(fileNameSuffix) < 0) {
             log.error("文件上传格式有误");
-            return error("请上传正确的格式文件");
+//            return error("请上传正确的格式文件");
+            return null;
         }
         String path=uploadPath+document.getDocumentClass()+"/"+document.getDocumentType()+"/"+document.getDocumentClassify()+"/"+document.getDocumentName()+"/";
         //文件名的前缀
@@ -69,11 +71,11 @@ public class DocumentCenterController extends BaseAdminController {
         //获取上传文件名
         fileName = fileNamePrefix + "-" + System.currentTimeMillis() + "." + fileNameSuffix;
         fileUtil.uploadFile(file, path,fileName);
-        document.setPath(path);
+        String static_url=systemConfigService.selectAllConfig().get("static_url").toString()+document.getDocumentClass()+"/"+document.getDocumentType()+"/"+document.getDocumentClassify()+"/"+document.getDocumentName()+"/"+fileName;
+        document.setPath(static_url);
         document.setCode((UUID.randomUUID().toString().replace("-", "").toLowerCase()));
         document.setUrl("/forum/document/download/"+document.getCode());
         document.setFullpath(path+fileName);
-        System.out.println(fileUtil.getFileMd5(document.getFullpath()));
         DocumentLabel documentLabel;
         documentCenterService.insert(document);
         for (int i=0;i<ids.length;i++) {
@@ -84,7 +86,8 @@ public class DocumentCenterController extends BaseAdminController {
         }
         documentLabelService.insert(list);
         log.info("文件上传成功");
-        return success();
+        return "redirect:/forum/documentCenter/list";
+//        return success();
     }
 
     @RequiresPermissions("document:list")

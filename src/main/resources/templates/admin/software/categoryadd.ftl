@@ -15,21 +15,14 @@
       <div class="box-header with-border">
         <h3 class="box-title">软件分类</h3>
       </div>
-      <!-- /.box-header -->
       <div class="box-body">
         <form id="form" action="/forum/admin/software/categoryadd" method="post" enctype="multipart/form-data">
           <input type="hidden" value="${cgId!0}" name="cgId">
           <input type="hidden" value="${layer!0}" name="layer">
-          <!--<input type="hidden" value="${path!null}" name="parentPath"> -->
           <div class="form-group">
             <label>名称</label>
             <input type="text" name="name" value="" class="form-control">
           </div>
-          <div class="form-group">
-            <label>路径（请使用“/”）</label>
-            <input type="text" name="path" value="${path!null}" class="form-control">
-            </div>
-
           <div class="form-group">
             <label for="">描述</label>
             <textarea name="description" rows="7" class="form-control"></textarea>

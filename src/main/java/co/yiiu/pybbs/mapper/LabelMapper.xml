@@ -6,7 +6,7 @@
     </select>
 
     <select id="selectBySoftId" resultType="string">
-   select name from label l left join file_label f on l.id=f.label_id
+   select l.code from label l left join file_label f on l.id=f.label_id
                          left join uploadfile u on f.file_id=u.id
                          where u.id=#{softId}
   </select>
