@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="co.yiiu.pybbs.mapper.SoftwareLabelMapper">
+    <insert id="insertForEach">
+        insert into software_label(software_id, label_id)
+        values
+        <foreach collection="lists" item="list" index="index" separator=",">
+            (#{list.softwareId},
+            #{list.labelId})
+        </foreach>
+    </insert>
+    <delete id="deleteLabelById">
+        delete from  software_label where software_id=#{id}
+    </delete>
+</mapper>
