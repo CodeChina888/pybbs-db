@@ -7,7 +7,9 @@ spring:
     username: root
     password: 12345678
     url: jdbc:mysql://127.0.0.1:3306/dbapp2?useSSL=false&characterEncoding=utf8&serverTimezone=GMT
-  tokenurl: http://kong-internal-proxy.system:10083
+#  tokenurl: http://kong-internal-proxy.system:10083
+  tokenurl: http://service.adl.io
+
   servlet:
     multipart:
       max-file-size: 20000MB

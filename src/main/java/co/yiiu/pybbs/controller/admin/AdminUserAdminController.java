@@ -49,7 +49,7 @@ public class AdminUserAdminController extends BaseAdminController {
     // 查询所有的角色
     model.addAttribute("roles", roleService.selectAll());
     // 查询所有的模块
-    model.addAttribute("plate",plateServies.selectall());
+//    model.addAttribute("plate",plateServies.selectall());
     return "admin/admin_user/add";
   }
 
@@ -58,9 +58,8 @@ public class AdminUserAdminController extends BaseAdminController {
   public String save(AdminUser adminUser) {
     adminUser.setInTime(new Date());
     adminUser.setPassword(new BCryptPasswordEncoder().encode(adminUser.getPassword()));
-    adminUser.setTagId(0);
     adminUserService.insert(adminUser);
-    return redirect("/admin/admin_user/list");
+    return redirect("/forum/admin/admin_user/list");
   }
 
   @RequiresPermissions("admin_user:edit")
@@ -68,10 +67,11 @@ public class AdminUserAdminController extends BaseAdminController {
   public String edit(Integer id, Model model) {
     // 查询所有的角色
     model.addAttribute("roles", roleService.selectAll());
-    List<Tag> tags = tagService.selectall();
-    tags.add(tagService.selectById(adminUserService.selectById(id).getTagId()));
-      model.addAttribute("tags",tags);
-      model.addAttribute("adminUser", adminUserService.selectById(id));
+//    List<Tag> tags = tagService.selectall();
+//    tags.add(tagService.selectById(adminUserService.selectById(id).getTagId()));
+//    model.addAttribute("tags",tags);
+//    model.addAttribute("plate",plateServies.selectall());
+    model.addAttribute("adminUser", adminUserService.selectById(id));
     return "admin/admin_user/edit";
   }
 
@@ -83,7 +83,6 @@ public class AdminUserAdminController extends BaseAdminController {
     } else {
       adminUser.setPassword(new BCryptPasswordEncoder().encode(adminUser.getPassword()));
     }
-
     adminUserService.update(adminUser);
     return redirect("/forum/admin/admin_user/list");
   }
@@ -93,11 +92,5 @@ public class AdminUserAdminController extends BaseAdminController {
   public String delete(Integer id) {
     adminUserService.delete(id);
     return redirect("/forum/admin/admin_user/list");
-  }
-
-  @GetMapping("/detail/{name}")
-  public String detail(@PathVariable String name, Model model) {
-    model.addAttribute("adminUser", adminUserService.selectByUsername(name));
-    return "admin/admin_user/detail";
   }
 }

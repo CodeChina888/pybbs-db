@@ -58,9 +58,9 @@
         </ul>
         </#if>
 
-      <#if sec.hasPermission('software:categorylist')>
+      <#if sec.hasPermission('software:list')>
         <li <#if page_tab=='software'>class="active"</#if>>
-          <a href="/forum/admin/software/categorylist">
+          <a href="/forum/softwareCenter/list">
             <i class="fa fa-tags"></i>
             <span>软件中心</span>
           </a>
@@ -74,14 +74,24 @@
             </a>
         </li>
       </#if>
-<#--      <#if sec.hasPermission('records:list')>-->
+
+      <#if sec.hasPermission('category:list')>
+        <li <#if page_tab=='category'>class="active"</#if>>
+          <a href="/forum/category/list">
+            <i class="fa fa-tags"></i>
+            <span>分类中心</span>
+          </a>
+        </li>
+      </#if>
+
+      <#if sec.hasPermission('records:list')>
       <li <#if page_tab=='record'>class="active"</#if>>
           <a href="/forum/admin/record/list">
               <i class="fa fa-tags"></i>
               <span>${i18n.getMessage("admin.records")}</span>
           </a>
       </li>
-<#--      </#if>-->
+      </#if>
       <#if sec.hasPermission('user:list')>
         <li <#if page_tab=='user'>class="active"</#if>>
           <a href="/forum/admin/user/list">

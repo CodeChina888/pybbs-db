@@ -8,6 +8,9 @@
     <delete id="delectByCode">
         delete from document where code=#{code}
     </delete>
+    <delete id="deleteByCategoryId">
+        delete from document where document_category_id=#{id}
+    </delete>
 
     <select id="selectByCode" resultType="co.yiiu.pybbs.model.Document">
         select * from document where code=#{code}
@@ -21,6 +24,9 @@
   </select>
     <select id="selectIdByCode" resultType="java.lang.Integer">
         select id from document where code=#{code}
+    </select>
+    <select id="selectByCategoryId" resultType="co.yiiu.pybbs.model.Document">
+        select * from document where document_category_id=#{id}
     </select>
 
 </mapper>

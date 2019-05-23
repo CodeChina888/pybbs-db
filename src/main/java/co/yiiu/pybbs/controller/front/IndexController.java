@@ -118,8 +118,9 @@ public class IndexController extends BaseController {
     model.addAttribute("pageNo", pageNo);
     User user = (User) session.getAttribute("_user");
     String token=(String)session.getAttribute("_token");
-    if (user!=null && token!=null)
+    if (user!=null && token!=null) {
       userService.refresh(user.getOriginId(),token);
+    }
     return render("tag/tags");
   }
 
@@ -161,7 +162,9 @@ public class IndexController extends BaseController {
   @GetMapping("/adminlogin")
   public String adminlogin() {
     Subject subject = SecurityUtils.getSubject();
-    if (subject.isAuthenticated()) return redirect("/forum/admin/index");
+    if (subject.isAuthenticated()) {
+      return redirect("/forum/admin/index");
+    }
     return "admin/login";
   }
 
@@ -192,35 +195,4 @@ public class IndexController extends BaseController {
     return redirect("/forum/admin/index");
   }
 
-  @GetMapping("/software/categorylist")
-  public String software(@RequestParam(defaultValue = "1") Integer pageNo,Model model,@RequestParam(defaultValue = "0") int categoryId){
-    model.addAttribute("pageNo", pageNo);
-    model.addAttribute("categoryId",categoryId);
-    return  render("software/categorylist");
-  }
-
-
-
-
-
-
-//  @GetMapping("/search")
-//  public String search(@RequestParam(defaultValue = "1") Integer pageNo, @RequestParam String keyword, Model model) {
-//    Assert.isTrue(systemConfigService.selectAllConfig().get("search").toString().equals("1"), "网站没有启动搜索功能，联系站长问问看");
-//    model.addAttribute("pageNo", pageNo);
-//    model.addAttribute("keyword", keyword);
-//    return render("search");
-//  }
-
-//  // 切换语言
-//  @GetMapping("changeLanguage")
-//  public String changeLanguage(String lang, HttpSession session, HttpServletRequest request) {
-//    String referer = request.getHeader("referer");
-//    if ("zh".equals(lang)) {
-//      session.setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME, Locale.SIMPLIFIED_CHINESE);
-//    } else if ("en".equals(lang)) {
-//      session.setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME, Locale.US);
-//    }
-//    return StringUtils.isEmpty(referer) ? redirect("/") : redirect(referer);
-//  }
 }

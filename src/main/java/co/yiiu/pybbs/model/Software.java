@@ -7,22 +7,24 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
-@Data
 @Component
-public class Document implements Serializable {
+@Data
+public class Software implements Serializable
+{
     private static final long serialVersionUID = -8444058017995383187L;
     @TableId(type = IdType.AUTO)
     private Integer id;
+    private Date inTime;
+    private String url;
+    private String path;
     private String code;
     private String fullpath;
     private String originName;
-    private String url;
-    private String path;
-    private Date inTime;
-    private String pdfUrl;
-    private String pdfPath;
-    private String pdfName;
-    private Integer documentCategoryId;
     private String category;
+    private String version;
+    private String description;
+    private Integer softwareCategoryId;
+
 }

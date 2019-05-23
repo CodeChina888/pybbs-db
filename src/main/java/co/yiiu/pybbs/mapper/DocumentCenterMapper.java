@@ -16,4 +16,8 @@ public interface DocumentCenterMapper extends BaseMapper<Document> {
     void delectByCode(String code);
 
     Integer selectIdByCode(String code);
+
+    void deleteByCategoryId(Integer id);
+
+    Document selectByCategoryId(Integer id);
 }

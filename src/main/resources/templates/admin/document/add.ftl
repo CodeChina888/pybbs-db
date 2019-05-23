@@ -1,27 +1,52 @@
 <#include "../layout/layout.ftl">
 <@html page_title="文档添加" page_tab="document">
-    <body>
-    <form action="/forum/documentCenter/upload" method="post" enctype="multipart/form-data">
-        <label>上传文档</label><br>
-        <label>产品分类</label><br>
-        <input type="text" name="documentClass"><br>
-        <label>产品种类</label><br>
-        <input type="text" name="documentType"><br>
-        <label>文档分类</label><br>
-        <input type="text" name="documentClassify"><br>
-        <label>文档名称</label><br>
-        <input type="text" name="documentName"><br>
-        <span>标签选择</span><br>
-        <span>
-        <select name="ids" multiple="multiple">
-           <#list labels as label>
-               <option name="ids" value ="${label.id}">${label.code!}</option>
-           </#list>
-        </select>
-        </span><br>
-        <label>上传文档</label><br>
-        <input type="file" name="file"/>
-        <input type="submit" value="上传"/>
-    </form>
-    </body>
+    <section class="content-header">
+        <h1>
+            文档
+            <small>列表</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="/forum/admin/index"><i class="fa fa-dashboard"></i> 首页</a></li>
+            <li><a href="/forum/documentCenter/list">文档</a></li>
+            <li class="active">添加</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box box-info">
+            <div class="box-header with-border">
+                <h3 class="box-title">文档添加</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <form id="form" action="/forum/documentCenter/upload" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label>上传pdf文件</label>
+                        <input type="file" name="pdfFile" class="form-control">
+                        <label>上传文件</label>
+                        <input type="file" name="files" class="form-control">
+                    </div>
+                    <label>产品归属</label><br>
+                    <select name="documentCategoryId">
+                        <#list categoryList as name>
+                            <option value="${name.id}">${name.name}</option>
+                        </#list>
+                    </select>
+                    <br>
+                    <div class="form-group">
+                    <span >
+                        <label for="">标签选择</label>
+                    <br>
+                     <select name="ids" multiple="multiple">
+                       <#list labels as label>
+                           <option name="ids" value ="${label.id}">${label.code!}</option>
+                       </#list>
+                     </select>
+                    </span>
+                    <br>
+                    <button type="submit" id="btn" class="btn btn-primary">提交</button>
+                </form>
+            </div>
+        </div>
+    </section>
 </@html>
+

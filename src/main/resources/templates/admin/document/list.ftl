@@ -3,7 +3,7 @@
   <section class="content-header">
       <h1>
           文档
-          <small>中心</small>
+          <small>列表</small>
       </h1>
       <ol class="breadcrumb">
           <li><a href="/forum/admin/index"><i class="fa fa-dashboard"></i> 首页</a></li>
@@ -15,22 +15,17 @@
       <div class="box box-info">
           <div class="box-header with-border">
               <h3 class="box-title">文档中心</h3>
-        <#if sec.hasPermission('document:add')>
-          <a href="/forum/documentCenter/add" class="btn btn-xs btn-primary pull-right">文档上传</a>
-        </#if>
+              <#if sec.hasPermission('document:add')>
+                  <a href="/forum/documentCenter/add" class="btn btn-xs btn-primary pull-right">上传文档</a>
+              </#if>
           </div>
           <!-- /.box-header -->
           <div class="box-body">
               <table class="table table-bordered">
                   <thead>
                   <tr>
-                      <th>编号</th>
-                      <th>产品名称</th>
-                      <th>产品种类</th>
-                      <th>文档分类</th>
-                      <th>文档说明</th>
-                      <th>接口访问路径</th>
-                      <th>完整路径</th>
+                      <th>文档名称</th>
+                      <th>产品归属</th>
                       <th>上传时间</th>
                       <th>操作</th>
                   </tr>
@@ -38,17 +33,15 @@
               <tbody>
           <#list page.records as record>
           <tr>
-              <td>${record.id}</td>
-              <td>${record.documentClass!}</td>
-              <td>${record.documentType!}</td>
-              <td>${record.documentClassify!}</td>
-              <td>${record.documentName!}</td>
-              <td>${record.url!}</td>
-              <td>${record.fullpath!}</td>
+              <th>${record.originName}</th>
+              <th>${record.category}</th>
               <td>${record.inTime?string('yyyy-MM-dd HH:mm:ss')}</td>
               <td>
                   <#if sec.hasPermission("document:delete")>
                       <button onclick="deleteBtn('${record.code}')" class="btn btn-xs btn-danger">删除</button>
+                  </#if>
+                  <#if sec.hasPermission("document:edit")>
+                      <a href="/forum/documentCenter/edit/${record.code}" class="btn btn-xs btn-warning">编辑</a>
                   </#if>
               </td>
           </tr>
@@ -74,6 +67,7 @@
               }
           }
           </#if>
+
       </script>
   <#include "../layout/paginate.ftl">
     <@paginate currentPage=page.current totalPage=page.pages actionUrl="/forum/documentCenter/list" urlParas=""/>

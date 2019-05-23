@@ -13,7 +13,6 @@
                 <li class="xpro-nav-li"><a href="https://www.linkedbyx.com/studyCenter/types" class="">学习中心</a></li>
                 <li class="xpro-nav-li"><a href="https://www.linkedbyx.com/train/home" class="">认证培训</a></li>
                 <li class="xpro-nav-li"><a href="https://www.linkedbyx.com/market" class="">积分商城</a></li>
-<#--                <li class="xpro-nav-li"><a href="https://www.linkedbyx.com/forum" class=""><strong>前往论坛</strong></a></li>-->
             </ul>
         </div>
     </header>
@@ -35,14 +34,13 @@
                 <ul class="nav navbar-nav">
                     <li <#if page_tab == "index">class="active"</#if>><a href="/forum"><i class="fa fa-home"></i> ${i18n.getMessage("index")}</a></li>
                     <li <#if page_tab == "tags">class="active"</#if>><a href="/forum/tags"><i class="fa fa-tags"></i> ${i18n.getMessage("tag")}</a></li>
-                    <li <#if page_tab == "Software_Center">class="active"</#if>><a href="/forum/software/categorylist"><i class="fa fa-tags"></i> 软件中心</a></li>
-                    <li <#if page_tab == "document">class="active"</#if>><a href="/forum/document/list"><i class="fa fa-tags"></i> 文档中心</a></li>
+                    <li <#if page_tab == "software">class="active"</#if>><a href="/forum/software/list"><i class="fa fa-tags"></i> 软件下载</a></li>
+                    <li <#if page_tab == "document">class="active"</#if>><a href="/forum/document/list"><i class="fa fa-tags"></i> 文档下载</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
         <#if _user??>
           <li <#if page_tab == "notification">class="active"</#if>><a href="/forum/notifications"><i class="fa fa-envelope"></i> ${i18n.getMessage("notification")} <span class="badge badge-default" id="nh_count"></span></a></li>
           <li <#if page_tab == "user">class="active"</#if>><a href="/forum/user/${_user.username}"><i class="fa fa-user"></i> ${_user.username}</a></li>
-<#--        <li><a href="javascript:if(confirm('确定要登出吗？登出了就没办法发帖回帖了哦!'))window.location.href='/forum/logout'"><i class="fa fa-sign-out"></i> ${i18n.getMessage("logout")}</a></li>-->
         </#if>
                 </ul>
             </div><!-- /.navbar-collapse -->

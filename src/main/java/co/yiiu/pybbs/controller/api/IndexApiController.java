@@ -39,7 +39,7 @@ public class IndexApiController extends BaseApiController {
   @Autowired
   private FileUtil fileUtil;
   @Autowired
-  private UploadFileServies uploadFileServies;
+  private SoftwareService softwareService;
 
   // 首页接口
   @GetMapping({"/", "/index"})
@@ -138,8 +138,4 @@ public class IndexApiController extends BaseApiController {
     return success(url);
   }
 
-  @GetMapping("/software/categorylist/")
-  public Result categorylist(@RequestParam(defaultValue = "1") Integer pageNo,@RequestParam(defaultValue = "0")int cgId) {
-    return success(uploadFileServies.selectAllCategory(pageNo,null,null,cgId));
-  }
 }

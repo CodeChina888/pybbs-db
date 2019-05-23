@@ -31,18 +31,6 @@
                 <input type="password" id="password" name="password" class="form-control"  placeholder="密码">
               </div>
               <div class="form-group">
-                <label>部门</label>
-                <input type="text" id="department" name="department" value="${adminUser.department!}" class="form-control" placeholder="部门">
-              </div>
-              <div class="form-group">
-                <label>邮箱</label>
-                <input type="email" id="email" name="email" value="${adminUser.email!}" class="form-control" placeholder="邮箱">
-              </div>
-              <div class="form-group">
-                <label>电话</label>
-                <input type="number" id="phone" name="phone" value="${adminUser.phone!}" class="form-control" placeholder="电话">
-              </div>
-              <div class="form-group">
                 <label>角色</label>
                 <p>
                   <#list roles as role>
@@ -52,20 +40,18 @@
                   </#list>
                 </p>
               </div>
-              <div class="form-group">
-                  <#if adminUser.roleId !=1>
-                    <label>模块</label>
-                    <p>
-                    <#list tags as tag>
-                    <input type="radio" name="tagId" value="${tag.id}" id="tag_${tag.id}"
-                      <#--<#if adminUser.tagId !=0>-->
-                           <#if tag.id == adminUser.tagId>checked</#if>>&nbsp;
-                      <#--</#if>-->
-                    <label for="tag_${tag.id}">${tag.name!"还没添加板块"}</label>
-                    </#list>
-                  </#if>
-                </p>
-              </div>
+<#--              <div class="form-group">-->
+<#--                  <#if adminUser.roleId !=1>-->
+<#--                    <label>模块</label>-->
+<#--                    <p>-->
+<#--                    <#list plate as plate>-->
+<#--                    <input type="radio" name="tagId" value="${plate.id}" id="tag_${plate.id}"-->
+<#--                    <#if plate.id == adminUser.tagId>checked</#if>>&nbsp;-->
+<#--                    <label for="tag_${plate.id}">${plate.name!"还没添加板块"}</label>-->
+<#--                    </#list>-->
+<#--                  </#if>-->
+<#--                </p>-->
+<#--              </div>-->
               <button type="submit" class="btn btn-xs btn-primary">保存</button>
             </form>
           </div>

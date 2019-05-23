@@ -1,7 +1,9 @@
 package co.yiiu.pybbs.util;
 
 import co.yiiu.pybbs.model.Document;
+import co.yiiu.pybbs.model.Software;
 import co.yiiu.pybbs.service.DocumentCenterService;
+import co.yiiu.pybbs.service.SoftwareService;
 import co.yiiu.pybbs.service.SystemConfigService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.slf4j.Logger;
@@ -11,11 +13,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.security.MessageDigest;
+import java.util.List;
 
 /**
  * Created by tomoya.
@@ -33,6 +37,8 @@ public class FileUtil {
   private DocumentCenterService documentCenterService;
   @Autowired
   private Document document;
+  @Autowired
+  private SoftwareService softwareService;
   /**
    * 上传文件
    * @param file 要上传的文件对象
@@ -144,11 +150,75 @@ public class FileUtil {
     return "下载失败";
   }
 
+  public String downloadSoftware(HttpServletResponse response,String code) throws UnsupportedEncodingException {
+    Software software=softwareService.selectByCode(code);
+    String fullPath = software.getFullpath();
+    String originName = software.getOriginName();
+    // 获取了文件名称
+    if (originName != null) {
+      //设置文件路径
+      File file = new File(fullPath);
+      if (file.exists()) {
+        response.setContentType("application/force-download");
+        // 设置强制下载不打开
+//        response.setHeader("Content-Disposition","inline;fileName=" +new String(originName.getBytes("UTF-8"),"iso-8859-1"));
+        response.addHeader("Content-Disposition","attachment;fileName=" +new String(originName.getBytes("UTF-8"),"iso-8859-1"));
+        response.setCharacterEncoding("utf-8");
+        byte[] buffer = new byte[1024];
+        FileInputStream fis = null;
+        BufferedInputStream bis = null;
+        try {
+          fis = new FileInputStream(file);
+          bis = new BufferedInputStream(fis);
+          OutputStream os = response.getOutputStream();
+          int i = bis.read(buffer);
+          while (i != -1) {
+            os.write(buffer, 0, i);
+            i = bis.read(buffer);
+          }
+          return "下载成功";
+        } catch (Exception e) {
+          e.printStackTrace();
+        } finally {
+          if (bis != null) {
+            try {
+              bis.close();
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+          if (fis != null) {
+            try {
+              fis.close();
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+        }
+      }
+    }
+    return "下载失败";
+  }
 
   // 删除文件
   public boolean removeFile(String code){
     document=documentCenterService.selectByCode(code);
     String path=document.getFullpath();
+    File file=new File(path);
+    File pdf=new File(document.getPdfPath());
+    if (pdf.exists()) {
+      pdf.delete();
+    }
+    if (file.exists()) {
+      file.delete();
+      return true;
+    }
+    return false;
+  }
+
+  public boolean removeSoftware(String code){
+    Software software =softwareService.selectByCode(code);
+    String path=software.getFullpath();
     File file=new File(path);
     if (file.exists()) {
       file.delete();
@@ -157,9 +227,10 @@ public class FileUtil {
     return false;
   }
 
+
   public String previewFile(HttpServletResponse response,String code) throws UnsupportedEncodingException {
     document=documentCenterService.selectByCode(code);
-    String fullPath = document.getFullpath();
+    String fullPath = document.getPdfPath();
     String originName = document.getOriginName();
     // 获取了文件名称
     if (originName != null) {
@@ -237,7 +308,6 @@ public class FileUtil {
       return "";
     }
   }
-
 
 
 }

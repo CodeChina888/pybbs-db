@@ -55,7 +55,6 @@ public class TagAdminController extends BaseAdminController {
   @PostMapping("/add")
   public String add(String name, String description, Integer topicCount) {
 
-//    System.out.println(adminUser.getUsername());
     tag.setName(name);
     tag.setDescription(description);
     //tag.setTopicCount(topicCount);

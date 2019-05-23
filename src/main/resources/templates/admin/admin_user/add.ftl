@@ -30,18 +30,6 @@
                 <input type="password" id="password" name="password" class="form-control" placeholder="密码">
               </div>
               <div class="form-group">
-                <label>部门</label>
-                <input type="text" id="department" name="department" class="form-control" placeholder="部门">
-              </div>
-              <div class="form-group">
-                <label>邮箱</label>
-                <input type="email" id="email" name="email" class="form-control" placeholder="邮箱">
-              </div>
-              <div class="form-group">
-                <label>电话</label>
-                <input type="number" id="phone" name="phone" class="form-control" placeholder="电话">
-              </div>
-              <div class="form-group">
                 <label>角色</label>
                 <p>
                   <#list roles as role>
@@ -50,15 +38,15 @@
                   </#list>
                 </p>
               </div>
-              <div class="form-group">
-                <label>模块</label>
-                <p>
-                  <#list tags as tag>
-                    <input type="radio" name="tagId" value="${tag.id}" id="tag_${tag.id}"
-                    <label for="tag_${tag.id}">${tag.name!}</label>
-                  </#list>
-                </p>
-              </div>
+<#--              <div class="form-group">-->
+<#--                <label>模块</label>-->
+<#--                <p>-->
+<#--                  <#list plate as plate>-->
+<#--                    <input type="radio" name="tagId" value="${plate.id}" id="tag_${plate.id}"-->
+<#--                    <label for="tag_${plate.id}">${plate.name!}</label>-->
+<#--                  </#list>-->
+<#--                </p>-->
+<#--              </div>-->
               <button type="submit" class="btn btn-xs btn-primary">保存</button>
             </form>
           </div>

@@ -1,7 +1,7 @@
 package co.yiiu.pybbs.directive;
 
-import co.yiiu.pybbs.model.Softcategory;
-import co.yiiu.pybbs.service.UploadFileServies;
+import co.yiiu.pybbs.model.Software;
+import co.yiiu.pybbs.service.SoftwareService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import freemarker.core.Environment;
 import freemarker.template.*;
@@ -15,15 +15,13 @@ import java.util.Map;
 public class SoftwareDirective implements TemplateDirectiveModel
 {
     @Autowired
-    private UploadFileServies uploadFileServies;
+    private SoftwareService softwareService;
 
     @Override
     public void execute(Environment environment, Map map, TemplateModel[] templateModels, TemplateDirectiveBody templateDirectiveBody) throws TemplateException, IOException
     {
         Integer pageNo = Integer.parseInt(map.get("pageNo").toString());
-        Integer pageSize = Integer.parseInt(map.get("pageSize").toString());
-        Integer cgId=Integer.parseInt(map.get("categoryId").toString());
-        IPage<Softcategory> page=uploadFileServies.selectAllCategory(pageNo, pageSize, null,cgId);
+        IPage<Software> page=softwareService.selectAll(pageNo);
         DefaultObjectWrapperBuilder builder = new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_28);
         environment.setVariable("page", builder.build().wrap(page));
         templateDirectiveBody.render(environment.getOut());

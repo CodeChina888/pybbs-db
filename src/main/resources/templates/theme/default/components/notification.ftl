@@ -17,12 +17,12 @@
               <#elseif notification.action == "COLLECT">
                 收藏了你的话题 <a href="/forum/topic/${notification.topicId}">${notification.title}</a>
               </#if>
-            <#else>
-              <#if notification.pass>
-                话题审核通过 <a href="/forum/topic/${notification.topicId}">${notification.title}</a>
-              <#else>
-                话题审核未通过
-              </#if>
+<#--            <#else>-->
+<#--              <#if notification.pass>-->
+<#--                话题审核通过 <a href="/forum/topic/${notification.topicId}">${notification.title}</a>-->
+<#--              <#else>-->
+<#--                话题审核未通过-->
+<#--              </#if>-->
             </#if>
           </div>
           <#if notification.content??>

@@ -129,7 +129,6 @@ public class HttpClientUtil {
         // 创建Httpclient对象
         CloseableHttpClient httpClient = HttpClients.createDefault();
         CloseableHttpResponse response = null;
-
         String resultString = "";
         try {
             // 创建Http Post请求
