@@ -48,7 +48,7 @@ public class DocumentCenterService {
         QueryWrapper<Document> wrapper=new QueryWrapper<>();
         if (!StringUtils.isEmpty(name)) {
             wrapper.lambda().like(Document::getOriginName,name);
-            wrapper.orderByDesc("in_time");
+            wrapper.orderByDesc("category");
         }
         return documentCenterMapper.selectPage(page, wrapper);
     }

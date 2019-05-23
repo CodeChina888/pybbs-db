@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -44,7 +45,10 @@ public class SoftwareService {
     public IPage<Software> selectAll(Integer pageNo,String name) {
         MyPage<Software> page = new MyPage<>(pageNo,Integer.parseInt((String) systemConfigService.selectAllConfig().get("page_size")));
         QueryWrapper<Software> wrapper=new QueryWrapper<>();
-        wrapper.lambda().like(Software::getOriginName,name);
+        if (!StringUtils.isEmpty(name)) {
+            wrapper.lambda().like(Software::getOriginName,name);
+            wrapper.orderByDesc("category");
+        }
         return softwareMapper.selectPage(page, wrapper);
     }
 

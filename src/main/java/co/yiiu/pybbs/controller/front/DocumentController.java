@@ -97,18 +97,17 @@ public class DocumentController extends BaseApiController {
     }
 
     @GetMapping("/list")
-    public String documentList(@RequestParam(defaultValue = "1") Integer pageNo, String name,Model model) {
-        if (StringUtils.isEmpty(name)) {
-            name = null;
-        }
-        System.out.println(name);
-        IPage<Document> page = documentCenterService.selectAll(pageNo,name);
-        for (Document document:page.getRecords()) {
-            System.out.println(document.toString());
+    public String documentList(@RequestParam(defaultValue = "1") Integer pageNo, String keyword,Model model) {
+        IPage<Document> page;
+        if (!StringUtils.isEmpty(keyword)) {
+            page = documentCenterService.selectAll(pageNo,keyword);
+        } else {
+            page = documentCenterService.selectAll(pageNo);
         }
         model.addAttribute("pageNo", pageNo);
         model.addAttribute("page", page);
-        model.addAttribute("name",name);
+        model.addAttribute("keyword",keyword);
         return render("document/list");
     }
+
 }

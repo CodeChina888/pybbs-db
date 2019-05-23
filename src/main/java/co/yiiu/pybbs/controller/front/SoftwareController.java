@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -67,10 +68,16 @@ public class SoftwareController extends BaseApiController {
     }
 
     @GetMapping("/list")
-    public String softwareList(@RequestParam(defaultValue = "1") Integer pageNo, Model model) {
-        IPage<Software> page = softwareService.selectAll(pageNo);
+    public String softwareList(@RequestParam(defaultValue = "1") Integer pageNo,String keyword, Model model) {
+        IPage<Software> page;
+        if (!StringUtils.isEmpty(keyword)) {
+            page = softwareService.selectAll(pageNo,keyword);
+        } else {
+            page = softwareService.selectAll(pageNo);
+        }
         model.addAttribute("pageNo", pageNo);
         model.addAttribute("page", page);
+        model.addAttribute("keyword",keyword);
         return render("software/list");
     }
 }

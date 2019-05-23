@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : bbs
+ Source Server         : mac
  Source Server Type    : MySQL
- Source Server Version : 50726
- Source Host           : 10.20.120.252:3306
- Source Schema         : bbs
+ Source Server Version : 80015
+ Source Host           : localhost:3306
+ Source Schema         : dbapp2
 
  Target Server Type    : MySQL
- Target Server Version : 50726
+ Target Server Version : 80015
  File Encoding         : 65001
 
- Date: 16/05/2019 11:32:04
+ Date: 23/05/2019 09:41:03
 */
 
 SET NAMES utf8mb4;
@@ -23,25 +23,42 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `admin_user`;
 CREATE TABLE `admin_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) NOT NULL DEFAULT '',
-  `password` varchar(255) NOT NULL DEFAULT '',
+  `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `in_time` datetime NOT NULL,
   `role_id` int(11) NOT NULL,
   `tag_id` int(11) DEFAULT NULL,
-  `department` varchar(255) DEFAULT NULL,
-  `phone` varchar(255) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
+  `plate_id` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `username` (`username`) USING BTREE,
-  KEY `role_id` (`role_id`) USING BTREE,
-  CONSTRAINT `admin_user_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+  UNIQUE KEY `username` (`username`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of admin_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `admin_user` VALUES (1, 'admin', '$2a$10$wr5wNPtdAYCtR7pJHVjzm.duC3v2d3tXympYz171RgH7CZCzHGJZm', '2018-11-11 11:11:11', 1, 0, '', '', '');
+INSERT INTO `admin_user` VALUES (1, 'admin', '$2a$10$wr5wNPtdAYCtR7pJHVjzm.duC3v2d3tXympYz171RgH7CZCzHGJZm', '2018-11-11 11:11:11', 1, 0, NULL);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for category
+-- ----------------------------
+DROP TABLE IF EXISTS `category`;
+CREATE TABLE `category` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `pid` int(11) NOT NULL,
+  `in_time` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of category
+-- ----------------------------
+BEGIN;
+INSERT INTO `category` VALUES (1, '所有分类', 0, '2019-05-20 07:50:31');
+INSERT INTO `category` VALUES (3, '明鉴系列', 1, '2019-05-20 07:53:13');
+INSERT INTO `category` VALUES (14, '明御系列', 1, '2019-05-21 08:37:31');
 COMMIT;
 
 -- ----------------------------
@@ -51,14 +68,15 @@ DROP TABLE IF EXISTS `code`;
 CREATE TABLE `code` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
-  `code` varchar(255) NOT NULL DEFAULT '',
+  `code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `in_time` datetime NOT NULL,
   `expire_time` datetime NOT NULL,
-  `email` varchar(255) NOT NULL DEFAULT '',
+  `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `used` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `code` (`code`) USING BTREE,
-  KEY `user_id` (`user_id`) USING BTREE
+  KEY `user_id` (`user_id`) USING BTREE,
+  CONSTRAINT `code_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
@@ -70,7 +88,9 @@ CREATE TABLE `collect` (
   `user_id` int(11) NOT NULL,
   `in_time` datetime NOT NULL,
   KEY `topic_id` (`topic_id`) USING BTREE,
-  KEY `user_id` (`user_id`) USING BTREE
+  KEY `user_id` (`user_id`) USING BTREE,
+  CONSTRAINT `collect_ibfk_1` FOREIGN KEY (`topic_id`) REFERENCES `topic` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `collect_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
@@ -79,16 +99,17 @@ CREATE TABLE `collect` (
 DROP TABLE IF EXISTS `comment`;
 CREATE TABLE `comment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `content` longtext NOT NULL,
+  `content` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `topic_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `in_time` datetime NOT NULL,
   `comment_id` int(11) DEFAULT NULL,
-  `up_ids` text,
+  `up_ids` text CHARACTER SET utf8 COLLATE utf8_general_ci,
   PRIMARY KEY (`id`) USING BTREE,
   KEY `topic_id` (`topic_id`) USING BTREE,
-  KEY `user_id` (`user_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+  KEY `user_id` (`user_id`) USING BTREE,
+  CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for document
@@ -96,24 +117,52 @@ CREATE TABLE `comment` (
 DROP TABLE IF EXISTS `document`;
 CREATE TABLE `document` (
   `id` int(25) NOT NULL AUTO_INCREMENT,
-  `document_class` varchar(255) NOT NULL,
-  `document_type` varchar(255) NOT NULL,
-  `document_classify` varchar(255) NOT NULL,
-  `document_name` varchar(255) NOT NULL,
   `in_time` datetime NOT NULL,
   `url` varchar(255) NOT NULL,
   `path` varchar(255) NOT NULL,
   `code` varchar(255) NOT NULL,
   `fullpath` varchar(255) NOT NULL,
   `origin_name` varchar(255) NOT NULL,
+  `pdf_url` varchar(255) DEFAULT NULL,
+  `pdf_path` varchar(255) DEFAULT NULL,
+  `pdf_name` varchar(255) DEFAULT NULL,
+  `document_category_id` int(11) NOT NULL,
+  `category` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of document
 -- ----------------------------
 BEGIN;
-INSERT INTO `document` VALUES (2, '明御系列', 'WAF', '售前主打PPT', '产品介绍PPT', '2019-05-16 02:59:42', '/forum/document/download/54ddb618828c4d0296de1f10efa8e26a', 'http://10.20.120.252/static/upload/明御系列/WAF/售前主打PPT/产品介绍PPT/明御WEB应用防火墙产品手册-1557975582272.pdf', '54ddb618828c4d0296de1f10efa8e26a', '/bbs/static/upload/明御系列/WAF/售前主打PPT/产品介绍PPT/明御WEB应用防火墙产品手册-1557975582272.pdf', '明御WEB应用防火墙产品手册.pdf');
+INSERT INTO `document` VALUES (43, '2019-05-22 07:45:20', '/forum/document/download/86552fbcab7b46d6a212513957ee73f1', 'http://127.0.0.1:8080/static/upload/Linux就该这么学 高清晰PDF-1558511120340.pdf', '86552fbcab7b46d6a212513957ee73f1', '/Users/chenghongzhi/GitHub/pybbs/pybbs-db/static/upload/Linux就该这么学 高清晰PDF-1558511120340.pdf', 'Linux就该这么学 高清晰PDF.pdf', 'http://127.0.0.1:8080/static/upload/Java多线程编程核心技术_完整版+PDF电子书下载+-1558511120339.pdf', '/Users/chenghongzhi/GitHub/pybbs/pybbs-db/static/upload/Java多线程编程核心技术_完整版+PDF电子书下载+-1558511120339.pdf', 'Java多线程编程核心技术_完整版+PDF电子书下载+.pdf', 7, '远程安全评估系统');
+INSERT INTO `document` VALUES (44, '2019-05-22 07:51:35', '/forum/document/download/10d9a77808a240e8b65257a17e4e12dc', 'http://127.0.0.1:8080/static/upload/Java多线程编程核心技术_完整版+PDF电子书下载+-1558511494994.pdf', '10d9a77808a240e8b65257a17e4e12dc', '/Users/chenghongzhi/GitHub/pybbs/pybbs-db/static/upload/Java多线程编程核心技术_完整版+PDF电子书下载+-1558511494994.pdf', 'Java多线程编程核心技术_完整版+PDF电子书下载+.pdf', 'http://127.0.0.1:8080/static/upload/实战Java高并发程序设计（第2版）@www.java1234.com -1558511494993.pdf', '/Users/chenghongzhi/GitHub/pybbs/pybbs-db/static/upload/实战Java高并发程序设计（第2版）@www.java1234.com -1558511494993.pdf', '实战Java高并发程序设计（第2版）@www.java1234.com .pdf', 7, '远程安全评估系统');
+INSERT INTO `document` VALUES (45, '2019-05-22 07:52:00', '/forum/document/download/1cafa9b16c794f359107ef5a7b304428', 'http://127.0.0.1:8080/static/upload/深入实践Spring Boot-1558511519762.pdf', '1cafa9b16c794f359107ef5a7b304428', '/Users/chenghongzhi/GitHub/pybbs/pybbs-db/static/upload/深入实践Spring Boot-1558511519762.pdf', '深入实践Spring Boot.pdf', 'http://127.0.0.1:8080/static/upload/Java多线程编程核心技术_完整版+PDF电子书下载+-1558511519761.pdf', '/Users/chenghongzhi/GitHub/pybbs/pybbs-db/static/upload/Java多线程编程核心技术_完整版+PDF电子书下载+-1558511519761.pdf', 'Java多线程编程核心技术_完整版+PDF电子书下载+.pdf', 7, '远程安全评估系统');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for document_category
+-- ----------------------------
+DROP TABLE IF EXISTS `document_category`;
+CREATE TABLE `document_category` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `pid` int(11) NOT NULL,
+  `top_id` int(11) NOT NULL,
+  `in_time` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of document_category
+-- ----------------------------
+BEGIN;
+INSERT INTO `document_category` VALUES (7, '远程安全评估系统', 3, 1, '2019-05-21 08:39:24');
+INSERT INTO `document_category` VALUES (8, 'web应用防火墙', 14, 1, '2019-05-21 08:39:37');
+INSERT INTO `document_category` VALUES (9, 'USM运维审计', 14, 1, '2019-05-21 08:39:48');
+INSERT INTO `document_category` VALUES (10, 'SOC日志审计', 14, 1, '2019-05-21 08:40:02');
+INSERT INTO `document_category` VALUES (11, 'DB数据库审计', 14, 1, '2019-05-21 08:40:16');
+INSERT INTO `document_category` VALUES (12, 'NGFW安全网关', 14, 1, '2019-05-21 08:40:30');
 COMMIT;
 
 -- ----------------------------
@@ -123,32 +172,16 @@ DROP TABLE IF EXISTS `document_label`;
 CREATE TABLE `document_label` (
   `doc_id` int(11) DEFAULT NULL,
   `label_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of document_label
 -- ----------------------------
 BEGIN;
-INSERT INTO `document_label` VALUES (1, 14);
-INSERT INTO `document_label` VALUES (2, 14);
-COMMIT;
-
--- ----------------------------
--- Table structure for file_label
--- ----------------------------
-DROP TABLE IF EXISTS `file_label`;
-CREATE TABLE `file_label` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `file_id` int(11) NOT NULL,
-  `label_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
-
--- ----------------------------
--- Records of file_label
--- ----------------------------
-BEGIN;
-INSERT INTO `file_label` VALUES (1, 1, 14);
+INSERT INTO `document_label` VALUES (43, 14);
+INSERT INTO `document_label` VALUES (43, 15);
+INSERT INTO `document_label` VALUES (43, 16);
+INSERT INTO `document_label` VALUES (43, 17);
 COMMIT;
 
 -- ----------------------------
@@ -157,12 +190,12 @@ COMMIT;
 DROP TABLE IF EXISTS `flyway_schema_history`;
 CREATE TABLE `flyway_schema_history` (
   `installed_rank` int(11) NOT NULL,
-  `version` varchar(50) DEFAULT NULL,
-  `description` varchar(200) NOT NULL,
-  `type` varchar(20) NOT NULL,
-  `script` varchar(1000) NOT NULL,
+  `version` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `description` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `type` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `script` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `checksum` int(11) DEFAULT NULL,
-  `installed_by` varchar(100) NOT NULL,
+  `installed_by` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `installed_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `execution_time` int(11) NOT NULL,
   `success` tinyint(1) NOT NULL,
@@ -183,10 +216,10 @@ COMMIT;
 DROP TABLE IF EXISTS `label`;
 CREATE TABLE `label` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `code` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '标签标示',
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '标签名称',
+  `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '标签标示',
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '标签名称',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=202 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=202 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of label
@@ -403,15 +436,24 @@ CREATE TABLE `notification` (
   `topic_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `target_user_id` int(11) NOT NULL,
-  `action` varchar(255) NOT NULL DEFAULT '',
+  `action` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `in_time` datetime NOT NULL,
   `read` bit(1) NOT NULL DEFAULT b'0',
-  `content` longtext,
+  `content` longtext CHARACTER SET utf8 COLLATE utf8_general_ci,
   PRIMARY KEY (`id`) USING BTREE,
   KEY `topic_id` (`topic_id`) USING BTREE,
   KEY `user_id` (`user_id`) USING BTREE,
-  KEY `target_user_id` (`target_user_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+  KEY `target_user_id` (`target_user_id`) USING BTREE,
+  CONSTRAINT `notification_ibfk_3` FOREIGN KEY (`target_user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+-- ----------------------------
+-- Records of notification
+-- ----------------------------
+BEGIN;
+INSERT INTO `notification` VALUES (68, 39, 0, 8, 'check', '2019-04-25 08:55:30', b'0', '111');
+INSERT INTO `notification` VALUES (69, 40, 0, 8, 'check', '2019-05-22 08:36:43', b'0', '测试结果');
+COMMIT;
 
 -- ----------------------------
 -- Table structure for oauth_user
@@ -420,15 +462,16 @@ DROP TABLE IF EXISTS `oauth_user`;
 CREATE TABLE `oauth_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `oauth_id` int(11) NOT NULL,
-  `type` varchar(255) NOT NULL DEFAULT '',
-  `login` varchar(255) NOT NULL DEFAULT '',
-  `access_token` varchar(255) NOT NULL DEFAULT '',
+  `type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `login` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `access_token` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `in_time` datetime NOT NULL,
-  `bio` text,
-  `email` varchar(255) DEFAULT NULL,
+  `bio` text CHARACTER SET utf8 COLLATE utf8_general_ci,
+  `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
-  KEY `user_id` (`user_id`) USING BTREE
+  KEY `user_id` (`user_id`) USING BTREE,
+  CONSTRAINT `oauth_user_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
@@ -437,13 +480,13 @@ CREATE TABLE `oauth_user` (
 DROP TABLE IF EXISTS `permission`;
 CREATE TABLE `permission` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL DEFAULT '',
-  `value` varchar(255) NOT NULL DEFAULT '',
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `value` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `pid` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `name` (`name`) USING BTREE,
   UNIQUE KEY `value` (`value`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=98 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of permission
@@ -500,9 +543,7 @@ INSERT INTO `permission` VALUES (51, '后台用户删除', 'admin_user:delete', 
 INSERT INTO `permission` VALUES (52, '话题审核', 'topic:check', 2);
 INSERT INTO `permission` VALUES (56, '软件', 'software', 0);
 INSERT INTO `permission` VALUES (57, '软件列表', 'software:list', 56);
-INSERT INTO `permission` VALUES (58, '软件上传', 'software:add', 56);
-INSERT INTO `permission` VALUES (59, '分类列表', 'software:categorylist', 56);
-INSERT INTO `permission` VALUES (60, '分类添加', 'software:categoryadd', 56);
+INSERT INTO `permission` VALUES (58, '软件添加', 'software:add', 56);
 INSERT INTO `permission` VALUES (70, '日志', 'record:list', 0);
 INSERT INTO `permission` VALUES (71, '日志列表', 'records:list', 70);
 INSERT INTO `permission` VALUES (73, '文档', 'documents:list', 0);
@@ -512,6 +553,18 @@ INSERT INTO `permission` VALUES (76, '文档列表', 'document:list', 73);
 INSERT INTO `permission` VALUES (77, '文档删除', 'document:delete', 73);
 INSERT INTO `permission` VALUES (78, '软件修改', 'software:edit', 56);
 INSERT INTO `permission` VALUES (79, '软件删除', 'software:delete', 56);
+INSERT INTO `permission` VALUES (80, '角色添加', 'role:add', 33);
+INSERT INTO `permission` VALUES (83, '文档编辑', 'document:edit', 73);
+INSERT INTO `permission` VALUES (87, '分类', 'category', 0);
+INSERT INTO `permission` VALUES (89, '添加分类', 'category:add', 87);
+INSERT INTO `permission` VALUES (90, '删除分类', 'category:delete', 87);
+INSERT INTO `permission` VALUES (91, '修改分类', 'category:edit', 87);
+INSERT INTO `permission` VALUES (92, '列表分类', 'category:list', 87);
+INSERT INTO `permission` VALUES (93, '文档分类添加', 'DocumentCategory:add', 87);
+INSERT INTO `permission` VALUES (94, '文档分类编辑', 'DocumentCategory:edit', 87);
+INSERT INTO `permission` VALUES (95, '文档分类删除', 'DocumentCategory:delete', 87);
+INSERT INTO `permission` VALUES (96, '文档分类列表', 'DocumentCategory:list', 87);
+INSERT INTO `permission` VALUES (97, '软件上传', 'software:upload', 56);
 COMMIT;
 
 -- ----------------------------
@@ -520,10 +573,10 @@ COMMIT;
 DROP TABLE IF EXISTS `plate`;
 CREATE TABLE `plate` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `in_time` datetime NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of plate
@@ -540,13 +593,20 @@ DROP TABLE IF EXISTS `record`;
 CREATE TABLE `record` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `origin_id` int(11) NOT NULL,
-  `username` varchar(255) NOT NULL,
-  `operation` varchar(255) DEFAULT NULL,
-  `method` varchar(255) DEFAULT NULL,
-  `params` varchar(10000) DEFAULT NULL,
+  `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `operation` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `method` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `params` varchar(10000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `in_time` datetime NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+-- ----------------------------
+-- Records of record
+-- ----------------------------
+BEGIN;
+INSERT INTO `record` VALUES (1, 1195, '老舰长不靠浆', '创建话题', 'create', '{\"title\":\"论坛功能测试\",\"content\":\"测试结果\",\"tags\":\"产品需求\"}', '2019-05-22 08:36:22');
+COMMIT;
 
 -- ----------------------------
 -- Table structure for role
@@ -554,19 +614,17 @@ CREATE TABLE `record` (
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `name` (`name`) USING BTREE
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of role
 -- ----------------------------
 BEGIN;
-INSERT INTO `role` VALUES (2, '审核员');
-INSERT INTO `role` VALUES (4, '文档中心管理员');
 INSERT INTO `role` VALUES (1, '超级管理员');
-INSERT INTO `role` VALUES (3, '软件中心管理员');
+INSERT INTO `role` VALUES (2, '模块管理员');
+INSERT INTO `role` VALUES (3, '内容管理员');
 COMMIT;
 
 -- ----------------------------
@@ -578,8 +636,8 @@ CREATE TABLE `role_permission` (
   `permission_id` int(11) NOT NULL,
   KEY `role_id` (`role_id`) USING BTREE,
   KEY `permission_id` (`permission_id`) USING BTREE,
-  CONSTRAINT `role_permission_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
-  CONSTRAINT `role_permission_ibfk_2` FOREIGN KEY (`permission_id`) REFERENCES `permission` (`id`)
+  CONSTRAINT `role_permission_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `role_permission_ibfk_2` FOREIGN KEY (`permission_id`) REFERENCES `permission` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
@@ -599,8 +657,16 @@ INSERT INTO `role_permission` VALUES (2, 19);
 INSERT INTO `role_permission` VALUES (2, 26);
 INSERT INTO `role_permission` VALUES (2, 57);
 INSERT INTO `role_permission` VALUES (2, 58);
-INSERT INTO `role_permission` VALUES (2, 59);
-INSERT INTO `role_permission` VALUES (2, 60);
+INSERT INTO `role_permission` VALUES (3, 11);
+INSERT INTO `role_permission` VALUES (3, 38);
+INSERT INTO `role_permission` VALUES (3, 39);
+INSERT INTO `role_permission` VALUES (3, 40);
+INSERT INTO `role_permission` VALUES (3, 41);
+INSERT INTO `role_permission` VALUES (3, 51);
+INSERT INTO `role_permission` VALUES (3, 57);
+INSERT INTO `role_permission` VALUES (3, 58);
+INSERT INTO `role_permission` VALUES (3, 78);
+INSERT INTO `role_permission` VALUES (3, 79);
 INSERT INTO `role_permission` VALUES (1, 11);
 INSERT INTO `role_permission` VALUES (1, 12);
 INSERT INTO `role_permission` VALUES (1, 13);
@@ -639,43 +705,70 @@ INSERT INTO `role_permission` VALUES (1, 51);
 INSERT INTO `role_permission` VALUES (1, 35);
 INSERT INTO `role_permission` VALUES (1, 36);
 INSERT INTO `role_permission` VALUES (1, 37);
+INSERT INTO `role_permission` VALUES (1, 80);
 INSERT INTO `role_permission` VALUES (1, 57);
 INSERT INTO `role_permission` VALUES (1, 58);
-INSERT INTO `role_permission` VALUES (1, 59);
-INSERT INTO `role_permission` VALUES (1, 60);
 INSERT INTO `role_permission` VALUES (1, 78);
 INSERT INTO `role_permission` VALUES (1, 79);
-INSERT INTO `role_permission` VALUES (1, 71);
+INSERT INTO `role_permission` VALUES (1, 97);
 INSERT INTO `role_permission` VALUES (1, 74);
 INSERT INTO `role_permission` VALUES (1, 75);
 INSERT INTO `role_permission` VALUES (1, 76);
 INSERT INTO `role_permission` VALUES (1, 77);
+INSERT INTO `role_permission` VALUES (1, 83);
+INSERT INTO `role_permission` VALUES (1, 89);
+INSERT INTO `role_permission` VALUES (1, 90);
+INSERT INTO `role_permission` VALUES (1, 91);
+INSERT INTO `role_permission` VALUES (1, 92);
+INSERT INTO `role_permission` VALUES (1, 93);
+INSERT INTO `role_permission` VALUES (1, 94);
+INSERT INTO `role_permission` VALUES (1, 95);
+INSERT INTO `role_permission` VALUES (1, 96);
 COMMIT;
 
 -- ----------------------------
--- Table structure for softcategory
+-- Table structure for software
 -- ----------------------------
-DROP TABLE IF EXISTS `softcategory`;
-CREATE TABLE `softcategory` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `path` varchar(255) NOT NULL,
+DROP TABLE IF EXISTS `software`;
+CREATE TABLE `software` (
+  `id` int(25) NOT NULL AUTO_INCREMENT,
   `in_time` datetime NOT NULL,
-  `description` varchar(255) NOT NULL,
-  `cg_id` int(11) NOT NULL DEFAULT '0',
-  `layer` int(11) NOT NULL DEFAULT '0',
-  `has_sg` bit(1) NOT NULL DEFAULT b'0',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+  `url` varchar(255) NOT NULL,
+  `path` varchar(255) NOT NULL,
+  `code` varchar(255) NOT NULL,
+  `fullpath` varchar(255) NOT NULL,
+  `origin_name` varchar(255) NOT NULL,
+  `software_category_id` int(11) NOT NULL,
+  `category` varchar(255) NOT NULL,
+  `version` varchar(255) DEFAULT NULL,
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
--- Records of softcategory
+-- Records of software
 -- ----------------------------
 BEGIN;
-INSERT INTO `softcategory` VALUES (1, 'WAF', '/bbs/static/upload/WAF', '2019-05-16 02:41:17', 'WAF', 0, 1, b'0');
-INSERT INTO `softcategory` VALUES (2, '明御系列', '/bbs/static/upload/明御系列', '2019-05-16 02:42:01', '', 0, 1, b'1');
-INSERT INTO `softcategory` VALUES (3, '明御web应用防火墙', '/bbs/static/upload/明御系列/明御web应用防火墙', '2019-05-16 02:42:18', 'WAF', 2, 2, b'1');
-INSERT INTO `softcategory` VALUES (4, 'WAF 433版本', '/bbs/static/upload/明御系列/明御web应用防火墙/WAF 433版本', '2019-05-16 02:43:59', '', 3, 3, b'0');
+INSERT INTO `software` VALUES (49, '2019-05-22 08:09:50', '/forum/software/download/3ca688d846bd41e1899b955d36c0c36f', 'http://127.0.0.1:8080/static/upload/实战Java高并发程序设计（第2版）@www.java1234.com -1558512589841.pdf', '3ca688d846bd41e1899b955d36c0c36f', '/Users/chenghongzhi/GitHub/pybbs/pybbs-db/static/upload/实战Java高并发程序设计（第2版）@www.java1234.com -1558512589841.pdf', '实战Java高并发程序设计（第2版）@www.java1234.com .pdf', 7, '远程安全评估系统', '', '');
+INSERT INTO `software` VALUES (50, '2019-05-22 08:09:56', '/forum/software/download/bba1d34df0b849aaa6b19a2e3a338434', 'http://127.0.0.1:8080/static/upload/java开发_程鸿志-1558512595830.pdf', 'bba1d34df0b849aaa6b19a2e3a338434', '/Users/chenghongzhi/GitHub/pybbs/pybbs-db/static/upload/java开发_程鸿志-1558512595830.pdf', 'java开发_程鸿志.pdf', 7, '远程安全评估系统', '', '');
+INSERT INTO `software` VALUES (51, '2019-05-22 08:10:04', '/forum/software/download/59efaedc4fd24cf8bf303eadbd51c428', 'http://127.0.0.1:8080/static/upload/实战Java高并发程序设计（第2版）@www.java1234.com -1558512604077.pdf', '59efaedc4fd24cf8bf303eadbd51c428', '/Users/chenghongzhi/GitHub/pybbs/pybbs-db/static/upload/实战Java高并发程序设计（第2版）@www.java1234.com -1558512604077.pdf', '实战Java高并发程序设计（第2版）@www.java1234.com .pdf', 7, '远程安全评估系统', '', '');
+INSERT INTO `software` VALUES (52, '2019-05-22 08:24:28', '/forum/software/download/fc582f02016142b0b5c0a4c263e3749d', 'http://127.0.0.1:8080/static/upload/实验7、用户管理和权限管理-1558513468486.docx', 'fc582f02016142b0b5c0a4c263e3749d', '/Users/chenghongzhi/GitHub/pybbs/pybbs-db/static/upload/实验7、用户管理和权限管理-1558513468486.docx', '实验7、用户管理和权限管理.docx', 7, '远程安全评估系统', '', '');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for software_label
+-- ----------------------------
+DROP TABLE IF EXISTS `software_label`;
+CREATE TABLE `software_label` (
+  `software_id` int(11) NOT NULL,
+  `label_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
+
+-- ----------------------------
+-- Records of software_label
+-- ----------------------------
+BEGIN;
+INSERT INTO `software_label` VALUES (52, 1);
 COMMIT;
 
 -- ----------------------------
@@ -684,15 +777,15 @@ COMMIT;
 DROP TABLE IF EXISTS `system_config`;
 CREATE TABLE `system_config` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `key` varchar(255) DEFAULT NULL,
-  `value` varchar(255) DEFAULT NULL,
-  `description` varchar(1000) NOT NULL,
+  `key` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `value` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `description` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `pid` int(11) NOT NULL DEFAULT '0',
-  `type` varchar(255) DEFAULT '',
-  `option` varchar(255) DEFAULT NULL,
+  `type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '',
+  `option` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `reboot` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of system_config
@@ -715,10 +808,10 @@ INSERT INTO `system_config` VALUES (14, 'mail_username', 'xxoo@qq.com', '发送�
 INSERT INTO `system_config` VALUES (15, 'name', '安恒信息', '站点名称', 23, 'text', NULL, 0);
 INSERT INTO `system_config` VALUES (16, 'page_size', '8', '分页每页条数', 23, 'number', NULL, 0);
 INSERT INTO `system_config` VALUES (17, 'websocket', '0', '是否开启websocket功能', 45, 'radio', NULL, 1);
-INSERT INTO `system_config` VALUES (18, 'static_url', 'http://10.20.120.252/static/upload/', '静态文件访问地址，主要用于上传文件的访问，注意最后有个\"/\"', 25, 'url', NULL, 0);
+INSERT INTO `system_config` VALUES (18, 'static_url', 'http://127.0.0.1:8080/', '静态文件访问地址，主要用于上传文件的访问，注意最后有个\"/\"', 25, 'url', NULL, 0);
 INSERT INTO `system_config` VALUES (19, 'up_comment_score', '3', '点赞评论奖励评论作者的积分', 26, 'number', NULL, 0);
 INSERT INTO `system_config` VALUES (20, 'upload_avatar_size_limit', '2', '上传头像文件大小，单位MB，默认2MB', 25, 'number', NULL, 0);
-INSERT INTO `system_config` VALUES (21, 'upload_path', '/bbs/static/upload/', '上传文件的路径，注意最后有个\"/\"', 25, 'text', NULL, 0);
+INSERT INTO `system_config` VALUES (21, 'upload_path', '/Users/chenghongzhi/GitHub/pybbs/pybbs-db/static/upload/', '上传文件的路径，注意最后有个\"/\"', 25, 'text', NULL, 0);
 INSERT INTO `system_config` VALUES (22, 'up_topic_score', '3', '点赞话题奖励话题作者的积分', 26, 'number', NULL, 0);
 INSERT INTO `system_config` VALUES (23, NULL, NULL, '基础配置', 0, NULL, NULL, 0);
 INSERT INTO `system_config` VALUES (25, NULL, NULL, '上传配置', 0, NULL, NULL, 0);
@@ -748,16 +841,29 @@ COMMIT;
 DROP TABLE IF EXISTS `tag`;
 CREATE TABLE `tag` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL DEFAULT '',
-  `description` varchar(1000) DEFAULT NULL,
-  `icon` varchar(255) DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `description` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `icon` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `topic_count` int(11) NOT NULL DEFAULT '0',
   `in_time` datetime NOT NULL,
   `admin_id` int(11) DEFAULT '0',
-  `admin_name` varchar(255) DEFAULT NULL,
+  `admin_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `name` (`name`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+-- ----------------------------
+-- Records of tag
+-- ----------------------------
+BEGIN;
+INSERT INTO `tag` VALUES (20, '软件下载', '下载内容\r\n      软件版本：提供产品软件版本的下载链接和使用说明\r\n      规则库：提供规则库的下载链接和使用说明\r\n资料来源\r\n      统一由产品组负责更新维护\r\n', NULL, 0, '2019-04-03 00:52:55', 19, '于富洋');
+INSERT INTO `tag` VALUES (21, '文档中心', '下载内容\r\n      用户手册：提供产品通用的用户使用指导手册\r\n      配置案例：提供产品常用的配置说明案例\r\n      维护资料：提供产品常见的维护指导资料\r\n资料来源\r\n      统一由产品组负责更新维护\r\n', NULL, 0, '2019-04-03 00:53:38', 0, NULL);
+INSERT INTO `tag` VALUES (22, '知识库', '内容：涉及各个产品的配置、问题排查方法、FAQ等资料\r\n来源：所有安恒员工均可提交资料\r\n审核：400中心L2负责审核资料\r\n', NULL, 0, '2019-04-03 00:54:49', 0, NULL);
+INSERT INTO `tag` VALUES (23, '许可申请', '推进许可自动化，逐步将OA系统的许可申请迁移至社区平台\r\n', NULL, 0, '2019-04-03 00:55:21', 0, NULL);
+INSERT INTO `tag` VALUES (24, '快问快答', '话题广场：所有人员（外部+内部）都可以提交话题，安恒总部技术（400L2/产品组）回答问题\r\n智能客服：智能机器人+在线客服（400L1）\r\n', NULL, 0, '2019-04-03 00:56:04', 0, NULL);
+INSERT INTO `tag` VALUES (25, '技术论坛', '内容：交流帖子、技术分享、改进建议等\r\n来源：面向所有人，包括安恒员工、安恒客户、渠道工程师等\r\n管理：资料不做审核，但是需要管理维护\r\n', NULL, 0, '2019-04-03 00:56:50', 0, NULL);
+INSERT INTO `tag` VALUES (26, '产品需求', '内容：产品改进建议或者功能需求\r\n来源：面向所有安恒员工开放\r\n管理：400L2首次审核，产品组二次审核，研发最终审核\r\n奖励：接纳的需求给予相关奖励\r\n', NULL, 2, '2019-04-03 00:57:36', 0, NULL);
+COMMIT;
 
 -- ----------------------------
 -- Table structure for topic
@@ -765,8 +871,8 @@ CREATE TABLE `tag` (
 DROP TABLE IF EXISTS `topic`;
 CREATE TABLE `topic` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) NOT NULL DEFAULT '',
-  `content` longtext,
+  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `content` longtext CHARACTER SET utf8 COLLATE utf8_general_ci,
   `in_time` datetime NOT NULL,
   `modify_time` datetime DEFAULT NULL,
   `user_id` int(11) NOT NULL,
@@ -775,13 +881,20 @@ CREATE TABLE `topic` (
   `view` int(11) NOT NULL DEFAULT '0',
   `top` bit(1) NOT NULL DEFAULT b'0',
   `good` bit(1) NOT NULL DEFAULT b'0',
-  `up_ids` text,
+  `up_ids` text CHARACTER SET utf8 COLLATE utf8_general_ci,
   `tag_id` int(11) NOT NULL,
   `pass` bit(1) DEFAULT b'0',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `title` (`title`) USING BTREE,
   KEY `user_id` (`user_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+-- ----------------------------
+-- Records of topic
+-- ----------------------------
+BEGIN;
+INSERT INTO `topic` VALUES (40, '论坛功能测试', '测试结果', '2019-05-22 08:36:22', '2019-05-22 08:36:43', 8, 0, 0, 1, b'1', b'0', NULL, 26, b'1');
+COMMIT;
 
 -- ----------------------------
 -- Table structure for topic_tag
@@ -791,34 +904,10 @@ CREATE TABLE `topic_tag` (
   `tag_id` int(11) NOT NULL,
   `topic_id` int(11) NOT NULL,
   KEY `tag_id` (`tag_id`) USING BTREE,
-  KEY `topic_id` (`topic_id`) USING BTREE
+  KEY `topic_id` (`topic_id`) USING BTREE,
+  CONSTRAINT `topic_tag_ibfk_1` FOREIGN KEY (`tag_id`) REFERENCES `tag` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `topic_tag_ibfk_2` FOREIGN KEY (`topic_id`) REFERENCES `topic` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
-
--- ----------------------------
--- Table structure for uploadfile
--- ----------------------------
-DROP TABLE IF EXISTS `uploadfile`;
-CREATE TABLE `uploadfile` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `file_name` varchar(255) NOT NULL,
-  `size` bigint(20) NOT NULL,
-  `url` varchar(255) NOT NULL,
-  `in_time` datetime NOT NULL,
-  `category_id` int(11) NOT NULL,
-  `version` varchar(255) NOT NULL,
-  `description` varchar(255) NOT NULL,
-  `Grade` int(11) NOT NULL DEFAULT '1',
-  `code` varchar(255) NOT NULL,
-  `origin_name` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
-
--- ----------------------------
--- Records of uploadfile
--- ----------------------------
-BEGIN;
-INSERT INTO `uploadfile` VALUES (1, '4.3.2cloud-1557974818561.zip', 3087050, '/bbs/static/upload/明御系列/明御web应用防火墙/WAF 433版本/4.3.2cloud-1557974818561.zip', '2019-05-16 02:46:59', 4, '433', '', 1, 'q600RRd0', '4.3.2cloud.zip');
-COMMIT;
 
 -- ----------------------------
 -- Table structure for user
@@ -827,28 +916,28 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `origin_id` int(11) NOT NULL,
-  `username` varchar(255) NOT NULL DEFAULT '',
-  `password` varchar(255) DEFAULT '',
-  `avatar` varchar(1000) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `bio` varchar(1000) DEFAULT NULL,
+  `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '',
+  `avatar` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `bio` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `score` int(11) NOT NULL DEFAULT '0',
   `in_time` datetime NOT NULL,
-  `token` varchar(255) NOT NULL DEFAULT '',
-  `telegram_name` varchar(255) DEFAULT NULL,
+  `token` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `telegram_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `email_notification` bit(1) NOT NULL DEFAULT b'0',
   `message` bigint(255) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `username` (`username`) USING BTREE,
   UNIQUE KEY `token` (`token`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
 BEGIN;
-INSERT INTO `user` VALUES (1, 11728, '老舰长不靠浆', '$2a$10$ZhHjx6q5yVilj.VR1i2MHebhwoPZ6zt4/y6I7X5DSTh5MWDTZ1L.a', 'http://ximg.linkedbyx.com/default-avatar.png', NULL, NULL, 0, '2019-05-13 10:05:46', '0c0ef21a-e685-4d6c-a60d-6203bb2e8b23', NULL, b'0', 0);
-INSERT INTO `user` VALUES (2, 21, 'jingyi.wang', '$2a$10$T6b6B7lZqhto0qPcCA5itek0TkH9Mn6QrQzQgd/bJC2HJkgh5wpay', 'http://ximg.linkedbyx.com/a62593f0730ed0465c3865e1a9b9a75f.png', NULL, NULL, 0, '2019-05-14 01:26:15', '8771f866-c13c-484a-9aac-1c15e7bdba1d', NULL, b'0', 0);
+INSERT INTO `user` VALUES (6, 115, 'test', '$2a$10$fPKYEXWvltG2xGpXjqLWCOeV/25sMa06.YATRiLQumAL7mliCL7MK', 'http://127.0.0.1:8080/static/upload/avatar/test/avatar.jpeg?v=5', NULL, NULL, 410, '2019-03-11 06:01:11', '5e431eb4-7ae1-460c-846b-293cc9c8673d', NULL, b'0', 0);
+INSERT INTO `user` VALUES (8, 1195, '老舰长不靠浆', '$2a$10$4yaWpl47C0hcKDr2amw/BO1NLjz0XCNet0Qs9u2TK2gl1INgOclTq', 'http://p1q3gxdny.bkt.clouddn.com/default-avatar.png', NULL, NULL, 65, '2019-04-25 06:55:53', '0aad27a4-f666-41f9-b2c3-37a97fd7a2c2', NULL, b'0', 2);
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
