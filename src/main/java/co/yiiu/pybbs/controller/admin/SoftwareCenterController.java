@@ -67,7 +67,7 @@ public class SoftwareCenterController extends BaseAdminController {
             String fileName = file.getOriginalFilename();
             // 文件后缀
             String fileNameSuffix = fileName.substring(fileName.lastIndexOf(".") + 1);
-            String Suffix = "pdf/docx/doc";
+            String Suffix = "exe/tar/tar.gz/zip/";
             if (Suffix.indexOf(fileNameSuffix) < 0) {
                 log.error("文件上传格式有误");
                 return "文件上传格式有误";
@@ -125,7 +125,7 @@ public class SoftwareCenterController extends BaseAdminController {
             String fileName = file.getOriginalFilename();
             // 文件后缀
             String fileNameSuffix = fileName.substring(fileName.lastIndexOf(".") + 1);
-            String Suffix = "pdf/docx/doc";
+            String Suffix = "exe/tar/tar.gz/zip/";
             if (Suffix.indexOf(fileNameSuffix) < 0) {
                 log.error("文件上传格式有误");
                 return null;
